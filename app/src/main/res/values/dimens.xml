@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="last_calories_and_timer_size">32dp</dimen>
+    <dimen name="eated_and_burned_calories">16dp</dimen>
+    <dimen name="breakfast_lunch_dinner_size">16dp</dimen>
+    <dimen name="giant_text_size">24dp</dimen>
+    <dimen name="top_strings_size">16dp</dimen>
+    <dimen name="theme_of_element_size">12dp</dimen>
+    <dimen name="main_information_size">12dp</dimen>
+    <dimen name="minimal_text_size">10dp</dimen>
+    <dimen name="navigation_text_size">12dp</dimen>
+    <dimen name="calories_digits">14dp</dimen>
+    <dimen name="fab_margin">16dp</dimen>
+</resources>

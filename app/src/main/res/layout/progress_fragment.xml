@@ -1,0 +1,1084 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/week"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="15dp">
+
+        <TextView
+            android:id="@+id/week_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            android:text="@string/week"
+            android:fontFamily="@font/blinker_regular"
+            android:textSize="@dimen/main_information_size"
+            android:textColor="@color/text_color_on_light_and_timer"/>
+        <TextView
+            android:id="@+id/number_week"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintLeft_toRightOf="@id/week_text"
+            android:layout_marginLeft="2dp"
+            android:text="24"
+            android:fontFamily="@font/blinker_regular"
+            android:textSize="@dimen/main_information_size"
+            android:textColor="@color/text_color_on_light_and_timer"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/week"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginTop="5dp"
+        android:layout_marginLeft="15dp">
+
+        <TextView
+            android:id="@+id/date_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/blinker_bold"
+            android:text="@string/today"
+            android:textColor="@color/text_color_on_light_and_timer"
+            android:textSize="@dimen/giant_text_size"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/summaryMain"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/date"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginTop="5dp"
+        android:layout_marginLeft="15dp">
+
+        <TextView
+            android:id="@+id/summary_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/blinker_bold"
+            android:text="@string/summary"
+            android:textColor="@color/text_color_on_light_and_timer"
+            android:textSize="@dimen/main_information_size"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/sumaryLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        app:layout_constraintTop_toBottomOf="@id/summaryMain"
+        app:layout_constraintLeft_toLeftOf="parent">
+
+        <ImageView
+            android:id="@+id/sumaryLayoutBackground"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="fitXY"
+            android:src="@drawable/information"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent">
+        </ImageView>
+
+        <com.mikhaellopez.circularprogressbar.CircularProgressBar
+            android:id="@+id/circularProgressBarCalories"
+            android:layout_width="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="5dp"
+            android:layout_height="0dp"
+            app:cpb_progress="1"
+            app:layout_constraintTop_toTopOf="@id/sumaryLayoutBackground"
+            app:layout_constraintBottom_toTopOf="@id/carbon_proteins_fats_view"
+            app:layout_constraintLeft_toLeftOf="@id/sumaryLayoutBackground"
+            app:layout_constraintRight_toRightOf="@id/sumaryLayoutBackground"
+            app:cpb_background_progressbar_color="@color/not_full_status_bar"
+            app:cpb_background_progressbar_width="10dp"
+            app:cpb_progress_direction="to_right"
+            app:cpb_progressbar_color="@color/full_status_bar_purple"
+            app:cpb_progressbar_width="10dp"
+            app:cpb_round_border="true" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="@id/circularProgressBarCalories"
+            app:layout_constraintRight_toRightOf="@id/circularProgressBarCalories"
+            app:layout_constraintLeft_toLeftOf="@id/circularProgressBarCalories"
+            app:layout_constraintBottom_toBottomOf="@id/circularProgressBarCalories"
+            >
+            <TextView
+                android:id="@+id/last_calories"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/blinker_bold"
+                android:text="1919"
+                android:textSize="@dimen/last_calories_and_timer_size"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toTopOf="@id/last_calories_text"
+                />
+
+            <TextView
+                android:id="@+id/last_calories_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/blinker_regular"
+                android:text="@string/all_lost_ccal"
+                android:textSize="@dimen/minimal_text_size"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/last_calories"
+                />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="@id/sumaryLayoutBackground"
+            app:layout_constraintBottom_toTopOf="@id/carbon_proteins_fats_view"
+            app:layout_constraintRight_toLeftOf="@id/circularProgressBarCalories"
+            app:layout_constraintLeft_toLeftOf="@id/sumaryLayoutBackground"
+            >
+            <TextView
+                android:id="@+id/eated_calories"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/blinker_bold"
+                android:text="0"
+                android:textSize="@dimen/eated_and_burned_calories"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toTopOf="@id/eated_calories_text"
+                />
+
+            <TextView
+                android:id="@+id/eated_calories_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/blinker_regular"
+                android:text="@string/all_eat_ccal"
+                android:textSize="@dimen/minimal_text_size"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/eated_calories"
+                />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="@id/sumaryLayoutBackground"
+            app:layout_constraintBottom_toTopOf="@id/carbon_proteins_fats_view"
+            app:layout_constraintLeft_toRightOf="@id/circularProgressBarCalories"
+            app:layout_constraintRight_toRightOf="@id/sumaryLayoutBackground"
+            >
+            <TextView
+                android:id="@+id/burned_calories"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/blinker_bold"
+                android:text="0"
+                android:textSize="@dimen/eated_and_burned_calories"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toTopOf="@id/burned_calories_text"
+                />
+
+            <TextView
+                android:id="@+id/burned_calories_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/blinker_regular"
+                android:text="@string/burned_ccal"
+                android:textSize="@dimen/minimal_text_size"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/burned_calories"
+                />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/carbon_proteins_fats_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            app:layout_constraintLeft_toLeftOf="@id/sumaryLayoutBackground"
+            app:layout_constraintRight_toRightOf="@id/sumaryLayoutBackground"
+            app:layout_constraintBottom_toBottomOf="@id/sumaryLayoutBackground">
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/carbons"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toLeftOf="@id/proteins"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+                <TextView
+                    android:id="@+id/carbons_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toTopOf="@id/carbons_progress_bar"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    android:textSize="@dimen/minimal_text_size"
+                    android:text="@string/carbohydrates"
+                    android:fontFamily="@font/blinker_regular"
+                    />
+                <ProgressBar
+                    android:id="@+id/carbons_progress_bar"
+                    android:layout_width="80dp"
+                    android:layout_height="5dp"
+                    style="?android:attr/progressBarStyleHorizontal"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    android:progressDrawable="@drawable/custom_progress_bar"
+                    app:layout_constraintTop_toBottomOf="@id/carbons_text"
+                    app:layout_constraintBottom_toTopOf="@id/carbons_grams"
+                    android:progress="1"
+                    android:indeterminate="false"
+                    />
+                <TextView
+                    android:id="@+id/carbons_grams"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/carbons_progress_bar"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    android:textSize="@dimen/minimal_text_size"
+                    android:text="0 / 234г"
+                    android:fontFamily="@font/blinker_bold"/>
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/proteins"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintLeft_toRightOf="@id/carbons"
+                app:layout_constraintRight_toLeftOf="@id/fats"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+                <TextView
+                    android:id="@+id/proteins_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toTopOf="@id/proteins_progress_bar"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    android:textSize="@dimen/minimal_text_size"
+                    android:text="@string/proteins"
+                    android:fontFamily="@font/blinker_regular"
+                    />
+                <ProgressBar
+                    android:id="@+id/proteins_progress_bar"
+                    android:layout_width="80dp"
+                    android:layout_height="5dp"
+                    style="?android:attr/progressBarStyleHorizontal"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    android:progressDrawable="@drawable/custom_progress_bar"
+                    app:layout_constraintTop_toBottomOf="@id/proteins_text"
+                    app:layout_constraintBottom_toTopOf="@id/proteins_grams"
+                    android:progress="1"
+                    android:indeterminate="false"
+                    />
+                <TextView
+                    android:id="@+id/proteins_grams"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/proteins_progress_bar"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    android:textSize="@dimen/minimal_text_size"
+                    android:text="0 / 94г"
+                    android:fontFamily="@font/blinker_bold"/>
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/fats"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintLeft_toRightOf="@id/proteins"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+                <TextView
+                    android:id="@+id/fats_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toTopOf="@id/fats_progress_bar"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    android:textSize="@dimen/minimal_text_size"
+                    android:text="@string/carbohydrates"
+                    android:fontFamily="@font/blinker_regular"
+                    />
+                <ProgressBar
+                    android:id="@+id/fats_progress_bar"
+                    android:layout_width="80dp"
+                    android:layout_height="5dp"
+                    style="?android:attr/progressBarStyleHorizontal"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    android:progressDrawable="@drawable/custom_progress_bar"
+                    app:layout_constraintTop_toBottomOf="@id/fats_text"
+                    app:layout_constraintBottom_toTopOf="@id/fats_grams"
+                    android:progress="1"
+                    android:indeterminate="false"
+                    />
+                <TextView
+                    android:id="@+id/fats_grams"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/fats_progress_bar"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    android:textSize="@dimen/minimal_text_size"
+                    android:text="0 / 62г"
+                    android:fontFamily="@font/blinker_bold"/>
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/waterMain"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/sumaryLayout"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginTop="15dp"
+        android:layout_marginLeft="15dp">
+
+        <TextView
+            android:id="@+id/water_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/blinker_bold"
+            android:text="@string/water_track"
+            android:textColor="@color/text_color_on_light_and_timer"
+            android:textSize="@dimen/main_information_size"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/waterLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="2dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        app:layout_constraintTop_toBottomOf="@id/waterMain"
+        app:layout_constraintLeft_toLeftOf="parent">
+
+        <ImageView
+            android:id="@+id/waterBackgroundImage"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="fitXY"
+            android:src="@drawable/water_frame" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/glassOfwater1"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toLeftOf="@+id/glassOfwater2"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="fitXY"
+                android:src="@drawable/glass_of_watter_empty" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/glassOfwater2"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            app:layout_constraintLeft_toRightOf="@id/glassOfwater1"
+            app:layout_constraintRight_toLeftOf="@+id/glassOfwater3"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="fitXY"
+                android:src="@drawable/glass_of_watter_empty" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/glassOfwater3"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            app:layout_constraintLeft_toRightOf="@id/glassOfwater2"
+            app:layout_constraintRight_toLeftOf="@+id/glassOfwater4"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="fitXY"
+                android:src="@drawable/glass_of_watter_empty" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/glassOfwater4"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            app:layout_constraintLeft_toRightOf="@id/glassOfwater3"
+            app:layout_constraintRight_toLeftOf="@+id/add_substr_water"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="fitXY"
+                android:src="@drawable/glass_of_watter_empty" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/add_substr_water"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginRight="10dp">
+            <TextView
+                android:id="@+id/water_value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/blinker_bold"
+                android:text="0 литров"
+                android:textColor="@color/text_color_on_light_and_timer"
+                android:textSize="@dimen/main_information_size"
+                app:layout_constraintRight_toRightOf="parent"
+                android:layout_marginBottom="10dp"
+                app:layout_constraintBottom_toTopOf="@id/plus_water" />
+            <ImageButton
+                android:id="@+id/plus_water"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="10dp"
+                android:layout_marginBottom="5dp"
+                android:background="@android:color/transparent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintBottom_toTopOf="@id/minus_water"
+                android:scaleType="fitXY"
+                android:src="@drawable/add"/>
+            <ImageButton
+                android:id="@+id/minus_water"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="10dp"
+                android:background="@android:color/transparent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:scaleType="fitXY"
+                android:src="@drawable/substr"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/foodMain"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/waterLayout"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginTop="15dp"
+        android:layout_marginLeft="15dp">
+
+        <TextView
+            android:id="@+id/food_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/blinker_bold"
+            android:text="@string/nutrition"
+            android:textColor="@color/text_color_on_light_and_timer"
+            android:textSize="@dimen/main_information_size"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/foodLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="2dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        app:layout_constraintTop_toBottomOf="@id/foodMain"
+        app:layout_constraintLeft_toLeftOf="parent">
+
+        <ImageView
+            android:id="@+id/foodBackgroundImage"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="fitXY"
+            android:src="@drawable/food_frame" />
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintTop_toTopOf="@id/foodBackgroundImage"
+            app:layout_constraintBottom_toBottomOf="@id/foodBackgroundImage"
+            app:layout_constraintLeft_toLeftOf="@id/foodBackgroundImage"
+            app:layout_constraintRight_toRightOf="@id/foodBackgroundImage">
+
+            <LinearLayout
+                android:id="@+id/all_elements_of_food"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                android:weightSum="4">
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/breakfast"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_margin="5dp"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent">
+
+                        <com.mikhaellopez.circularprogressbar.CircularProgressBar
+                            android:id="@+id/circularProgressBarBreakfast"
+                            android:layout_width="wrap_content"
+                            android:layout_height="0dp"
+                            app:cpb_progress="1"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintLeft_toLeftOf="parent"
+                            app:layout_constraintRight_toLeftOf="@id/breakfast_calories"
+                            app:cpb_background_progressbar_color="@color/not_full_status_bar"
+                            app:cpb_background_progressbar_width="7dp"
+                            app:cpb_progress_direction="to_right"
+                            app:cpb_progressbar_color="@color/full_status_bar_purple"
+                            app:cpb_progressbar_width="7dp"
+                            app:cpb_round_border="true" />
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="10dp"
+                            android:layout_marginLeft="7dp"
+                            app:layout_constraintBottom_toBottomOf="@id/circularProgressBarBreakfast"
+                            app:layout_constraintTop_toTopOf="@id/circularProgressBarBreakfast"
+                            app:layout_constraintRight_toRightOf="@id/circularProgressBarBreakfast"
+                            app:layout_constraintLeft_toLeftOf="@id/circularProgressBarBreakfast"
+                            android:background="@drawable/breakfast_el"
+                            />
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:id="@+id/breakfast_calories"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintLeft_toRightOf="@id/circularProgressBarBreakfast"
+                            android:layout_marginLeft="10dp"
+                            >
+                            <TextView
+                                android:id="@+id/breakfast_text"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/blinker_bold"
+                                android:text="@string/breakfast"
+                                android:textSize="@dimen/breakfast_lunch_dinner_size"
+                                app:layout_constraintLeft_toLeftOf="parent"
+                                app:layout_constraintTop_toTopOf="parent"
+                                app:layout_constraintBottom_toTopOf="@id/breakfast_calories_text"
+                                />
+
+                            <TextView
+                                android:id="@+id/breakfast_calories_text"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/blinker_regular"
+                                android:text="0 / 576 ккал"
+                                android:textSize="@dimen/calories_digits"
+                                app:layout_constraintLeft_toLeftOf="parent"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintTop_toBottomOf="@id/breakfast_text"
+                                />
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+                        <Button
+                            android:id="@+id/add_breakfast_dish_button"
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:layout_marginRight="10dp"
+                            android:background="@drawable/add_food"
+                            app:layout_constraintRight_toRightOf="parent"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            />
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:id="@+id/element_in_center_breakfast"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            app:layout_constraintRight_toRightOf="parent"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintLeft_toLeftOf="parent"/>
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            app:layout_constraintLeft_toRightOf="@id/element_in_center_breakfast"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintRight_toLeftOf="@id/add_breakfast_dish_button"
+                            android:maxLines="2"
+                            android:maxLength="50"
+                            android:layout_marginRight="20dp"
+                            android:text="@string/empty_text"
+                            android:textSize="@dimen/main_information_size"
+                            android:fontFamily="@font/blinker_regular"
+                            android:ellipsize="none"
+                            />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/lunch"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_margin="5dp"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent">
+
+                        <com.mikhaellopez.circularprogressbar.CircularProgressBar
+                            android:id="@+id/circularProgressBarLunch"
+                            android:layout_width="wrap_content"
+                            android:layout_height="0dp"
+                            app:cpb_progress="1"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintLeft_toLeftOf="parent"
+                            app:cpb_background_progressbar_color="@color/not_full_status_bar"
+                            app:cpb_background_progressbar_width="7dp"
+                            app:cpb_progress_direction="to_right"
+                            app:cpb_progressbar_color="@color/full_status_bar_purple"
+                            app:cpb_progressbar_width="7dp"
+                            app:cpb_round_border="true" />
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="10dp"
+                            app:layout_constraintBottom_toBottomOf="@id/circularProgressBarLunch"
+                            app:layout_constraintTop_toTopOf="@id/circularProgressBarLunch"
+                            app:layout_constraintRight_toRightOf="@id/circularProgressBarLunch"
+                            app:layout_constraintLeft_toLeftOf="@id/circularProgressBarLunch"
+                            android:background="@drawable/lunch_el"
+                            />
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:id="@+id/lunch_calories"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintLeft_toRightOf="@id/circularProgressBarLunch"
+                            android:layout_marginLeft="10dp"
+                            >
+                            <TextView
+                                android:id="@+id/lunch_text"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/blinker_bold"
+                                android:text="@string/lunch"
+                                android:textSize="@dimen/breakfast_lunch_dinner_size"
+                                app:layout_constraintLeft_toLeftOf="parent"
+                                app:layout_constraintTop_toTopOf="parent"
+                                app:layout_constraintBottom_toTopOf="@id/lunch_calories_text"
+                                />
+
+                            <TextView
+                                android:id="@+id/lunch_calories_text"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/blinker_regular"
+                                android:text="0 / 768 ккал"
+                                android:textSize="@dimen/calories_digits"
+                                app:layout_constraintLeft_toLeftOf="parent"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintTop_toBottomOf="@id/lunch_text"
+                                />
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+                        <Button
+                            android:id="@+id/add_lunch_dish_button"
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:layout_marginRight="10dp"
+                            android:background="@drawable/add_food"
+                            app:layout_constraintRight_toRightOf="parent"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            />
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:id="@+id/element_in_center_lunch"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            app:layout_constraintRight_toRightOf="parent"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintLeft_toLeftOf="parent"/>
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            app:layout_constraintLeft_toRightOf="@id/element_in_center_lunch"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintRight_toLeftOf="@id/add_lunch_dish_button"
+                            android:maxLines="2"
+                            android:maxLength="50"
+                            android:layout_marginRight="20dp"
+                            android:text="@string/empty_text"
+                            android:textSize="@dimen/main_information_size"
+                            android:fontFamily="@font/blinker_regular"
+                            android:ellipsize="none"
+                            />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/dinner"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_margin="5dp"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent">
+
+                        <com.mikhaellopez.circularprogressbar.CircularProgressBar
+                            android:id="@+id/circularProgressBarDinner"
+                            android:layout_width="wrap_content"
+                            android:layout_height="0dp"
+                            app:cpb_progress="1"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintLeft_toLeftOf="parent"
+                            app:cpb_background_progressbar_color="@color/not_full_status_bar"
+                            app:cpb_background_progressbar_width="7dp"
+                            app:cpb_progress_direction="to_right"
+                            app:cpb_progressbar_color="@color/full_status_bar_purple"
+                            app:cpb_progressbar_width="7dp"
+                            app:cpb_round_border="true" />
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="18dp"
+                            app:layout_constraintBottom_toBottomOf="@id/circularProgressBarDinner"
+                            app:layout_constraintTop_toTopOf="@id/circularProgressBarDinner"
+                            app:layout_constraintRight_toRightOf="@id/circularProgressBarDinner"
+                            app:layout_constraintLeft_toLeftOf="@id/circularProgressBarDinner"
+                            android:background="@drawable/dinner_el"
+                            />
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:id="@+id/dinner_calories"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintLeft_toRightOf="@id/circularProgressBarDinner"
+                            android:layout_marginLeft="10dp"
+                            >
+                            <TextView
+                                android:id="@+id/dinner_text"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/blinker_bold"
+                                android:text="@string/dinner"
+                                android:textSize="@dimen/breakfast_lunch_dinner_size"
+                                app:layout_constraintLeft_toLeftOf="parent"
+                                app:layout_constraintTop_toTopOf="parent"
+                                app:layout_constraintBottom_toTopOf="@id/dinner_calories_text"
+                                />
+
+                            <TextView
+                                android:id="@+id/dinner_calories_text"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/blinker_regular"
+                                android:text="0 / 480 ккал"
+                                android:textSize="@dimen/calories_digits"
+                                app:layout_constraintLeft_toLeftOf="parent"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintTop_toBottomOf="@id/dinner_text"
+                                />
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+                        <Button
+                            android:id="@+id/add_dinner_dish_button"
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:layout_marginRight="10dp"
+                            android:background="@drawable/add_food"
+                            app:layout_constraintRight_toRightOf="parent"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            />
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:id="@+id/element_in_center_dinner"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            app:layout_constraintRight_toRightOf="parent"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintLeft_toLeftOf="parent"/>
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            app:layout_constraintLeft_toRightOf="@id/element_in_center_dinner"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintRight_toLeftOf="@id/add_dinner_dish_button"
+                            android:maxLines="2"
+                            android:maxLength="50"
+                            android:layout_marginRight="20dp"
+                            android:text="@string/empty_text"
+                            android:textSize="@dimen/main_information_size"
+                            android:fontFamily="@font/blinker_regular"
+                            android:ellipsize="none"
+                            />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/snack"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_margin="5dp"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent">
+
+                        <com.mikhaellopez.circularprogressbar.CircularProgressBar
+                            android:id="@+id/circularProgressBarSnack"
+                            android:layout_width="wrap_content"
+                            android:layout_height="0dp"
+                            app:cpb_progress="1"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintLeft_toLeftOf="parent"
+                            app:cpb_background_progressbar_color="@color/not_full_status_bar"
+                            app:cpb_background_progressbar_width="7dp"
+                            app:cpb_progress_direction="to_right"
+                            app:cpb_progressbar_color="@color/full_status_bar_purple"
+                            app:cpb_progressbar_width="7dp"
+                            app:cpb_round_border="true" />
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="4dp"
+                            android:layout_marginBottom="5dp"
+                            app:layout_constraintBottom_toBottomOf="@id/circularProgressBarSnack"
+                            app:layout_constraintTop_toTopOf="@id/circularProgressBarSnack"
+                            app:layout_constraintRight_toRightOf="@id/circularProgressBarSnack"
+                            app:layout_constraintLeft_toLeftOf="@id/circularProgressBarSnack"
+                            android:background="@drawable/snack_el"
+                            />
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:id="@+id/snack_calories"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintLeft_toRightOf="@id/circularProgressBarSnack"
+                            android:layout_marginLeft="10dp"
+                            >
+                            <TextView
+                                android:id="@+id/snack_text"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/blinker_bold"
+                                android:text="@string/snack"
+                                android:textSize="@dimen/breakfast_lunch_dinner_size"
+                                app:layout_constraintLeft_toLeftOf="parent"
+                                app:layout_constraintTop_toTopOf="parent"
+                                app:layout_constraintBottom_toTopOf="@id/snack_calories_text"
+                                />
+
+                            <TextView
+                                android:id="@+id/snack_calories_text"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/blinker_regular"
+                                android:text="0 / 96 ккал"
+                                android:textSize="@dimen/calories_digits"
+                                app:layout_constraintLeft_toLeftOf="parent"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintTop_toBottomOf="@id/snack_text"
+                                />
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+                        <Button
+                            android:id="@+id/add_snack_dish_button"
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:layout_marginRight="10dp"
+                            android:background="@drawable/add_food"
+                            app:layout_constraintRight_toRightOf="parent"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            />
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:id="@+id/element_in_center_snack"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            app:layout_constraintRight_toRightOf="parent"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintLeft_toLeftOf="parent"/>
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            app:layout_constraintLeft_toRightOf="@id/element_in_center_snack"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintRight_toLeftOf="@id/add_snack_dish_button"
+                            android:maxLines="2"
+                            android:maxLength="50"
+                            android:layout_marginRight="20dp"
+                            android:text="@string/empty_text"
+                            android:textSize="@dimen/main_information_size"
+                            android:fontFamily="@font/blinker_regular"
+                            android:ellipsize="none"
+                            />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </LinearLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/activityMain"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/foodLayout"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginTop="15dp"
+        android:layout_marginLeft="15dp">
+
+        <TextView
+            android:id="@+id/activity_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/blinker_bold"
+            android:text="@string/activity"
+            android:textColor="@color/text_color_on_light_and_timer"
+            android:textSize="@dimen/main_information_size"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/activityLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="2dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        app:layout_constraintTop_toBottomOf="@id/activityMain"
+        app:layout_constraintLeft_toLeftOf="parent">
+
+        <ImageView
+            android:id="@+id/activityBackgroundImage"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="fitXY"
+            android:src="@drawable/activity_frame" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>
