@@ -29,6 +29,7 @@
     <string name="recent">Недавние</string>
     <string name="done_button_text">Готово</string>
     <!--  Экран интервального голодания  -->
+    <string name="your_tracker">Ваш трекер</string>
     <string name="intermittent_fasting">Интервальное голодание</string>
     <string name="fasting_tracker">Трекер голодания</string>
     <string name="customize_yourself">Настройте трекер под себя</string>

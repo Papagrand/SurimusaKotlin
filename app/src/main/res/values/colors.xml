@@ -12,7 +12,7 @@
     <color name="text_color_on_light_and_timer">#191C1E</color>
     <color name="text_color_on_dark">#E5DEFF</color>
 <!--  Цвета на странице голодания  -->
-    <color name="not_full_circle_diagram_and_center_circle_color">#98C8ED</color>
+    <color name="not_full_circle_diagram_and_center_circle_color">#f098C8ED</color>
     <color name="full_status_bar_purple_blue">#006688</color>
     <color name="starving_digits">#006688</color>
     <color name="on_tracker_button_color">#006688</color>
