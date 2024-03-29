@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/bottom_progress"
+        android:title="Прогресс"
+        android:icon="@drawable/progress_navigation"
+        />
+    <item
+        android:id="@+id/bottom_recepies"
+        android:title="Рецепты"
+        android:icon="@drawable/recepies_navigation"
+        />
+    <item
+        android:id="@+id/bottom_flasting"
+        android:title="Голодание"
+        android:icon="@drawable/flasting_navigation"
+        />
+    <item
+        android:id="@+id/bottom_profile"
+        android:title="Профиль"
+        android:icon="@drawable/profile_navigation"
+        />
+
+</menu>

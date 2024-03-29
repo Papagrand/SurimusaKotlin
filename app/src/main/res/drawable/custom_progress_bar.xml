@@ -3,7 +3,7 @@
   <item android:id="@android:id/background">
     <shape>
       <corners android:radius="20dp" />
-      <solid android:color="@color/not_full_status_bar" />
+      <solid android:color="?attr/colorSecondary" />
     </shape>
   </item>
 
@@ -12,7 +12,7 @@
     <scale android:scaleWidth="100%">
       <shape android:shape="rectangle">
         <corners android:radius="20dp" />
-        <solid android:color="@color/full_status_bar_purple" />
+        <solid android:color="?attr/colorSecondary" />
       </shape>
     </scale>
   </item>

@@ -56,7 +56,7 @@
                 android:text="0"
                 android:fontFamily="@font/blinker_regular"
                 android:textSize="@dimen/giant_text_size"
-                android:textColor="@color/full_status_bar_purple"/>
+                android:textColor="?attr/colorTertiary"/>
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <TextView
@@ -81,28 +81,29 @@
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toBottomOf="@id/breakfast_lunch_dinner"
             >
-            <ImageButton
-
-                android:layout_width="wrap_content"
+            <SearchView
+                android:id="@+id/search_view"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
                 android:background="@drawable/searchbar"
+                android:queryHint="@string/search_empty"
+                android:iconifiedByDefault="false"
                 />
-            <TextView
-                android:id="@+id/what_you_search"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="35dp"
-                app:layout_constraintTop_toTopOf="@+id/search_bar_products"
-                app:layout_constraintLeft_toLeftOf="@+id/search_bar_products"
-                app:layout_constraintBottom_toBottomOf="@+id/search_bar_products"
-                android:text="@string/search_empty"
-                android:fontFamily="@font/blinker_regular"
-                android:textSize="@dimen/calories_digits"
-                android:textColor="@color/text_color_on_light_and_timer"/>
+<!--            <ImageButton-->
+
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                app:layout_constraintRight_toRightOf="parent"-->
+<!--                app:layout_constraintLeft_toLeftOf="parent"-->
+<!--                app:layout_constraintTop_toTopOf="parent"-->
+<!--                app:layout_constraintBottom_toBottomOf="parent"-->
+<!--                android:background="@drawable/searchbar"-->
+<!--                />-->
+
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout

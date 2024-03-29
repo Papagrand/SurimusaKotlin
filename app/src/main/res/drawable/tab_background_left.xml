@@ -3,5 +3,5 @@
         android:bottomLeftRadius="16dp"
         android:topRightRadius="0dp"
         android:bottomRightRadius="0dp"/>
-    <solid android:color="@color/full_status_bar_purple"/>
+    <solid android:color="?attr/colorPrimary"/>
 </shape>

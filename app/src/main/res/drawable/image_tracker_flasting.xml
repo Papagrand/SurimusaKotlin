@@ -8,12 +8,12 @@
         android:pathData="M9,1L373,1A8,8 0,0 1,381 9L381,333A8,8 0,0 1,373 341L9,341A8,8 0,0 1,1 333L1,9A8,8 0,0 1,9 1z"/>
     <path
         android:pathData="M9,1L373,1A8,8 0,0 1,381 9L381,333A8,8 0,0 1,373 341L9,341A8,8 0,0 1,1 333L1,9A8,8 0,0 1,9 1z"
-        android:fillColor="#E5DEFF"/>
+        android:fillColor="?attr/colorPrimary"/>
     <path
         android:pathData="M358,-461m-592,0a592,592 0,1 1,1184 0a592,592 0,1 1,-1184 0"
-        android:fillColor="#C1E8FF"/>
+        android:fillColor="?attr/colorPrimaryVariant"/>
     <path
         android:pathData="M-186,-512m-548,0a548,548 0,1 1,1096 0a548,548 0,1 1,-1096 0"
-        android:fillColor="#E5DEFF"/>
+        android:fillColor="?attr/colorPrimary"/>
   </group>
 </vector>
