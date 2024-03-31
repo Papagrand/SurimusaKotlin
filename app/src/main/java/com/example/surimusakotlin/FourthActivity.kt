@@ -1,6 +1,9 @@
 package com.example.surimusakotlin
 
+import android.content.Intent
 import android.os.Bundle
+import android.view.MotionEvent
+import android.widget.ImageButton
 import android.widget.SearchView
 import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
@@ -10,8 +13,6 @@ import androidx.core.view.WindowInsetsCompat
 
 class FourthActivity : AppCompatActivity() {
 
-    private lateinit var searchView: SearchView
-    private var searchText: String? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_product_or_meal)
@@ -20,32 +21,20 @@ class FourthActivity : AppCompatActivity() {
         breakfastLunchDinnerTextView.text = meal
 
 
-        searchView = findViewById(R.id.search_view)
+        val searchView = findViewById<ImageButton>(R.id.search_view_button)
+        searchView.isEnabled = true;
 
-        if (savedInstanceState != null) {
-            searchText = savedInstanceState.getString("searchText")
-            searchView.setQuery(searchText, false)
+        searchView.setOnClickListener{
+            val intent = Intent(this@FourthActivity, SearchActivity::class.java)
+            startActivity(intent)
+        }
+        val backButton = findViewById<ImageButton>(R.id.back_to_progress)
+        backButton.setOnClickListener{
+            val intent = Intent(this@FourthActivity, MainActivity::class.java)
+            startActivity(intent)
+            finish()
         }
 
-        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-            override fun onQueryTextSubmit(query: String?): Boolean {
-                return false
-            }
-
-            override fun onQueryTextChange(newText: String?): Boolean {
-                searchText = newText
-                return true
-            }
-        })
     }
 
-    override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
-        outState.putString("searchText", searchText)
-    }
-
-    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
-        super.onRestoreInstanceState(savedInstanceState)
-        searchText = savedInstanceState.getString("searchText")
-    }
 }
