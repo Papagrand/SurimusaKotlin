@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.ACTIVITY_RECOGNITION" />
+    <uses-permission android:name="android.permission.INTERNET"/>
 
     <application
         android:allowBackup="true"
@@ -19,12 +20,6 @@
             android:exported="false" />
         <activity
             android:name=".FourthActivity"
-            android:exported="false" />
-        <activity
-            android:name=".ThirdActivity"
-            android:exported="false" />
-        <activity
-            android:name=".SecondActivity"
             android:exported="false" />
         <activity
             android:name=".MainActivity"
