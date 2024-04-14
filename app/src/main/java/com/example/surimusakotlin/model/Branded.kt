@@ -9,7 +9,6 @@ data class Branded(
     val nf_calories: Int,
     val nix_brand_id: String,
     val nix_item_id: String,
-    val photo: PhotoX,
     val region: Int,
     val serving_qty: Double,
     val serving_unit: String

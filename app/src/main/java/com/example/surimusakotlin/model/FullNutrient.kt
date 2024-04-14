@@ -1,6 +1,6 @@
 package com.example.surimusakotlin.model
 
-data class FullNutrientX(
+data class FullNutrient(
     val attr_id: Int,
-    val value: Int
+    val value: Double
 )

@@ -9,18 +9,23 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.surimusakotlin.data.repository.FoodRepository
 import com.example.surimusakotlin.model.Branded
+import com.example.surimusakotlin.model.Common
 import com.example.surimusakotlin.model.Food
-import com.example.surimusakotlin.model.FoodInformation
 import com.example.surimusakotlin.model.FoodInstant
+import com.example.surimusakotlin.model.Nutrition
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import retrofit2.Response
 
 class FoodAdapter : RecyclerView.Adapter<FoodAdapter.FoodViewHolder>() {
 
-    var listFood = emptyList<Branded>()
+    var listFood = emptyList<Food>()
+    private val MAX_ITEMS_DISPLAYED = 2
+    private val searchScope = CoroutineScope(Dispatchers.Main)
 
     class FoodViewHolder(view: View) : RecyclerView.ViewHolder(view)
 
@@ -30,42 +35,24 @@ class FoodAdapter : RecyclerView.Adapter<FoodAdapter.FoodViewHolder>() {
     }
     override fun onBindViewHolder(holder: FoodViewHolder, position: Int) {
         val foodInfo = listFood[position]
-        holder.itemView.findViewById<TextView>(R.id.food_text_recycler).text = foodInfo.brand_name_item_name
-        holder.itemView.findViewById<TextView>(R.id.calories_of_product).text = foodInfo.nf_calories.toString()+" ккал"
+        holder.itemView.findViewById<TextView>(R.id.food_text_recycler).text = foodInfo.food_name
+        holder.itemView.findViewById<TextView>(R.id.calories_of_product).text = foodInfo.serving_weight_grams.toString()+" гр"
+        holder.itemView.findViewById<TextView>(R.id.carbons_recycler_grams).text = foodInfo.nf_total_carbohydrate.toString()+" гр."
+        holder.itemView.findViewById<TextView>(R.id.proteins_recycler_grams).text = foodInfo.nf_protein.toString()+" гр."
+        holder.itemView.findViewById<TextView>(R.id.fats_recycler_grams).text = foodInfo.nf_total_fat.toString()+" гр"
+    }
 
 
-        GlobalScope.launch(Dispatchers.IO) {
-            try {
-                val additionalInfoResponse: Response<Food> = FoodRepository().getAdditionalFoodInfo(foodInfo.nix_item_id)
-                withContext(Dispatchers.Main) {
-                    if (additionalInfoResponse.isSuccessful) {
-                        val additionalInfo:Food? = additionalInfoResponse.body()
-                        if (additionalInfo != null && !additionalInfo.foods.isNullOrEmpty()) {
-//                            holder.itemView.findViewById<TextView>(R.id.mass_of_product).text = additionalInfo.foods[position].serving_weight_grams.toString()+" гр."
-//                            holder.itemView.findViewById<TextView>(R.id.carbons_recycler_grams).text = additionalInfo.foods[position].nf_total_carbohydrate.toString()+" гр."
-//                            holder.itemView.findViewById<TextView>(R.id.proteins_recycler_grams).text = additionalInfo.foods[position].nf_protein.toString()+" гр."
-//                            holder.itemView.findViewById<TextView>(R.id.fats_recycler_grams).text = additionalInfo.foods[position].nf_total_fat.toString()+" гр."
-                        } else {
-                            // Обработка случая, когда данные не получены
-                        }
-                    } else {
-                        Log.e("FoodAdapter", "Failed to fetch additional food info: ${additionalInfoResponse.message()}")
-                        // Обработка случая, когда запрос завершился неудачно
-                    }
-                }
-            } catch (e: Exception) {
-                Log.e("FoodAdapter", "Error fetching additional food info: ${e.message}")
-                // Обработка ошибки
-            }
-        }
+    override fun onDetachedFromRecyclerView(recyclerView: RecyclerView) {
+        super.onDetachedFromRecyclerView(recyclerView)
     }
 
     override fun getItemCount(): Int {
-        return listFood.size
+        return if (listFood.size > MAX_ITEMS_DISPLAYED) MAX_ITEMS_DISPLAYED else listFood.size
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    fun setList(list: List<Branded>){
+    fun setList(list: List<Food>){
         listFood = list
         notifyDataSetChanged()
     }

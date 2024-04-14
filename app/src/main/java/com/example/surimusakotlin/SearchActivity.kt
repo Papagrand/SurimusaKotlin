@@ -10,14 +10,18 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.surimusakotlin.data.repository.FoodRepository
 import com.example.surimusakotlin.model.FoodInstant
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.cancel
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import okhttp3.Call
@@ -34,11 +38,14 @@ import java.net.HttpURLConnection
 import java.net.URL
 
 class SearchActivity : AppCompatActivity() {
+    val foodRepository = FoodRepository()
+    val searchViewModel = SearchViewModel(foodRepository)
     private lateinit var recyclerView: RecyclerView
     private lateinit var searchView: SearchView
     private var searchText: String? = null
     private val foodAdapter = FoodAdapter()
     private var searchJob: Job? = null
+    private val searchScope = CoroutineScope(Dispatchers.Main)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -61,12 +68,19 @@ class SearchActivity : AppCompatActivity() {
         recyclerView.adapter = foodAdapter
 
         val backButton = findViewById<ImageButton>(R.id.back_to_search_meal)
-        backButton.setOnClickListener{
+        backButton.setOnClickListener {
             val intent = Intent(this@SearchActivity, FourthActivity::class.java)
             startActivity(intent)
             finish()
         }
 
+        lifecycleScope.launch {
+            searchViewModel.foodInstantList.collectLatest {
+                foodAdapter.clearList()
+                foodAdapter.setList(it)
+                foodAdapter.notifyDataSetChanged()
+            }
+        }
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 return false
@@ -77,8 +91,8 @@ class SearchActivity : AppCompatActivity() {
                 searchJob?.cancel()
                 if (!newText.isNullOrEmpty()) {
                     searchJob = GlobalScope.launch(Dispatchers.Main) {
-                        delay(300)
-                        searchFood(newText)
+                        delay(1000)
+                        searchViewModel.makeRequest(newText)
                     }
                 }
                 return true
@@ -86,33 +100,9 @@ class SearchActivity : AppCompatActivity() {
         })
     }
 
-    private fun searchFood(query: String) {
-        GlobalScope.launch(Dispatchers.IO) {
-            try {
-                val response: Response<FoodInstant> = FoodRepository().getNutritions(query)
-                withContext(Dispatchers.Main) {
-                    if (response.isSuccessful) {
-                        val food: FoodInstant? = response.body()
-                        if (food != null && !food.branded.isNullOrEmpty()) {
-                            foodAdapter.setList(food.branded)
-                        } else {
-                            foodAdapter.clearList()
-                            Toast.makeText(this@SearchActivity, "Продукты не найдены", Toast.LENGTH_SHORT).show()
-                        }
-                    } else {
-                        foodAdapter.clearList()
-                        Log.e("SearchActivity", "Failed to search food: ${response.message()}")
-                        Toast.makeText(this@SearchActivity, "Ошибка поиска продуктов", Toast.LENGTH_SHORT).show()
-                    }
-                }
-            } catch (e: Exception) {
-                foodAdapter.clearList()
-                Log.e("SearchActivity", "Exception: ${e.message}")
-                withContext(Dispatchers.Main) {
-                    Toast.makeText(this@SearchActivity, "Ошибка поиска продуктов", Toast.LENGTH_SHORT).show()
-                }
-            }
-        }
+    override fun onDestroy() {
+        super.onDestroy()
+        searchScope.cancel()
     }
 
 
