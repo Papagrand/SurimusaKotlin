@@ -24,8 +24,6 @@ import retrofit2.Response
 class FoodAdapter : RecyclerView.Adapter<FoodAdapter.FoodViewHolder>() {
 
     var listFood = emptyList<Food>()
-    private val MAX_ITEMS_DISPLAYED = 2
-    private val searchScope = CoroutineScope(Dispatchers.Main)
 
     class FoodViewHolder(view: View) : RecyclerView.ViewHolder(view)
 
@@ -42,13 +40,8 @@ class FoodAdapter : RecyclerView.Adapter<FoodAdapter.FoodViewHolder>() {
         holder.itemView.findViewById<TextView>(R.id.fats_recycler_grams).text = foodInfo.nf_total_fat.toString()+" гр"
     }
 
-
-    override fun onDetachedFromRecyclerView(recyclerView: RecyclerView) {
-        super.onDetachedFromRecyclerView(recyclerView)
-    }
-
     override fun getItemCount(): Int {
-        return if (listFood.size > MAX_ITEMS_DISPLAYED) MAX_ITEMS_DISPLAYED else listFood.size
+        return listFood.size
     }
 
     @SuppressLint("NotifyDataSetChanged")

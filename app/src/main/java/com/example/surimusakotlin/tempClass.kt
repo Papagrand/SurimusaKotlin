@@ -20,7 +20,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import retrofit2.Response
 
-class SearchViewModel(
+class TempClass(
     private val foodRepository: FoodRepository,
     private val screenSwitchable: ScreenSwitchable
 ) {
@@ -35,46 +35,43 @@ class SearchViewModel(
                     val foodList = food?.common ?: emptyList()
 
                     val tempMutableList = mutableListOf<Food>()
-                    if (foodList.isEmpty()) {
-                        withContext(Dispatchers.Main) {
-                            screenSwitchable.hideError()
-                            screenSwitchable.showNoData()
-                        }
-                        return@launch
-                    }else{
-                        withContext(Dispatchers.Main) {
-                            screenSwitchable.hideError()
-                            screenSwitchable.showData()
-                        }
-                    }
+//                    if (foodList.isEmpty()) {
+//                        withContext(Dispatchers.Main) {
+//                            screenSwitchable.hideError()
+//                            screenSwitchable.showNoData()
+//                        }
+//                    }
                     foodList.take(4).forEach {
                         val additionalInfoResponse = foodRepository.getNutritions(it.food_name)
                         if (additionalInfoResponse.isSuccessful) {
+//                            withContext(Dispatchers.Main) {
+//                                screenSwitchable.hideError()
+//
+//                                screenSwitchable.showData()
+//
+//                            }
                             val nutrition: Food? = additionalInfoResponse.body()?.foods?.get(0)
                             if (nutrition != null) {
                                 tempMutableList.add(nutrition)
                             }
                         } else {
-                            withContext(Dispatchers.Main) {
-                                screenSwitchable.showError()
-                                Log.e("Exception on", it.food_name)
-                            }
+//                            withContext(Dispatchers.Main) {
+//                                screenSwitchable.showError()
+//                            }
                         }
                     }
                     foodInstantList.update { tempMutableList }
                 } else {
                     foodInstantList.update { mutableListOf() }
-                    withContext(Dispatchers.Main) {
-                        screenSwitchable.showError()
-                        Log.e("Exception on","111")
-                    }
+//                    withContext(Dispatchers.Main) {
+//                        screenSwitchable.showError()
+//                    }
                 }
             } catch (e: Exception) {
                 foodInstantList.update { mutableListOf() }
-                withContext(Dispatchers.Main) {
-                    Log.e("Exception on",e.stackTraceToString())
-                    screenSwitchable.showError()
-                }
+//                withContext(Dispatchers.Main) {
+//                    screenSwitchable.showError()
+//                }
             }
         }
 

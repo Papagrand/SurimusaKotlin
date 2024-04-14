@@ -14,7 +14,7 @@ data class Food(
     val metadata: Metadata,
     val ndb_no: Int,
     val nf_calories: Double,
-    val nf_cholesterol: Int,
+    val nf_cholesterol: Double,
     val nf_dietary_fiber: Double,
     val nf_p: Double,
     val nf_potassium: Double,
