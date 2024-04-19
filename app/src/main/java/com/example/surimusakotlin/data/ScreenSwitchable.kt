@@ -9,5 +9,9 @@ interface ScreenSwitchable {
 
     fun showData()
 
+    fun showDeleteCross()
+
+    fun hideDeleteCross()
+
 
 }

@@ -33,11 +33,20 @@ class FoodAdapter : RecyclerView.Adapter<FoodAdapter.FoodViewHolder>() {
     }
     override fun onBindViewHolder(holder: FoodViewHolder, position: Int) {
         val foodInfo = listFood[position]
-        holder.itemView.findViewById<TextView>(R.id.food_text_recycler).text = foodInfo.food_name
-        holder.itemView.findViewById<TextView>(R.id.calories_of_product).text = foodInfo.serving_weight_grams.toString()+" гр"
-        holder.itemView.findViewById<TextView>(R.id.carbons_recycler_grams).text = foodInfo.nf_total_carbohydrate.toString()+" гр."
-        holder.itemView.findViewById<TextView>(R.id.proteins_recycler_grams).text = foodInfo.nf_protein.toString()+" гр."
-        holder.itemView.findViewById<TextView>(R.id.fats_recycler_grams).text = foodInfo.nf_total_fat.toString()+" гр"
+        val calories = String.format("%.1f", foodInfo.nf_calories ?: 0) + " ккал"
+        val carbohydrates = String.format("%.1f", foodInfo.nf_total_carbohydrate ?: 0) + " гр."
+        val proteins = String.format("%.1f", foodInfo.nf_protein ?: 0) + " гр."
+        val fats = String.format("%.1f", foodInfo.nf_total_fat ?: 0) + " гр"
+        val servingWeight = String.format("%.1f", foodInfo.serving_weight_grams ?: 0) + " гр."
+
+        holder.itemView.findViewById<TextView>(R.id.food_text_recycler).text = foodInfo.food_name ?: "Нет данных"
+        holder.itemView.findViewById<TextView>(R.id.calories_of_product).text = calories
+        holder.itemView.findViewById<TextView>(R.id.carbons_recycler_grams).text = carbohydrates
+        holder.itemView.findViewById<TextView>(R.id.proteins_recycler_grams).text = proteins
+        holder.itemView.findViewById<TextView>(R.id.fats_recycler_grams).text = fats
+        holder.itemView.findViewById<TextView>(R.id.mass_of_product).text = servingWeight
+
+
     }
 
     override fun getItemCount(): Int {

@@ -31,7 +31,7 @@ data class Food(
     val photo: Photo,
     val serving_qty: Int,
     val serving_unit: String,
-    val serving_weight_grams: Int,
+    val serving_weight_grams: Double,
     val source: Int,
     val sub_recipe: Any,
     val tag_id: Any,

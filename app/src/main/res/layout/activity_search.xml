@@ -5,60 +5,92 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".SearchActivity"
-    android:layout_margin="15dp">
-    <include
-        android:layout_height="match_parent"
-        android:layout_width="0dp"
-        layout="@layout/no_internet"
-        android:id="@+id/no_wifi"
-        app:layout_constraintTop_toBottomOf="@id/search_view"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        android:visibility="gone"/>
+    tools:context=".SearchActivity">
 
     <include
-        android:layout_height="match_parent"
+        android:id="@+id/no_wifi"
+        layout="@layout/no_internet"
         android:layout_width="0dp"
-        layout="@layout/no_info"
-        android:id="@+id/no_data"
-        app:layout_constraintTop_toBottomOf="@id/search_view"
+        android:layout_height="match_parent"
+        android:layout_margin="15dp"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        android:visibility="gone"/>
+        app:layout_constraintTop_toBottomOf="@id/search_edit_text" />
+
+    <include
+        android:id="@+id/no_data"
+        layout="@layout/no_info"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_margin="15dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/search_edit_text" />
 
     <ImageButton
         android:id="@+id/back_to_search_meal"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="15dp"
         android:background="@android:color/transparent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
         android:scaleType="fitXY"
-        android:src="@drawable/arrow_back"/>
-
-    <SearchView
-        android:id="@+id/search_view"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        app:layout_constraintRight_toRightOf="parent"
-        android:layout_marginTop="10dp"
+        android:src="@drawable/arrow_back"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/back_to_search_meal"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/search_edit_text"
+        android:layout_width="0dp"
+        android:layout_height="40dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="10dp"
         android:background="@drawable/searchbar"
-        android:queryHint="@string/search_empty"
-        android:iconifiedByDefault="false"
-        android:enabled="false"
-        />
+        android:hint="@string/search_empty"
+        android:textSize="@dimen/calories_digits"
+        android:paddingStart="15dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@+id/reload_text"
+        app:layout_constraintTop_toBottomOf="@id/back_to_search_meal" />
+
+    <ImageButton
+        android:id="@+id/clear_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@android:drawable/ic_menu_close_clear_cancel"
+        android:background="@null"
+        app:layout_constraintRight_toRightOf="@+id/search_edit_text"
+        app:layout_constraintTop_toTopOf="@id/search_edit_text"
+        app:layout_constraintBottom_toBottomOf="@id/search_edit_text"
+        android:padding="8dp"
+        android:visibility="gone"/>
+
+    <TextView
+        android:id="@+id/reload_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="15dp"
+        android:layout_marginLeft="5dp"
+        android:onClick="onClickReload"
+        android:text="@string/reload"
+        app:layout_constraintBottom_toTopOf="@+id/food_recycler_view"
+        app:layout_constraintLeft_toRightOf="@+id/search_edit_text"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/search_edit_text"/>
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/food_recycler_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintVertical_bias="0"
-        app:layout_constraintTop_toBottomOf="@id/search_view" />
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/search_edit_text"
+        app:layout_constraintVertical_bias="0" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

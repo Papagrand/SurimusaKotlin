@@ -54,6 +54,7 @@
     <string name="next">Next</string>
     <string name="previous">Previous</string>
     <string name="mass_of_food">Масса(Заглушка)</string>
+    <string name="reload">Обновить</string>
 
     <string name="lorem_ipsum">
         Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam in scelerisque sem. Mauris
