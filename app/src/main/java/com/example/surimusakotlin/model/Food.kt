@@ -29,7 +29,7 @@ data class Food(
     val nix_item_id: Any,
     val nix_item_name: Any,
     val photo: Photo,
-    val serving_qty: Int,
+    val serving_qty: Double,
     val serving_unit: String,
     val serving_weight_grams: Double,
     val source: Int,

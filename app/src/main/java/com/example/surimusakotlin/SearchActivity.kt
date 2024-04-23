@@ -20,16 +20,19 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 
-class SearchActivity : AppCompatActivity(), ScreenSwitchable {
+class SearchActivity : AppCompatActivity(), SearchHistoryAdapter.DeleteManager, ScreenSwitchable {
     private val foodRepository = FoodRepository()
-    private val searchViewModel = SearchViewModel(foodRepository, this)
+    private val searchHistoryManager by lazy { SearchHistoryManager(this) }
+    private val searchViewModel = SearchViewModel(foodRepository, this, searchHistoryManager)
 
     private var searchText: String? = null
     private val foodAdapter = FoodAdapter()
+    private lateinit var searchHistoryAdapter: SearchHistoryAdapter
     private var searchJob: Job? = null
 
     private lateinit var binding: ActivitySearchBinding
@@ -49,14 +52,21 @@ class SearchActivity : AppCompatActivity(), ScreenSwitchable {
             insets
         }
 
-        searchEditText = binding.searchEditText // Изменено на EditText
+        searchEditText = binding.searchEditText
 
         if (savedInstanceState != null) {
             searchText = savedInstanceState.getString("searchText")
-            searchEditText.setText(searchText) // Установка сохраненного текста
+            searchEditText.setText(searchText)
         }
 
         initializeRecyclerView()
+
+        val searchHistory = searchHistoryManager.getSearchHistory().toMutableList()
+        searchHistoryAdapter = SearchHistoryAdapter(searchHistory, this )
+        initializeSearchHistoryRecyclerView(searchHistory)
+
+        searchHistoryManager.registerListener(searchHistoryAdapter)
+
 
         val backButton = binding.backToSearchMeal
         backButton.setOnClickListener {
@@ -76,14 +86,16 @@ class SearchActivity : AppCompatActivity(), ScreenSwitchable {
                 searchText = s.toString()
                 searchJob?.cancel()
                 if (!s.isNullOrEmpty()) {
+                    hideSearchHistory()
                     showDeleteCross()
                     searchJob = searchScope.launch(Dispatchers.Main) {
                         delay(1000)
                         searchViewModel.makeRequest(s.toString())
                     }
-                }else{
+                } else {
                     hideDeleteCross()
                     foodAdapter.clearList()
+                    showSearchHistory()
                 }
             }
         }
@@ -95,12 +107,23 @@ class SearchActivity : AppCompatActivity(), ScreenSwitchable {
         searchEditText.addTextChangedListener(textWatcher)
 
         lifecycleScope.launch {
-            searchViewModel.foodInstantList.collectLatest {
-                foodAdapter.clearList()
-                foodAdapter.setList(it)
-                foodAdapter.notifyDataSetChanged()
+            searchViewModel.isLoading.combine(searchViewModel.foodInstantList) { isLoading, foodInstantList ->
+                isLoading to foodInstantList
+            }.collectLatest { (isLoading, foodInstantList) ->
+                withContext(Dispatchers.Main) {
+                    binding.loadingInfo.root.visibility = if (isLoading) View.VISIBLE else View.GONE
+                    foodAdapter.clearList()
+                    foodAdapter.setList(foodInstantList)
+                    foodAdapter.notifyDataSetChanged()
+                }
             }
         }
+
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        searchHistoryManager.unregisterListener(searchHistoryAdapter)
     }
 
     fun onClickReload(view: View) {
@@ -117,6 +140,11 @@ class SearchActivity : AppCompatActivity(), ScreenSwitchable {
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         outState.putString("searchText", searchText)
+    }
+
+
+    fun onClickClear(view: View) {
+        searchHistoryManager.clearSearchHistory()
     }
 
     override fun showError() {
@@ -143,11 +171,35 @@ class SearchActivity : AppCompatActivity(), ScreenSwitchable {
         binding.clearButton.visibility = View.GONE
     }
 
+    override fun showSearchHistory() {
+        binding.searchHistoryRecyclerView.visibility = View.VISIBLE
+        binding.clearHistory.visibility = View.VISIBLE
+    }
+
+    override fun hideSearchHistory() {
+        binding.searchHistoryRecyclerView.visibility = View.GONE
+        binding.clearHistory.visibility = View.GONE
+    }
+
     private fun initializeRecyclerView() {
         with(binding.foodRecyclerView) {
             setHasFixedSize(true)
             layoutManager = LinearLayoutManager(this@SearchActivity)
             adapter = foodAdapter
         }
+    }
+
+    private fun initializeSearchHistoryRecyclerView(history: MutableList<String>) {
+        showSearchHistory()
+        searchHistoryAdapter = SearchHistoryAdapter(history,this)
+        binding.searchHistoryRecyclerView.apply {
+            setHasFixedSize(true)
+            layoutManager = LinearLayoutManager(this@SearchActivity)
+            adapter = searchHistoryAdapter
+        }
+    }
+
+    override fun deleteById(position: Int) {
+        searchViewModel.deleteHistoryItemById(position)
     }
 }

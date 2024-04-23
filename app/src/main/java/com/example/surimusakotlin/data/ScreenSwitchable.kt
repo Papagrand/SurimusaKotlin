@@ -13,5 +13,9 @@ interface ScreenSwitchable {
 
     fun hideDeleteCross()
 
+    fun showSearchHistory()
+
+    fun hideSearchHistory()
+
 
 }

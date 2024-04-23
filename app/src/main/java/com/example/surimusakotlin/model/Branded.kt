@@ -6,7 +6,7 @@ data class Branded(
     val brand_type: Int,
     val food_name: String,
     val locale: String,
-    val nf_calories: Int,
+    val nf_calories: Double,
     val nix_brand_id: String,
     val nix_item_id: String,
     val region: Int,

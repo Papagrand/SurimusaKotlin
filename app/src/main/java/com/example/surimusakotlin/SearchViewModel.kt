@@ -11,6 +11,7 @@ import com.example.surimusakotlin.model.FoodInstant
 import com.example.surimusakotlin.model.Nutrition
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.emptyFlow
@@ -22,13 +23,17 @@ import retrofit2.Response
 
 class SearchViewModel(
     private val foodRepository: FoodRepository,
-    private val screenSwitchable: ScreenSwitchable
+    private val screenSwitchable: ScreenSwitchable,
+    private val searchHistoryManager: SearchHistoryManager,
 ) {
+    var isLoading: MutableStateFlow<Boolean> = MutableStateFlow(false)
     val foodInstantList: MutableStateFlow<List<Food>> = MutableStateFlow(mutableListOf())
     fun makeRequest(query: String) {
-
-        CoroutineScope(Dispatchers.IO).launch {
+         CoroutineScope(Dispatchers.IO).launch {
             try {
+                withContext(Dispatchers.IO){
+                    isLoading.update { true }
+                }
                 val response: Response<FoodInstant> = foodRepository.getFood(query)
                 if (response.isSuccessful) {
                     val food: FoodInstant? = response.body()
@@ -37,16 +42,22 @@ class SearchViewModel(
                     val tempMutableList = mutableListOf<Food>()
                     if (foodList.isEmpty()) {
                         withContext(Dispatchers.Main) {
+                            isLoading.update { false }
                             screenSwitchable.hideError()
                             screenSwitchable.showNoData()
                         }
                         return@launch
                     }else{
                         withContext(Dispatchers.Main) {
+                            isLoading.update { false }
                             screenSwitchable.hideError()
                             screenSwitchable.showData()
                         }
                     }
+                    withContext(Dispatchers.Main){
+                        searchHistoryManager.addSearchQuery(query)
+                    }
+
                     foodList.take(4).forEach {
                         val additionalInfoResponse = foodRepository.getNutritions(it.food_name)
                         if (additionalInfoResponse.isSuccessful) {
@@ -65,11 +76,13 @@ class SearchViewModel(
                 } else {
                     foodInstantList.update { mutableListOf() }
                     withContext(Dispatchers.Main) {
+                        isLoading.update { false }
                         screenSwitchable.showError()
                         Log.e("Exception on","111")
                     }
                 }
             } catch (e: Exception) {
+                isLoading.update { false }
                 foodInstantList.update { mutableListOf() }
                 withContext(Dispatchers.Main) {
                     Log.e("Exception on",e.stackTraceToString())
@@ -78,5 +91,9 @@ class SearchViewModel(
             }
         }
 
+    }
+
+    fun deleteHistoryItemById(position: Int) {
+        searchHistoryManager.deleteById(position)
     }
 }
