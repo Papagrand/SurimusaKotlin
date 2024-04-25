@@ -24,9 +24,13 @@ class SearchHistoryManager(private val context: Context) {
     }
 
     fun addSearchQuery(query: String) {
-        val history = getSearchHistory().toMutableSet()
-        history.add(query)
-        saveSearchHistory(history)
+        val history = getSearchHistory().toMutableList()
+        history.remove(query)
+        history.add(0, query)
+        if (history.size > MAX_HISTORY_SIZE) {
+            history.subList(MAX_HISTORY_SIZE, history.size).clear()
+        }
+        saveSearchHistory(history.toSet())
         notifyListeners()
     }
 
@@ -56,5 +60,6 @@ class SearchHistoryManager(private val context: Context) {
     companion object {
         private const val PREF_NAME = "SearchHistoryPrefs"
         private const val KEY_SEARCH_HISTORY = "search_history"
+        private const val MAX_HISTORY_SIZE = 10
     }
 }

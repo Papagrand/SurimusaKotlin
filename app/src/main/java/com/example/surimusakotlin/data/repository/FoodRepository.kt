@@ -15,12 +15,11 @@ class FoodRepository {
     }
 
     suspend fun getNutritions(query: String): Response<Nutrition> {
-        // Создание JSON объекта с вашим запросом
         val jsonObject = JSONObject()
         jsonObject.put("query", query)
-        val requestBody = jsonObject.toString().toRequestBody("application/json".toMediaTypeOrNull())
+        val requestBody = jsonObject
+            .toString().toRequestBody("application/json".toMediaTypeOrNull())
 
-        // Выполнение запроса через Retrofit
         val response = RetrofitFoodInstance.api.fetchNutrients(requestBody)
 
         return response

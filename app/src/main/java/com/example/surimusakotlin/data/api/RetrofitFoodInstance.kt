@@ -5,7 +5,9 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 object RetrofitFoodInstance {
     private val retrofit by lazy {
-        Retrofit.Builder().baseUrl("https://trackapi.nutritionix.com/").addConverterFactory(GsonConverterFactory
+        Retrofit.Builder()
+            .baseUrl("https://trackapi.nutritionix.com/")
+            .addConverterFactory(GsonConverterFactory
             .create())
             .build()
     }

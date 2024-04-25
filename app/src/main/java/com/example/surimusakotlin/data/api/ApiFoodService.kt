@@ -29,7 +29,8 @@ interface ApiFoodService {
         "x-app-key: b10d8a3b5b06cc6f9d2997f0590c39d3"
     )
     @POST("v2/natural/nutrients")
-    suspend fun fetchNutrients(@Body body: RequestBody): Response<Nutrition>
+    suspend fun fetchNutrients(@Body body: RequestBody):
+            Response<Nutrition>
 
     @Headers(
         "Content-Type: application/json",

@@ -42,14 +42,12 @@ class SearchViewModel(
                     val tempMutableList = mutableListOf<Food>()
                     if (foodList.isEmpty()) {
                         withContext(Dispatchers.Main) {
-                            isLoading.update { false }
                             screenSwitchable.hideError()
                             screenSwitchable.showNoData()
                         }
                         return@launch
                     }else{
                         withContext(Dispatchers.Main) {
-                            isLoading.update { false }
                             screenSwitchable.hideError()
                             screenSwitchable.showData()
                         }
@@ -71,6 +69,9 @@ class SearchViewModel(
                                 Log.e("Exception on", it.food_name)
                             }
                         }
+                    }
+                    withContext(Dispatchers.Main){
+                        isLoading.update { false }
                     }
                     foodInstantList.update { tempMutableList }
                 } else {
