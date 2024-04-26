@@ -2,11 +2,13 @@ package com.example.surimusakotlin
 
 import android.content.Context
 import android.content.SharedPreferences
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 
 class SearchHistoryManager(private val context: Context) {
 
     interface SearchHistoryListener {
-        fun onHistoryUpdated(history: Set<String>)
+        fun onHistoryUpdated(history: List<String>)
     }
 
     private val sharedPreferences: SharedPreferences by lazy {
@@ -28,14 +30,14 @@ class SearchHistoryManager(private val context: Context) {
         history.remove(query)
         history.add(0, query)
         if (history.size > MAX_HISTORY_SIZE) {
-            history.subList(MAX_HISTORY_SIZE, history.size).clear()
+            history.removeAt(history.size - 1)
         }
-        saveSearchHistory(history.toSet())
+        saveSearchHistory(history)
         notifyListeners()
     }
 
     fun clearSearchHistory() {
-        saveSearchHistory(emptySet())
+        saveSearchHistory(emptyList())
         notifyListeners()
     }
 
@@ -44,13 +46,17 @@ class SearchHistoryManager(private val context: Context) {
         listeners.forEach { it.onHistoryUpdated(history) }
     }
 
-    fun getSearchHistory(): Set<String> {
-        return sharedPreferences.getStringSet(KEY_SEARCH_HISTORY, emptySet()) ?: emptySet()
+    private fun saveSearchHistory(history: List<String>) {
+        sharedPreferences.edit().putString(KEY_SEARCH_HISTORY, Gson().toJson(history)).apply()
     }
 
-
-    private fun saveSearchHistory(history: Set<String>) {
-        sharedPreferences.edit().putStringSet(KEY_SEARCH_HISTORY, history).apply()
+    fun getSearchHistory(): List<String> {
+        val json = sharedPreferences.getString(KEY_SEARCH_HISTORY, null)
+        return if (json != null) {
+            Gson().fromJson(json, object : TypeToken<List<String>>() {}.type)
+        } else {
+            emptyList()
+        }
     }
 
     fun deleteById(position: Int) {

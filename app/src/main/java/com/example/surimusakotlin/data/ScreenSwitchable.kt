@@ -17,5 +17,8 @@ interface ScreenSwitchable {
 
     fun hideSearchHistory()
 
+    fun showFoodRecyclerView()
+    fun hideFoodRecyclerView()
+
 
 }

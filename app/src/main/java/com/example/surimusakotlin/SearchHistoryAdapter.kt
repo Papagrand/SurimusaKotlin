@@ -35,7 +35,7 @@ class SearchHistoryAdapter(
         }
     }
 
-    override fun onHistoryUpdated(history: Set<String>) {
+    override fun onHistoryUpdated(history: List<String>) {
         historyList = history.toList()
         notifyDataSetChanged()
     }

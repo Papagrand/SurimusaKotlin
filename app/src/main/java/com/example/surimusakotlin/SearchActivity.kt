@@ -1,5 +1,6 @@
 package com.example.surimusakotlin
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
@@ -37,10 +38,11 @@ class SearchActivity : AppCompatActivity(), SearchHistoryAdapter.DeleteManager, 
 
     private lateinit var binding: ActivitySearchBinding
 
-    private lateinit var searchEditText: EditText // Изменено на EditText
+    private lateinit var searchEditText: EditText
 
     private val searchScope = lifecycleScope
 
+    @SuppressLint("NotifyDataSetChanged")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -101,7 +103,7 @@ class SearchActivity : AppCompatActivity(), SearchHistoryAdapter.DeleteManager, 
         }
 
         binding.clearButton.setOnClickListener {
-            searchEditText.text.clear();
+            searchEditText.text.clear()
         }
 
         searchEditText.addTextChangedListener(textWatcher)
@@ -111,8 +113,8 @@ class SearchActivity : AppCompatActivity(), SearchHistoryAdapter.DeleteManager, 
                 isLoading to foodInstantList
             }.collectLatest { (isLoading, foodInstantList) ->
                 withContext(Dispatchers.Main) {
-                    binding.loadingInfo.root.visibility = if (isLoading) View.VISIBLE else View.GONE
                     foodAdapter.clearList()
+                    binding.loadingInfo.root.visibility = if (isLoading) View.VISIBLE else View.GONE
                     foodAdapter.setList(foodInstantList)
                     foodAdapter.notifyDataSetChanged()
                 }
@@ -179,6 +181,14 @@ class SearchActivity : AppCompatActivity(), SearchHistoryAdapter.DeleteManager, 
     override fun hideSearchHistory() {
         binding.searchHistoryRecyclerView.visibility = View.GONE
         binding.clearHistory.visibility = View.GONE
+    }
+
+    override fun showFoodRecyclerView() {
+        binding.foodRecyclerView.visibility = View.VISIBLE
+    }
+
+    override fun hideFoodRecyclerView() {
+        binding.foodRecyclerView.visibility = View.GONE
     }
 
     private fun initializeRecyclerView() {

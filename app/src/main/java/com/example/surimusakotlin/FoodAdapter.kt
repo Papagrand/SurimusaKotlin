@@ -58,7 +58,7 @@ class FoodAdapter : RecyclerView.Adapter<FoodAdapter.FoodViewHolder>() {
         listFood = list
         notifyDataSetChanged()
     }
-
+    @SuppressLint("NotifyDataSetChanged")
     fun clearList() {
         listFood = emptyList()
         notifyDataSetChanged()

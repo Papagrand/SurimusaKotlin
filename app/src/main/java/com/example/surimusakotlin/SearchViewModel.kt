@@ -29,6 +29,7 @@ class SearchViewModel(
     var isLoading: MutableStateFlow<Boolean> = MutableStateFlow(false)
     val foodInstantList: MutableStateFlow<List<Food>> = MutableStateFlow(mutableListOf())
     fun makeRequest(query: String) {
+        screenSwitchable.hideFoodRecyclerView()
          CoroutineScope(Dispatchers.IO).launch {
             try {
                 withContext(Dispatchers.IO){
@@ -42,6 +43,7 @@ class SearchViewModel(
                     val tempMutableList = mutableListOf<Food>()
                     if (foodList.isEmpty()) {
                         withContext(Dispatchers.Main) {
+                            isLoading.update { false }
                             screenSwitchable.hideError()
                             screenSwitchable.showNoData()
                         }
@@ -53,6 +55,7 @@ class SearchViewModel(
                         }
                     }
                     withContext(Dispatchers.Main){
+                        screenSwitchable.showFoodRecyclerView()
                         searchHistoryManager.addSearchQuery(query)
                     }
 
@@ -65,6 +68,7 @@ class SearchViewModel(
                             }
                         } else {
                             withContext(Dispatchers.Main) {
+                                isLoading.update { false }
                                 screenSwitchable.showError()
                                 Log.e("Exception on", it.food_name)
                             }
