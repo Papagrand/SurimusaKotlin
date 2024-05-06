@@ -1,29 +1,23 @@
 package com.example.surimusakotlin
 
-import android.annotation.SuppressLint
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import com.example.surimusakotlin.data.repository.FoodRepository
-import com.example.surimusakotlin.model.Branded
-import com.example.surimusakotlin.model.Common
+import com.example.surimusakotlin.adapter_utils.DiffUtilCallback
 import com.example.surimusakotlin.model.Food
-import com.example.surimusakotlin.model.FoodInstant
-import com.example.surimusakotlin.model.Nutrition
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.cancel
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
-import retrofit2.Response
 
 class FoodAdapter : RecyclerView.Adapter<FoodAdapter.FoodViewHolder>() {
-
-    var listFood = emptyList<Food>()
+    var listFood: List<Food> = emptyList()
+        set(new) {
+            val callback = DiffUtilCallback(old = field, new = new)
+            field = new
+            val diffResult = DiffUtil.calculateDiff(callback)
+            diffResult.dispatchUpdatesTo(this)
+        }
 
     class FoodViewHolder(view: View) : RecyclerView.ViewHolder(view)
 
@@ -52,16 +46,4 @@ class FoodAdapter : RecyclerView.Adapter<FoodAdapter.FoodViewHolder>() {
     override fun getItemCount(): Int {
         return listFood.size
     }
-
-    @SuppressLint("NotifyDataSetChanged")
-    fun setList(list: List<Food>){
-        listFood = list
-        notifyDataSetChanged()
-    }
-    @SuppressLint("NotifyDataSetChanged")
-    fun clearList() {
-        listFood = emptyList()
-        notifyDataSetChanged()
-    }
-
 }

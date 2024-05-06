@@ -54,7 +54,6 @@ class SearchActivity : AppCompatActivity(), SearchHistoryAdapter.DeleteManager, 
         initializeFoodRecyclerView()
         initializeSearchHistoryRecyclerView()
         searchViewModel.searchHistoryManager.registerListener(searchHistoryAdapter)
-
         val backButton = binding.backToSearchMeal
         backButton.setOnClickListener {
             val intent = Intent(this@SearchActivity, FourthActivity::class.java)
@@ -73,7 +72,6 @@ class SearchActivity : AppCompatActivity(), SearchHistoryAdapter.DeleteManager, 
                 }
             } else {
                 hideDeleteCross()
-                foodAdapter.clearList()
                 showSearchHistory()
             }
         }
@@ -104,14 +102,15 @@ class SearchActivity : AppCompatActivity(), SearchHistoryAdapter.DeleteManager, 
             searchViewModel.foodInstantList.collectLatest { list ->
                 hideSearchHistory()
                 showData()
+
                 if (list.isEmpty() && binding.searchEditText.text.isNotEmpty()) {
-                    foodAdapter.clearList()
+                    foodAdapter.listFood = emptyList()
                     showNoData()
                 } else if (list.isEmpty() && binding.searchEditText.text.isEmpty()) {
+                    foodAdapter.listFood = emptyList()
                     showSearchHistory()
-                    foodAdapter.clearList()
                 } else {
-                    foodAdapter.setList(list)
+                    foodAdapter.listFood = list
                     showFoodRecyclerView()
                 }
             }
@@ -190,7 +189,7 @@ class SearchActivity : AppCompatActivity(), SearchHistoryAdapter.DeleteManager, 
     private fun initializeFoodRecyclerView() {
         foodAdapter = FoodAdapter()
         with(binding.foodRecyclerView) {
-            setHasFixedSize(true)
+//            setHasFixedSize(true)
             layoutManager = LinearLayoutManager(this@SearchActivity)
             adapter = foodAdapter
         }
@@ -201,7 +200,7 @@ class SearchActivity : AppCompatActivity(), SearchHistoryAdapter.DeleteManager, 
             SearchHistoryAdapter(searchViewModel.searchHistoryManager.getSearchHistory(), this)
         showSearchHistory()
         binding.searchHistoryRecyclerView.apply {
-            setHasFixedSize(true)
+            //setHasFixedSize(true)
             layoutManager = LinearLayoutManager(this@SearchActivity)
             adapter = searchHistoryAdapter
         }
