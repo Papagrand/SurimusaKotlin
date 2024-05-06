@@ -26,14 +26,9 @@ class SearchHistoryManager(private val context: Context) {
     }
 
     fun addSearchQuery(query: String) {
-        val history = getSearchHistory().toMutableList()
-        history.remove(query)
-        history.add(0, query)
-        if (history.size > MAX_HISTORY_SIZE) {
-            history.removeAt(history.size - 1)
-        }
-        saveSearchHistory(history)
-        notifyListeners()
+        val oldHistoryList = getSearchHistory()
+        val newHistoryList = listOf(query) + oldHistoryList
+        saveSearchHistory(newHistoryList.take(10))
     }
 
     fun clearSearchHistory() {

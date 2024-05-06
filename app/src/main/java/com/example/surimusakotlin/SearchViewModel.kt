@@ -1,101 +1,98 @@
 package com.example.surimusakotlin
 
 import android.util.Log
-import android.widget.Toast
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.surimusakotlin.data.ScreenSwitchable
-import com.example.surimusakotlin.data.api.ApiFoodService
 import com.example.surimusakotlin.data.repository.FoodRepository
 import com.example.surimusakotlin.model.Common
 import com.example.surimusakotlin.model.Food
 import com.example.surimusakotlin.model.FoodInstant
-import com.example.surimusakotlin.model.Nutrition
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.emptyFlow
-import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import retrofit2.Response
 
 class SearchViewModel(
     private val foodRepository: FoodRepository,
-    private val screenSwitchable: ScreenSwitchable,
-    private val searchHistoryManager: SearchHistoryManager,
-) {
-    var isLoading: MutableStateFlow<Boolean> = MutableStateFlow(false)
-    val foodInstantList: MutableStateFlow<List<Food>> = MutableStateFlow(mutableListOf())
-    fun makeRequest(query: String) {
-        screenSwitchable.hideFoodRecyclerView()
-         CoroutineScope(Dispatchers.IO).launch {
-            try {
-                withContext(Dispatchers.IO){
-                    isLoading.update { true }
-                }
-                val response: Response<FoodInstant> = foodRepository.getFood(query)
-                if (response.isSuccessful) {
-                    val food: FoodInstant? = response.body()
-                    val foodList = food?.common ?: emptyList()
+    val searchHistoryManager: SearchHistoryManager,
+) : ViewModel() {
+    private val _isLoading: MutableStateFlow<Boolean> = MutableStateFlow(false)
+    val isLoading = _isLoading.asStateFlow()
 
-                    val tempMutableList = mutableListOf<Food>()
-                    if (foodList.isEmpty()) {
-                        withContext(Dispatchers.Main) {
-                            isLoading.update { false }
-                            screenSwitchable.hideError()
-                            screenSwitchable.showNoData()
-                        }
-                        return@launch
-                    }else{
-                        withContext(Dispatchers.Main) {
-                            screenSwitchable.hideError()
-                            screenSwitchable.showData()
-                        }
-                    }
-                    withContext(Dispatchers.Main){
-                        screenSwitchable.showFoodRecyclerView()
-                        searchHistoryManager.addSearchQuery(query)
-                    }
+    private val _isError: MutableStateFlow<Boolean> = MutableStateFlow(false)
+    val isError = _isError.asStateFlow()
 
-                    foodList.take(4).forEach {
-                        val additionalInfoResponse = foodRepository.getNutritions(it.food_name)
-                        if (additionalInfoResponse.isSuccessful) {
-                            val nutrition: Food? = additionalInfoResponse.body()?.foods?.get(0)
-                            if (nutrition != null) {
-                                tempMutableList.add(nutrition)
-                            }
-                        } else {
-                            withContext(Dispatchers.Main) {
-                                isLoading.update { false }
-                                screenSwitchable.showError()
-                                Log.e("Exception on", it.food_name)
-                            }
-                        }
-                    }
-                    withContext(Dispatchers.Main){
-                        isLoading.update { false }
-                    }
-                    foodInstantList.update { tempMutableList }
-                } else {
-                    foodInstantList.update { mutableListOf() }
-                    withContext(Dispatchers.Main) {
-                        isLoading.update { false }
-                        screenSwitchable.showError()
-                        Log.e("Exception on","111")
-                    }
+    private val _foodInstantList: MutableStateFlow<List<Food>> = MutableStateFlow(emptyList())
+    val foodInstantList = _foodInstantList.asStateFlow()
+
+    private fun prepareViewForRequestResult() {
+        _foodInstantList.update { emptyList() }
+        _isError.update { false }
+        _isLoading.update { true }
+    }
+
+    private suspend fun getFoodInstantResponseByQuery(query: String): FoodInstant? {
+        val response: Response<FoodInstant> = foodRepository.getFood(query)
+
+        return if (response.isSuccessful) {
+            response.body()
+        } else {
+            Log.e("Exception on", "111")
+            null
+        }
+    }
+
+    private suspend fun getNutritionsForCommonList(foodList: List<Common>): List<Food>? {
+        val tempMutableList = mutableListOf<Food>()
+
+        foodList.take(4).forEach {
+            val additionalInfoResponse = foodRepository.getNutritions(it.food_name)
+
+            if (additionalInfoResponse.isSuccessful) {
+
+                val nutrition: Food? = additionalInfoResponse.body()?.foods?.get(0)
+                if (nutrition != null) {
+                    tempMutableList.add(nutrition)
                 }
-            } catch (e: Exception) {
-                isLoading.update { false }
-                foodInstantList.update { mutableListOf() }
-                withContext(Dispatchers.Main) {
-                    Log.e("Exception on",e.stackTraceToString())
-                    screenSwitchable.showError()
-                }
+            } else {
+                Log.e("КБЖУ not found for ", it.food_name)
+                return null
             }
         }
 
+        return tempMutableList
+    }
+
+    fun makeFoodInstantRequestByQuery(query: String) {
+        prepareViewForRequestResult()
+
+        viewModelScope.launch(Dispatchers.IO) {
+            try {
+                val foodInstant: FoodInstant? = getFoodInstantResponseByQuery(query)
+                if (foodInstant == null) {
+                    _isError.update { false }
+                    return@launch
+                }
+                val foodCommonList = foodInstant.common
+
+                searchHistoryManager.addSearchQuery(query)
+
+                val foodList = getNutritionsForCommonList(foodCommonList)
+                if (foodList == null) {
+                    _isError.update { true }
+                } else {
+                    _foodInstantList.update { foodList }
+                }
+            } catch (e: Exception) {
+                Log.e("Exception on", e.stackTraceToString())
+                _isError.update { true }
+            }
+        }
+
+        _isLoading.update { false }
     }
 
     fun deleteHistoryItemById(position: Int) {

@@ -25,8 +25,8 @@ interface ApiFoodService {
 
     @Headers(
         "Content-Type: application/json",
-        "x-app-id: a090e737",
-        "x-app-key: b10d8a3b5b06cc6f9d2997f0590c39d3"
+        "x-app-id: f55b564e",
+        "x-app-key: ebb09c5dc3cbef9a264656d6332c1935"
     )
     @POST("v2/natural/nutrients")
     suspend fun fetchNutrients(@Body body: RequestBody):
@@ -34,8 +34,8 @@ interface ApiFoodService {
 
     @Headers(
         "Content-Type: application/json",
-        "x-app-id: a090e737",
-        "x-app-key: b10d8a3b5b06cc6f9d2997f0590c39d3"
+        "x-app-id: f55b564e",
+        "x-app-key: ebb09c5dc3cbef9a264656d6332c1935"
     )
     @GET("v2/search/instant/")
     suspend fun searchFood(
