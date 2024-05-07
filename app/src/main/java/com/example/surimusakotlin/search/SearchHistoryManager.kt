@@ -1,4 +1,4 @@
-package com.example.surimusakotlin
+package com.example.surimusakotlin.search
 
 import android.content.Context
 import android.content.SharedPreferences
@@ -26,9 +26,10 @@ class SearchHistoryManager(private val context: Context) {
     }
 
     fun addSearchQuery(query: String) {
-        val oldHistoryList = getSearchHistory()
-        val newHistoryList = listOf(query) + oldHistoryList
-        saveSearchHistory(newHistoryList.take(10))
+        val oldHistoryList = getSearchHistory().toMutableList()
+        oldHistoryList.remove(query)
+        oldHistoryList.add(0, query)
+        saveSearchHistory(oldHistoryList.take(10))
     }
 
     fun clearSearchHistory() {
@@ -48,11 +49,13 @@ class SearchHistoryManager(private val context: Context) {
     fun getSearchHistory(): List<String> {
         val json = sharedPreferences.getString(KEY_SEARCH_HISTORY, null)
         return if (json != null) {
-            Gson().fromJson(json, object : TypeToken<List<String>>() {}.type)
+            val type = object : TypeToken<LinkedHashSet<String>>() {}.type
+            Gson().fromJson<List<String>?>(json, type).toMutableList()
         } else {
             emptyList()
         }
     }
+
 
     fun deleteById(position: Int) {
 
@@ -61,6 +64,5 @@ class SearchHistoryManager(private val context: Context) {
     companion object {
         private const val PREF_NAME = "SearchHistoryPrefs"
         private const val KEY_SEARCH_HISTORY = "search_history"
-        private const val MAX_HISTORY_SIZE = 10
     }
 }

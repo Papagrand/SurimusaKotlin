@@ -5,7 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".SearchActivity">
+    >
 
     <include
         android:id="@+id/no_wifi"
@@ -52,6 +52,8 @@
         android:background="@drawable/searchbar"
         android:hint="@string/search_empty"
         android:textSize="@dimen/calories_digits"
+        android:textColorHint="@color/text_color_on_light_and_timer"
+        android:textColor="@color/text_color_on_light_and_timer"
         android:paddingStart="15dp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toLeftOf="@+id/reload_text"
@@ -75,7 +77,6 @@
         android:layout_height="wrap_content"
         android:layout_marginRight="15dp"
         android:layout_marginLeft="5dp"
-        android:onClick="onClickReload"
         android:text="@string/reload"
         android:clickable="true"
         android:textColor="?attr/colorTertiaryFixed"
@@ -113,7 +114,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        android:onClick="onClickClear"
         android:clickable="true"
         android:text="@string/clear_history"
         android:textSize="@dimen/giant_text_size"

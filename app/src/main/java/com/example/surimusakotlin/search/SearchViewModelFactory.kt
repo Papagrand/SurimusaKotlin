@@ -1,4 +1,4 @@
-package com.example.surimusakotlin
+package com.example.surimusakotlin.search
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider

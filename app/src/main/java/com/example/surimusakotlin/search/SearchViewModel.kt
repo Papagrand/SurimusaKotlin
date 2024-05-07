@@ -1,9 +1,8 @@
-package com.example.surimusakotlin
+package com.example.surimusakotlin.search
 
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.surimusakotlin.data.ScreenSwitchable
 import com.example.surimusakotlin.data.repository.FoodRepository
 import com.example.surimusakotlin.model.Common
 import com.example.surimusakotlin.model.Food
@@ -25,12 +24,16 @@ class SearchViewModel(
     private val _isError: MutableStateFlow<Boolean> = MutableStateFlow(false)
     val isError = _isError.asStateFlow()
 
+    private val _isNoData: MutableStateFlow<Boolean> = MutableStateFlow(false)
+    val isNoData = _isNoData.asStateFlow()
+
     private val _foodInstantList: MutableStateFlow<List<Food>> = MutableStateFlow(emptyList())
     val foodInstantList = _foodInstantList.asStateFlow()
 
     private fun prepareViewForRequestResult() {
         _foodInstantList.update { emptyList() }
         _isError.update { false }
+        _isNoData.update { false }
         _isLoading.update { true }
     }
 
@@ -41,6 +44,7 @@ class SearchViewModel(
             response.body()
         } else {
             Log.e("Exception on", "111")
+            _isError.update { true }
             null
         }
     }
@@ -59,6 +63,7 @@ class SearchViewModel(
                 }
             } else {
                 Log.e("КБЖУ not found for ", it.food_name)
+                _isError.update { true }
                 return null
             }
         }
@@ -72,8 +77,9 @@ class SearchViewModel(
         viewModelScope.launch(Dispatchers.IO) {
             try {
                 val foodInstant: FoodInstant? = getFoodInstantResponseByQuery(query)
-                if (foodInstant == null) {
-                    _isError.update { false }
+                if (foodInstant == null || foodInstant.common.isEmpty()) {
+                    _isNoData.update { true }
+                    _isLoading.update { false }
                     return@launch
                 }
                 val foodCommonList = foodInstant.common
@@ -82,17 +88,17 @@ class SearchViewModel(
 
                 val foodList = getNutritionsForCommonList(foodCommonList)
                 if (foodList == null) {
-                    _isError.update { true }
+                    _isNoData.update { true }
                 } else {
                     _foodInstantList.update { foodList }
                 }
             } catch (e: Exception) {
                 Log.e("Exception on", e.stackTraceToString())
                 _isError.update { true }
+                _isLoading.update { false }
             }
+            _isLoading.update { false }
         }
-
-        _isLoading.update { false }
     }
 
     fun deleteHistoryItemById(position: Int) {

@@ -1,28 +1,32 @@
-package com.example.surimusakotlin
+package com.example.surimusakotlin.search
 
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
+import androidx.fragment.app.Fragment
+import android.view.LayoutInflater
 import android.view.View
-import androidx.activity.enableEdgeToEdge
+import android.view.ViewGroup
 import androidx.activity.viewModels
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.widget.addTextChangedListener
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.surimusakotlin.FoodAdapter
+import com.example.surimusakotlin.R
 import com.example.surimusakotlin.data.ScreenSwitchable
 import com.example.surimusakotlin.data.repository.FoodRepository
-import com.example.surimusakotlin.databinding.ActivitySearchBinding
+import com.example.surimusakotlin.databinding.FragmentSearchBinding
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
-
-class SearchActivity : AppCompatActivity(), SearchHistoryAdapter.DeleteManager, ScreenSwitchable {
+class SearchFragment : Fragment(), SearchHistoryAdapter.DeleteManager, ScreenSwitchable {
     private lateinit var searchViewModel: SearchViewModel
 
     private lateinit var foodAdapter: FoodAdapter
@@ -30,17 +34,28 @@ class SearchActivity : AppCompatActivity(), SearchHistoryAdapter.DeleteManager, 
 
     private var searchJob: Job? = null
 
-    private lateinit var binding: ActivitySearchBinding
+    private lateinit var binding: FragmentSearchBinding
 
     @SuppressLint("NotifyDataSetChanged")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
-        binding = ActivitySearchBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+    }
+    @SuppressLint("NotifyDataSetChanged")
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+
+        binding = FragmentSearchBinding.inflate(inflater, container, false)
+        return binding.root
+    }
+    @SuppressLint("NotifyDataSetChanged")
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
         searchViewModel = viewModels<SearchViewModel> {
             SearchViewModelFactory(
-                FoodRepository(), SearchHistoryManager(this)
+                FoodRepository(), SearchHistoryManager(requireContext())
             )
         }.value
 
@@ -49,18 +64,27 @@ class SearchActivity : AppCompatActivity(), SearchHistoryAdapter.DeleteManager, 
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
-
-
         initializeFoodRecyclerView()
         initializeSearchHistoryRecyclerView()
         searchViewModel.searchHistoryManager.registerListener(searchHistoryAdapter)
         val backButton = binding.backToSearchMeal
         backButton.setOnClickListener {
-            val intent = Intent(this@SearchActivity, FourthActivity::class.java)
-            startActivity(intent)
-            finish()
+            findNavController().navigate(R.id.action_searchFragment_to_addProductOrMealFragment)
+        }
+        binding.reloadText.setOnClickListener {
+            val searchText = binding.searchEditText.text.toString()
+            searchJob?.cancel()
+            if (searchText.isNotEmpty()) {
+                searchJob = lifecycleScope.launch(Dispatchers.Main) {
+                    delay(1000)
+                    searchViewModel.makeFoodInstantRequestByQuery(searchText)
+                }
+            }
         }
 
+        binding.clearHistory.setOnClickListener {
+            searchViewModel.searchHistoryManager.clearSearchHistory()
+        }
         binding.searchEditText.addTextChangedListener { s ->
             searchJob?.cancel()
             if (!s.isNullOrEmpty()) {
@@ -71,15 +95,31 @@ class SearchActivity : AppCompatActivity(), SearchHistoryAdapter.DeleteManager, 
                     searchViewModel.makeFoodInstantRequestByQuery(s.toString())
                 }
             } else {
+                lifecycleScope.launch{
+                    foodAdapter.listFood = emptyList()
+                }
                 hideDeleteCross()
+                showData()
+                hideError()
+                hideLoading()
                 showSearchHistory()
             }
         }
-
         binding.clearButton.setOnClickListener {
             binding.searchEditText.text.clear()
+            lifecycleScope.launch{
+                foodAdapter.listFood = emptyList()
+            }
         }
-
+        lifecycleScope.launch {
+            searchViewModel.isLoading.collectLatest { isLoading ->
+                if (isLoading) {
+                    showLoading()
+                } else {
+                    hideLoading()
+                }
+            }
+        }
         lifecycleScope.launch {
             searchViewModel.isError.collectLatest { isError ->
                 if (isError) {
@@ -87,27 +127,22 @@ class SearchActivity : AppCompatActivity(), SearchHistoryAdapter.DeleteManager, 
                 } else hideError()
             }
         }
-
         lifecycleScope.launch {
-            searchViewModel.isLoading.collectLatest { isLoading ->
-                if (isLoading) {
-                   showLoading()
-                } else {
-                    hideLoading()
-                }
+            searchViewModel.isNoData.collectLatest { isNoData ->
+                if (isNoData) {
+                    showNoData()
+                } else showData()
             }
         }
-
         lifecycleScope.launch {
             searchViewModel.foodInstantList.collectLatest { list ->
                 hideSearchHistory()
                 showData()
-
-                if (list.isEmpty() && binding.searchEditText.text.isNotEmpty()) {
-                    foodAdapter.listFood = emptyList()
-                    showNoData()
-                } else if (list.isEmpty() && binding.searchEditText.text.isEmpty()) {
-                    foodAdapter.listFood = emptyList()
+                foodAdapter.listFood = emptyList()
+//                if (list.isEmpty() && binding.searchEditText.text.isNotEmpty()) {
+//                    showNoData()
+//                } else
+                if (list.isEmpty() && binding.searchEditText.text.isEmpty()) {
                     showSearchHistory()
                 } else {
                     foodAdapter.listFood = list
@@ -122,20 +157,6 @@ class SearchActivity : AppCompatActivity(), SearchHistoryAdapter.DeleteManager, 
         searchViewModel.searchHistoryManager.unregisterListener(searchHistoryAdapter)
     }
 
-    fun onClickReload(view: View) {
-        val searchText = binding.searchEditText.text.toString()
-        searchJob?.cancel()
-        if (searchText.isNotEmpty()) {
-            searchJob = lifecycleScope.launch(Dispatchers.Main) {
-                delay(1000)
-                searchViewModel.makeFoodInstantRequestByQuery(searchText)
-            }
-        }
-    }
-
-    fun onClickClear(view: View) {
-        searchViewModel.searchHistoryManager.clearSearchHistory()
-    }
 
     override fun showError() {
         binding.noWifi.root.visibility = View.VISIBLE
@@ -186,11 +207,14 @@ class SearchActivity : AppCompatActivity(), SearchHistoryAdapter.DeleteManager, 
         binding.foodRecyclerView.visibility = View.GONE
     }
 
+    override fun deleteById(position: Int) {
+        TODO("Not yet implemented")
+    }
+
     private fun initializeFoodRecyclerView() {
         foodAdapter = FoodAdapter()
         with(binding.foodRecyclerView) {
-//            setHasFixedSize(true)
-            layoutManager = LinearLayoutManager(this@SearchActivity)
+            layoutManager = LinearLayoutManager(requireContext())
             adapter = foodAdapter
         }
     }
@@ -200,13 +224,8 @@ class SearchActivity : AppCompatActivity(), SearchHistoryAdapter.DeleteManager, 
             SearchHistoryAdapter(searchViewModel.searchHistoryManager.getSearchHistory(), this)
         showSearchHistory()
         binding.searchHistoryRecyclerView.apply {
-            //setHasFixedSize(true)
-            layoutManager = LinearLayoutManager(this@SearchActivity)
+            layoutManager = LinearLayoutManager(requireContext())
             adapter = searchHistoryAdapter
         }
-    }
-
-    override fun deleteById(position: Int) {
-        searchViewModel.deleteHistoryItemById(position)
     }
 }
