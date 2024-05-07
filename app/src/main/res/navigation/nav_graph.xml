@@ -9,56 +9,35 @@
         android:name="com.example.surimusakotlin.ProgressFragment"
         android:label="ProgressFragment" >
         <action
-            android:id="@+id/action_progressFragment_to_recepiesFragment"
-            app:destination="@id/recepiesFragment" />
-        <action
-            android:id="@+id/action_progressFragment_to_flastingFragment"
-            app:destination="@id/flastingFragment" />
-        <action
-            android:id="@+id/action_progressFragment_to_profileFragment"
-            app:destination="@id/profileFragment" />
+            android:id="@+id/action_progressFragment_to_addProductOrMealFragment2"
+            app:destination="@id/addProductOrMealFragment2" />
     </fragment>
     <fragment
         android:id="@+id/recepiesFragment"
         android:name="com.example.surimusakotlin.RecepiesFragment"
-        android:label="RecepiesFragment" >
-        <action
-            android:id="@+id/action_recepiesFragment_to_progressFragment"
-            app:destination="@id/progressFragment" />
-        <action
-            android:id="@+id/action_recepiesFragment_to_flastingFragment"
-            app:destination="@id/flastingFragment" />
-        <action
-            android:id="@+id/action_recepiesFragment_to_profileFragment"
-            app:destination="@id/profileFragment" />
-    </fragment>
+        android:label="RecepiesFragment" />
     <fragment
         android:id="@+id/flastingFragment"
         android:name="com.example.surimusakotlin.FlastingFragment"
-        android:label="FlastingFragment" >
-        <action
-            android:id="@+id/action_flastingFragment_to_progressFragment"
-            app:destination="@id/progressFragment" />
-        <action
-            android:id="@+id/action_flastingFragment_to_recepiesFragment"
-            app:destination="@id/recepiesFragment" />
-        <action
-            android:id="@+id/action_flastingFragment_to_profileFragment"
-            app:destination="@id/profileFragment" />
-    </fragment>
+        android:label="FlastingFragment" />
     <fragment
         android:id="@+id/profileFragment"
         android:name="com.example.surimusakotlin.ProfileFragment"
         android:label="fragment_profile"
-        tools:layout="@layout/fragment_profile" >
+        tools:layout="@layout/fragment_profile" />
+    <fragment
+        android:id="@+id/addProductOrMealFragment2"
+        android:name="com.example.surimusakotlin.search.AddProductOrMealFragment"
+        android:label="AddProductOrMealFragment" >
         <action
-            android:id="@+id/action_profileFragment_to_flastingFragment"
-            app:destination="@id/flastingFragment" />
-        <action
-            android:id="@+id/action_profileFragment_to_recepiesFragment"
-            app:destination="@id/recepiesFragment" />
-        <action
-            android:id="@+id/action_profileFragment_to_progressFragment"
-            app:destination="@id/progressFragment" />
+            android:id="@+id/action_addProductOrMealFragment2_to_searchFragment2"
+            app:destination="@id/searchFragment2" />
+        <argument
+            android:name="meal"
+            app:argType="string" />
     </fragment>
+    <fragment
+        android:id="@+id/searchFragment2"
+        android:name="com.example.surimusakotlin.search.SearchFragment"
+        android:label="SearchFragment" />
 </navigation>

@@ -8,18 +8,20 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import com.example.surimusakotlin.MainActivity
 import com.example.surimusakotlin.R
 import com.example.surimusakotlin.databinding.FragmentAddProductOrMealBinding
 
 class AddProductOrMealFragment : Fragment() {
     private lateinit var binding: FragmentAddProductOrMealBinding
+    private val arg by navArgs<AddProductOrMealFragmentArgs>()
 
-    @SuppressLint("NotifyDataSetChanged")
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
     }
-    @SuppressLint("NotifyDataSetChanged")
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -27,22 +29,19 @@ class AddProductOrMealFragment : Fragment() {
         binding = FragmentAddProductOrMealBinding.inflate(inflater, container, false)
         return binding.root
     }
-    @SuppressLint("NotifyDataSetChanged")
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val meal = requireActivity().intent.getStringExtra("meal")
-        binding.breakfastLunchDinner.text = meal
+        binding.breakfastLunchDinner.text = arg.meal
 
         binding.searchViewButton.isEnabled = true
         binding.searchViewButton.setOnClickListener {
-            findNavController().navigate(R.id.action_addProductOrMealFragment_to_searchFragment)
+            findNavController().navigate(R.id.action_addProductOrMealFragment2_to_searchFragment2)
         }
 
         binding.backToProgress.setOnClickListener {
-            val intent = Intent(requireContext(), MainActivity::class.java)
-            startActivity(intent)
-            requireActivity().finish()
+            findNavController().popBackStack()
         }
 
     }

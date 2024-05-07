@@ -69,7 +69,7 @@ class SearchFragment : Fragment(), SearchHistoryAdapter.DeleteManager, ScreenSwi
         searchViewModel.searchHistoryManager.registerListener(searchHistoryAdapter)
         val backButton = binding.backToSearchMeal
         backButton.setOnClickListener {
-            findNavController().navigate(R.id.action_searchFragment_to_addProductOrMealFragment)
+            findNavController().popBackStack()
         }
         binding.reloadText.setOnClickListener {
             val searchText = binding.searchEditText.text.toString()

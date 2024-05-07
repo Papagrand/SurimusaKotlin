@@ -7,9 +7,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import androidx.core.os.bundleOf
+import androidx.navigation.fragment.findNavController
 import com.example.surimusakotlin.databinding.FragmentSearchBinding
 import com.example.surimusakotlin.databinding.ProgressFragmentBinding
-import com.example.surimusakotlin.search.AddingProductToMealActivity
 
 class ProgressFragment : Fragment() {
     private lateinit var binding: ProgressFragmentBinding
@@ -30,13 +31,25 @@ class ProgressFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val button: Button = view.findViewById(R.id.add_breakfast_dish_button)
-
-
-        button.setOnClickListener {
-            val intent = Intent(requireActivity(), AddingProductToMealActivity::class.java)
-            startActivity(intent)
+        binding.addBreakfastDishButton.setOnClickListener{
+            val destination = ProgressFragmentDirections.actionProgressFragmentToAddProductOrMealFragment2(binding.breakfastText.text.toString())
+            findNavController().navigate(destination)
         }
+        binding.addLunchDishButton.setOnClickListener{
+            val destination = ProgressFragmentDirections.actionProgressFragmentToAddProductOrMealFragment2(binding.lunchText.text.toString())
+            findNavController().navigate(destination)
+        }
+        binding.addDinnerDishButton.setOnClickListener{
+            val destination = ProgressFragmentDirections.actionProgressFragmentToAddProductOrMealFragment2(binding.dinnerText.text.toString())
+            findNavController().navigate(destination)
+        }
+        binding.addSnackDishButton.setOnClickListener{
+            val destination = ProgressFragmentDirections.actionProgressFragmentToAddProductOrMealFragment2(binding.snackText.text.toString())
+            findNavController().navigate(destination)
+        }
+
+
+
 
 
     }

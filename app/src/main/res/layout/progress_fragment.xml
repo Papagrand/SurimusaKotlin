@@ -928,7 +928,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/blinker_bold"
-            android:text="@string/dinner"
+            android:text="@string/snack"
             android:textSize="@dimen/breakfast_lunch_dinner_size"
             app:layout_constraintLeft_toRightOf="@+id/guideline_ccal"
             app:layout_constraintTop_toTopOf="@+id/snack_text_group"
