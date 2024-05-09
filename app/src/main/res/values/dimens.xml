@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <dimen name="most_high_textSize">42dp</dimen>
     <dimen name="last_calories_and_timer_size">32dp</dimen>
     <dimen name="eated_and_burned_calories">16dp</dimen>
     <dimen name="breakfast_lunch_dinner_size">16dp</dimen>

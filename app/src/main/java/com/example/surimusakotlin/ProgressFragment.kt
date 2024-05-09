@@ -30,6 +30,9 @@ class ProgressFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        (activity as? MainActivity)?.let {
+            it.binding.bottomNavigation.visibility = View.VISIBLE
+        }
 
         binding.addBreakfastDishButton.setOnClickListener{
             val destination = ProgressFragmentDirections.actionProgressFragmentToAddProductOrMealFragment2(binding.breakfastText.text.toString())
@@ -47,6 +50,7 @@ class ProgressFragment : Fragment() {
             val destination = ProgressFragmentDirections.actionProgressFragmentToAddProductOrMealFragment2(binding.snackText.text.toString())
             findNavController().navigate(destination)
         }
+
 
 
 

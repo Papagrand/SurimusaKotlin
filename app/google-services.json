@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "182644856529",
+    "project_id": "surimusa-21742",
+    "storage_bucket": "surimusa-21742.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:182644856529:android:f662dbd813f7966263d7f0",
+        "android_client_info": {
+          "package_name": "com.example.surimusakotlin"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB53uv_3k56YMPdBnMgiCJGu3Tce2eZSnA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

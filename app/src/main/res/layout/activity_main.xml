@@ -33,6 +33,7 @@
         app:itemIconTint="@color/dark_background_color"
         app:itemActiveIndicatorStyle="@style/App.Custom.Indicator"
         app:labelVisibilityMode="labeled"
+        android:visibility="visible"
         />
 
 

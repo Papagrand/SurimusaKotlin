@@ -22,4 +22,19 @@
         android:layout_marginTop="16dp"
         android:text="Темная тема" />
 
+    <Button
+        android:id="@+id/logout_button"
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginBottom="35dp"
+        android:background="@drawable/button_auth"
+        android:text="Выйти"
+        android:textColor="@color/white"
+        android:textSize="@dimen/top_strings_size"
+        android:fontFamily="@font/blinker_bold"
+        />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
