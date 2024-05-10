@@ -69,6 +69,7 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.6.1")
     // Annotation processor
     implementation("com.squareup.okhttp3:logging-interceptor:4.11.0")
+    implementation("com.google.android.material:material:1.12.0")
     //jsonplaceholder.typecode.com -> test api
     testImplementation ("junit:junit:4.13.2")
     androidTestImplementation ("androidx.test.ext:junit:1.1.5")
@@ -77,4 +78,12 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.6.0-RC")
     implementation(platform("com.google.firebase:firebase-bom:33.0.0"))
     implementation("com.google.firebase:firebase-analytics")
+
+    val koin_version = "3.5.3"
+    implementation("io.insert-koin:koin-core:$koin_version")
+    implementation("io.insert-koin:koin-android:$koin_version")
+    //test
+    testImplementation("io.insert-koin:koin-test:$koin_version")
+
+
 }

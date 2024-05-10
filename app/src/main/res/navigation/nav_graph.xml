@@ -6,7 +6,7 @@
     app:startDestination="@id/loginFragment">
     <fragment
         android:id="@+id/progressFragment"
-        android:name="com.example.surimusakotlin.ProgressFragment"
+        android:name="com.example.surimusakotlin.presentation.fragment.ProgressFragment"
         android:label="ProgressFragment" >
         <action
             android:id="@+id/action_progressFragment_to_addProductOrMealFragment2"
@@ -14,15 +14,15 @@
     </fragment>
     <fragment
         android:id="@+id/recepiesFragment"
-        android:name="com.example.surimusakotlin.RecepiesFragment"
+        android:name="com.example.surimusakotlin.presentation.fragment.RecepiesFragment"
         android:label="RecepiesFragment" />
     <fragment
         android:id="@+id/flastingFragment"
-        android:name="com.example.surimusakotlin.FlastingFragment"
+        android:name="com.example.surimusakotlin.presentation.fragment.FlastingFragment"
         android:label="FlastingFragment" />
     <fragment
         android:id="@+id/profileFragment"
-        android:name="com.example.surimusakotlin.ProfileFragment"
+        android:name="com.example.surimusakotlin.presentation.fragment.ProfileFragment"
         android:label="fragment_profile"
         tools:layout="@layout/fragment_profile" >
         <action
@@ -31,7 +31,7 @@
     </fragment>
     <fragment
         android:id="@+id/addProductOrMealFragment2"
-        android:name="com.example.surimusakotlin.search.AddProductOrMealFragment"
+        android:name="com.example.surimusakotlin.presentation.fragment.AddProductOrMealFragment"
         android:label="AddProductOrMealFragment" >
         <action
             android:id="@+id/action_addProductOrMealFragment2_to_searchFragment2"
@@ -42,11 +42,15 @@
     </fragment>
     <fragment
         android:id="@+id/searchFragment2"
-        android:name="com.example.surimusakotlin.search.SearchFragment"
-        android:label="SearchFragment" />
+        android:name="com.example.surimusakotlin.presentation.fragment.SearchFragment"
+        android:label="SearchFragment" >
+        <action
+            android:id="@+id/action_searchFragment2_to_addingSearchedProductFragment"
+            app:destination="@id/addingSearchedProductFragment" />
+    </fragment>
     <fragment
         android:id="@+id/loginFragment"
-        android:name="com.example.surimusakotlin.LoginFragment"
+        android:name="com.example.surimusakotlin.presentation.fragment.LoginFragment"
         android:label="fragment_login"
         tools:layout="@layout/fragment_login" >
         <action
@@ -58,7 +62,12 @@
     </fragment>
     <fragment
         android:id="@+id/registration_fragment"
-        android:name="com.example.surimusakotlin.RegistrationFragment"
+        android:name="com.example.surimusakotlin.presentation.fragment.RegistrationFragment"
         android:label="registration_fragment"
         tools:layout="@layout/registration_fragment" />
+    <fragment
+        android:id="@+id/addingSearchedProductFragment"
+        android:name="com.example.surimusakotlin.presentation.fragment.AddingSearchedProductFragment"
+        android:label="fragment_adding_searched_product"
+        tools:layout="@layout/fragment_adding_searched_product" />
 </navigation>

@@ -2,7 +2,7 @@ package com.example.surimusakotlin.adapter_utils
 
 import android.util.Log
 import androidx.recyclerview.widget.DiffUtil
-import com.example.surimusakotlin.model.Food
+import com.example.surimusakotlin.domain.model.Food
 
 class DiffUtilCallback(
     private val old: List<Food>,
