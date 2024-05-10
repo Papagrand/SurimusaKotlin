@@ -1,11 +1,5 @@
 package com.example.surimusakotlin.presentation.search
 
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
-import com.example.surimusakotlin.data.repository.FoodRepository
-import com.example.surimusakotlin.domain.usecase.GetFoodInstantResponceByQueryUseCase
-import com.example.surimusakotlin.domain.usecase.GetNutritionsForCommonListUseCase
-
 //class SearchViewModelFactory(
 //    private val foodRepository: FoodRepository,
 //    private val searchHistoryManager: SearchHistoryManager,

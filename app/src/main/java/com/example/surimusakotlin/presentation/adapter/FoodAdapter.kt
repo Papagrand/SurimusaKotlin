@@ -10,7 +10,7 @@ import com.example.surimusakotlin.R
 import com.example.surimusakotlin.adapter_utils.DiffUtilCallback
 import com.example.surimusakotlin.domain.model.Food
 
-class FoodAdapter : RecyclerView.Adapter<FoodAdapter.FoodViewHolder>() {
+class FoodAdapter(private val foodClickable: FoodClickable) : RecyclerView.Adapter<FoodAdapter.FoodViewHolder>() {
     var listFood: List<Food> = emptyList()
         set(new) {
             val callback = DiffUtilCallback(old = field, new = new)
@@ -18,6 +18,9 @@ class FoodAdapter : RecyclerView.Adapter<FoodAdapter.FoodViewHolder>() {
             val diffResult = DiffUtil.calculateDiff(callback)
             diffResult.dispatchUpdatesTo(this)
         }
+    interface FoodClickable {
+        fun onFoodClick(foodItem: Food)
+    }
 
     class FoodViewHolder(view: View) : RecyclerView.ViewHolder(view)
 
@@ -26,6 +29,7 @@ class FoodAdapter : RecyclerView.Adapter<FoodAdapter.FoodViewHolder>() {
         return FoodViewHolder(view);
     }
     override fun onBindViewHolder(holder: FoodViewHolder, position: Int) {
+
         val foodInfo = listFood[position]
 
         val calories = String.format("%.1f", foodInfo.nf_calories ?: 0) + " ккал"
@@ -40,9 +44,18 @@ class FoodAdapter : RecyclerView.Adapter<FoodAdapter.FoodViewHolder>() {
         holder.itemView.findViewById<TextView>(R.id.proteins_recycler_grams).text = proteins
         holder.itemView.findViewById<TextView>(R.id.fats_recycler_grams).text = fats
         holder.itemView.findViewById<TextView>(R.id.mass_of_product).text = servingWeight
+
+        holder.itemView.setOnClickListener {
+            foodClickable.onFoodClick(listFood[position])
+        }
     }
+
+
+
 
     override fun getItemCount(): Int {
         return listFood.size
     }
+
+
 }

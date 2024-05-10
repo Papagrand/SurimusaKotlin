@@ -14,6 +14,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.surimusakotlin.data.ScreenSwitchable
 import com.example.surimusakotlin.databinding.FragmentSearchBinding
+import com.example.surimusakotlin.domain.model.Food
 import com.example.surimusakotlin.presentation.adapter.FoodAdapter
 import com.example.surimusakotlin.presentation.adapter.SearchHistoryAdapter
 import com.example.surimusakotlin.domain.repository.SearchViewModel
@@ -58,6 +59,7 @@ class SearchFragment : Fragment(), SearchHistoryAdapter.DeleteManager, ScreenSwi
             insets
         }
         initializeFoodRecyclerView()
+
         initializeSearchHistoryRecyclerView()
         searchViewModel.searchHistoryManager.registerListener(searchHistoryAdapter)
         val backButton = binding.backToSearchMeal
@@ -202,7 +204,12 @@ class SearchFragment : Fragment(), SearchHistoryAdapter.DeleteManager, ScreenSwi
     }
 
     private fun initializeFoodRecyclerView() {
-        foodAdapter = FoodAdapter()
+        foodAdapter = FoodAdapter(object: FoodAdapter.FoodClickable{
+            override fun onFoodClick(foodItem: Food) {
+                val args = SearchFragmentDirections.actionSearchFragment2ToAddingSearchedProductFragment(foodItem)
+                findNavController().navigate(args)
+            }
+        })
         with(binding.foodRecyclerView) {
             layoutManager = LinearLayoutManager(requireContext())
             adapter = foodAdapter

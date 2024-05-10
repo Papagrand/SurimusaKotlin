@@ -1,7 +1,7 @@
 package com.example.surimusakotlin.di
 
-import com.example.surimusakotlin.domain.usecase.GetFoodInstantResponceByQueryUseCase
-import com.example.surimusakotlin.domain.usecase.GetNutritionsForCommonListUseCase
+import com.example.surimusakotlin.domain.usecase.search.GetFoodInstantResponceByQueryUseCase
+import com.example.surimusakotlin.domain.usecase.search.GetNutritionsForCommonListUseCase
 import org.koin.dsl.module
 
 val domainModule = module {

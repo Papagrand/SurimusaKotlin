@@ -1,4 +1,4 @@
-package com.example.surimusakotlin.domain.usecase
+package com.example.surimusakotlin.domain.usecase.search
 
 import com.example.surimusakotlin.domain.model.FoodInstant
 import com.example.surimusakotlin.domain.repository.FoodRepositoryInterface

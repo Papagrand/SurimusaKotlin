@@ -5,8 +5,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.surimusakotlin.domain.model.Common
 import com.example.surimusakotlin.domain.model.Food
-import com.example.surimusakotlin.domain.usecase.GetFoodInstantResponceByQueryUseCase
-import com.example.surimusakotlin.domain.usecase.GetNutritionsForCommonListUseCase
+import com.example.surimusakotlin.domain.usecase.search.GetFoodInstantResponceByQueryUseCase
+import com.example.surimusakotlin.domain.usecase.search.GetNutritionsForCommonListUseCase
 import com.example.surimusakotlin.presentation.search.SearchHistoryManager
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow

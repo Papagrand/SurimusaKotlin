@@ -59,7 +59,7 @@
     <string name="registration">Регистрация</string>
     <string name="Login">Авторизация</string>
     <string name="set_your_portion">Настройте свою порцию</string>
-    <string name="final_nutrient_in_product">Нутриенты в N граммах продукта</string>
+    <string name="final_nutrient_in_product">Нутриенты в %1$s граммах продукта</string>
     <string name="total_fat">Всего жиров</string>
     <string name="saturated_fat">Насыщенные жиры</string>
     <string name="cholesterol">Холестерин</string>
