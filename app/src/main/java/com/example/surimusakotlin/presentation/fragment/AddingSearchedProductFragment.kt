@@ -58,6 +58,7 @@ class AddingSearchedProductFragment : Fragment() {
         )
 
         Glide.with(this).load(args.foodItem.photo.highres).into(binding.imageOfProduct)
+        binding.editTextForGrams.setText("%.2f".format(foodNutrientsManager.grams))
 
         updateTextViews()
 
@@ -67,9 +68,8 @@ class AddingSearchedProductFragment : Fragment() {
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
             }
             override fun afterTextChanged(s: Editable?) {
-                handler.removeCallbacksAndMessages(null)
-                // Планируем вызов функции updateNutrientValues через 3 секунды
-                handler.postDelayed({ updateNutrientValues(s) }, 2000)
+                updateNutrientValues(s)
+                updateTextViews()
             }
         })
     }
@@ -94,14 +94,11 @@ class AddingSearchedProductFragment : Fragment() {
         }
         foodNutrientsManager.grams = newGrams
 
-        updateTextViews()
-
 
     }
     private fun updateTextViews() {
         with(binding){
             productText.text = foodNutrientsManager.foodName
-            editTextForGrams.setText("%.2f".format(foodNutrientsManager.grams))
             editTextForCalories.setText("%.2f".format(foodNutrientsManager.calories))
             val nutrientsString = getString(R.string.final_nutrient_in_product, "%.2f".format(foodNutrientsManager.grams))
             finalNutrientsText.text = nutrientsString

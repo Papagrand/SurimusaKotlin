@@ -83,6 +83,7 @@
         app:layout_constraintTop_toTopOf="@id/gramms_calories_group"
         android:fontFamily="@font/blinker_bold"
         android:textColorHint="?attr/colorTertiary"
+        android:maxLength="7"
         android:gravity="center" />
 
 

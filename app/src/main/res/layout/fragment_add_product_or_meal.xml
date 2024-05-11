@@ -70,7 +70,7 @@
             android:text="@string/breakfast"
             android:fontFamily="@font/blinker_regular"
             android:textSize="@dimen/main_information_size"
-            android:textColor="@color/text_color_on_light_and_timer"/>
+            android:textColor="?attr/android:textColor"/>
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/search_bar_products"
