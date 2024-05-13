@@ -12,10 +12,7 @@ class FoodNutrientsManager {
     var sugars: Double = 0.0
     var totalCarbohydrate: Double = 0.0
     var totalFat: Double = 0.0
-    var servingQty: Double = 0.0
-    var servingUnit: String = ""
     var grams: Double = 0.0
-    var source: Int = 0
 
     fun updateValues(
         foodName: String,
@@ -29,10 +26,7 @@ class FoodNutrientsManager {
         sugars: Double,
         totalCarbohydrate: Double,
         totalFat: Double,
-        servingQty: Double,
-        servingUnit: String,
         grams: Double,
-        source: Int
     ) {
         this.foodName = foodName
         this.calories = calories
@@ -45,9 +39,6 @@ class FoodNutrientsManager {
         this.sugars = sugars
         this.totalCarbohydrate = totalCarbohydrate
         this.totalFat = totalFat
-        this.servingQty = servingQty
-        this.servingUnit = servingUnit
         this.grams = grams
-        this.source = source
     }
 }

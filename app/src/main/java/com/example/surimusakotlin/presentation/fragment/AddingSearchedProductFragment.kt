@@ -15,7 +15,6 @@ import com.example.surimusakotlin.databinding.FragmentAddingSearchedProductBindi
 import com.example.surimusakotlin.domain.FoodNutrientsManager
 
 class AddingSearchedProductFragment : Fragment() {
-    private val handler = Handler()
     private val args: AddingSearchedProductFragmentArgs by navArgs()
 
     private lateinit var binding: FragmentAddingSearchedProductBinding
@@ -51,13 +50,11 @@ class AddingSearchedProductFragment : Fragment() {
             args.foodItem.nf_sugars,
             args.foodItem.nf_total_carbohydrate,
             args.foodItem.nf_total_fat,
-            args.foodItem.serving_qty,
-            args.foodItem.serving_unit,
-            args.foodItem.serving_weight_grams,
-            args.foodItem.source
+            args.foodItem.serving_weight_grams
         )
 
-        Glide.with(this).load(args.foodItem.photo.highres).into(binding.imageOfProduct)
+        val pic: String = args.foodItem.photo.highres ?: args.foodItem.photo.thumb ?: resources.getString(R.string.link_to_image)
+        Glide.with(this).load(pic).into(binding.imageOfProduct)
         binding.editTextForGrams.setText("%.2f".format(foodNutrientsManager.grams))
 
         updateTextViews()
@@ -99,18 +96,19 @@ class AddingSearchedProductFragment : Fragment() {
     private fun updateTextViews() {
         with(binding){
             productText.text = foodNutrientsManager.foodName
-            editTextForCalories.setText("%.2f".format(foodNutrientsManager.calories))
-            val nutrientsString = getString(R.string.final_nutrient_in_product, "%.2f".format(foodNutrientsManager.grams))
+            editTextForCalories.setText("%.2f".format(foodNutrientsManager.calories ?: 0))
+            val grams = foodNutrientsManager.grams ?: 0.0
+            val nutrientsString = getString(R.string.final_nutrient_in_product, "%.2f".format(grams))
             finalNutrientsText.text = nutrientsString
-            totalFatTextView.text = getString(R.string.total_fat)+" "+"%.2f".format(foodNutrientsManager.totalFat)+" гр"
-            saturatedFatTextView.text = getString(R.string.saturated_fat)+" "+"%.2f".format(foodNutrientsManager.saturated_fat)+" гр"
-            cholesterolTextView.text = getString(R.string.cholesterol)+" "+"%.2f".format(foodNutrientsManager.cholesterol)+" гр"
-            sodiumTextView.text = getString(R.string.sodium)+" "+"%.2f".format(foodNutrientsManager.sodium)+" мг"
-            totalCarbohydratesTextView.text = getString(R.string.total_carbohydrates)+" "+"%.2f".format(foodNutrientsManager.totalCarbohydrate)+" гр"
-            dietaryFiberTextView.text = getString(R.string.dietary_fiber)+" "+"%.2f".format(foodNutrientsManager.dietaryFiber)+" гр"
-            sugarTextView.text = getString(R.string.sugar)+" "+"%.2f".format(foodNutrientsManager.sugars)+" гр"
-            proteinsTextView.text = getString(R.string.proteins)+" "+"%.2f".format(foodNutrientsManager.protein)+" гр"
-            potassiumTextView.text = getString(R.string.potassium)+" "+"%.2f".format(foodNutrientsManager.potassium)+" мг"
+            totalFatTextView.text = getString(R.string.total_fat)+" "+"%.2f".format(foodNutrientsManager.totalFat ?: 0)+" гр"
+            saturatedFatTextView.text = getString(R.string.saturated_fat)+" "+"%.2f".format(foodNutrientsManager.saturated_fat ?: 0)+" гр"
+            cholesterolTextView.text = getString(R.string.cholesterol)+" "+"%.2f".format(foodNutrientsManager.cholesterol ?: 0)+" гр"
+            sodiumTextView.text = getString(R.string.sodium)+" "+"%.2f".format(foodNutrientsManager.sodium ?: 0)+" мг"
+            totalCarbohydratesTextView.text = getString(R.string.total_carbohydrates)+" "+"%.2f".format(foodNutrientsManager.totalCarbohydrate ?: 0)+" гр"
+            dietaryFiberTextView.text = getString(R.string.dietary_fiber)+" "+"%.2f".format(foodNutrientsManager.dietaryFiber ?: 0)+" гр"
+            sugarTextView.text = getString(R.string.sugar)+" "+"%.2f".format(foodNutrientsManager.sugars ?: 0)+" гр"
+            proteinsTextView.text = getString(R.string.proteins)+" "+"%.2f".format(foodNutrientsManager.protein ?: 0)+" гр"
+            potassiumTextView.text = getString(R.string.potassium)+" "+"%.2f".format(foodNutrientsManager.potassium ?: 0)+" мг"
         }
     }
 
