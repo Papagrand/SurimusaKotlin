@@ -18,7 +18,7 @@ import com.example.surimusakotlin.databinding.FragmentSearchBinding
 import com.example.surimusakotlin.domain.model.Food
 import com.example.surimusakotlin.presentation.adapter.FoodAdapter
 import com.example.surimusakotlin.presentation.adapter.SearchHistoryAdapter
-import com.example.surimusakotlin.domain.repository.SearchViewModel
+import com.example.surimusakotlin.domain.viewModels.SearchViewModel
 //import com.example.surimusakotlin.presentation.search.SearchViewModelFactory
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job

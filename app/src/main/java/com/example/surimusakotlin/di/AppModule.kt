@@ -1,7 +1,7 @@
 package com.example.surimusakotlin.di
 
 import com.example.surimusakotlin.presentation.search.SearchHistoryManager
-import com.example.surimusakotlin.domain.repository.SearchViewModel
+import com.example.surimusakotlin.domain.viewModels.SearchViewModel
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module

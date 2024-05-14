@@ -39,6 +39,9 @@
         <argument
             android:name="meal"
             app:argType="string" />
+        <argument
+            android:name="date"
+            app:argType="long" />
     </fragment>
     <fragment
         android:id="@+id/searchFragment2"
