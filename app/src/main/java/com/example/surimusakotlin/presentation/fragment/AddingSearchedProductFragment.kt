@@ -53,17 +53,24 @@ class AddingSearchedProductFragment : Fragment() {
             args.foodItem.serving_weight_grams
         )
 
-        val pic: String = args.foodItem.photo.highres ?: args.foodItem.photo.thumb ?: resources.getString(R.string.link_to_image)
+        val pic: String = args.foodItem.photo.highres ?: args.foodItem.photo.thumb
+        ?: resources.getString(R.string.link_to_image)
         Glide.with(this).load(pic).into(binding.imageOfProduct)
         binding.editTextForGrams.setText("%.2f".format(foodNutrientsManager.grams))
 
         updateTextViews()
+        binding.editTextForGrams.setOnClickListener {
+            binding.editTextForGrams.text.clear()
+        }
 
         binding.editTextForGrams.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+
             }
+
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
             }
+
             override fun afterTextChanged(s: Editable?) {
                 updateNutrientValues(s)
                 updateTextViews()
@@ -72,43 +79,65 @@ class AddingSearchedProductFragment : Fragment() {
     }
 
     private fun updateNutrientValues(s: Editable?) {
-        val grams = foodNutrientsManager.grams
+        var grams = foodNutrientsManager.grams
         var newGrams = s.toString().toDoubleOrNull()
-        if (newGrams==null){
+        if (newGrams == null) {
             newGrams = 1.0
         }
-        with(foodNutrientsManager){
-            calories=calories/grams*newGrams
-            totalFat=totalFat/grams*newGrams
-            saturated_fat=saturated_fat/grams*newGrams
-            cholesterol=cholesterol/grams*newGrams
-            sodium=sodium/grams*newGrams
-            totalCarbohydrate=totalCarbohydrate/grams*newGrams
-            dietaryFiber=dietaryFiber/grams*newGrams
-            sugars=sugars/grams*newGrams
-            protein=protein/grams*newGrams
-            potassium=potassium/grams*newGrams
+        if (grams != 0.0) {
+            with(foodNutrientsManager) {
+                calories = calories / grams * newGrams
+                totalFat = totalFat / grams * newGrams
+                saturated_fat = saturated_fat / grams * newGrams
+                cholesterol = cholesterol / grams * newGrams
+                sodium = sodium / grams * newGrams
+                totalCarbohydrate = totalCarbohydrate / grams * newGrams
+                dietaryFiber = dietaryFiber / grams * newGrams
+                sugars = sugars / grams * newGrams
+                protein = protein / grams * newGrams
+                potassium = potassium / grams * newGrams
+            }
+            foodNutrientsManager.grams = newGrams
         }
-        foodNutrientsManager.grams = newGrams
-
 
     }
+
     private fun updateTextViews() {
-        with(binding){
+        with(binding) {
             productText.text = foodNutrientsManager.foodName
             editTextForCalories.setText("%.2f".format(foodNutrientsManager.calories ?: 0))
             val grams = foodNutrientsManager.grams ?: 0.0
-            val nutrientsString = getString(R.string.final_nutrient_in_product, "%.2f".format(grams))
+            val nutrientsString =
+                getString(R.string.final_nutrient_in_product, "%.2f".format(grams))
             finalNutrientsText.text = nutrientsString
-            totalFatTextView.text = getString(R.string.total_fat)+" "+"%.2f".format(foodNutrientsManager.totalFat ?: 0)+" гр"
-            saturatedFatTextView.text = getString(R.string.saturated_fat)+" "+"%.2f".format(foodNutrientsManager.saturated_fat ?: 0)+" гр"
-            cholesterolTextView.text = getString(R.string.cholesterol)+" "+"%.2f".format(foodNutrientsManager.cholesterol ?: 0)+" гр"
-            sodiumTextView.text = getString(R.string.sodium)+" "+"%.2f".format(foodNutrientsManager.sodium ?: 0)+" мг"
-            totalCarbohydratesTextView.text = getString(R.string.total_carbohydrates)+" "+"%.2f".format(foodNutrientsManager.totalCarbohydrate ?: 0)+" гр"
-            dietaryFiberTextView.text = getString(R.string.dietary_fiber)+" "+"%.2f".format(foodNutrientsManager.dietaryFiber ?: 0)+" гр"
-            sugarTextView.text = getString(R.string.sugar)+" "+"%.2f".format(foodNutrientsManager.sugars ?: 0)+" гр"
-            proteinsTextView.text = getString(R.string.proteins)+" "+"%.2f".format(foodNutrientsManager.protein ?: 0)+" гр"
-            potassiumTextView.text = getString(R.string.potassium)+" "+"%.2f".format(foodNutrientsManager.potassium ?: 0)+" мг"
+            totalFatTextView.text = getString(R.string.total_fat) + " " + "%.2f".format(
+                foodNutrientsManager.totalFat ?: 0
+            ) + " гр"
+            saturatedFatTextView.text = getString(R.string.saturated_fat) + " " + "%.2f".format(
+                foodNutrientsManager.saturated_fat ?: 0
+            ) + " гр"
+            cholesterolTextView.text = getString(R.string.cholesterol) + " " + "%.2f".format(
+                foodNutrientsManager.cholesterol ?: 0
+            ) + " гр"
+            sodiumTextView.text = getString(R.string.sodium) + " " + "%.2f".format(
+                foodNutrientsManager.sodium ?: 0
+            ) + " мг"
+            totalCarbohydratesTextView.text =
+                getString(R.string.total_carbohydrates) + " " + "%.2f".format(
+                    foodNutrientsManager.totalCarbohydrate ?: 0
+                ) + " гр"
+            dietaryFiberTextView.text = getString(R.string.dietary_fiber) + " " + "%.2f".format(
+                foodNutrientsManager.dietaryFiber ?: 0
+            ) + " гр"
+            sugarTextView.text = getString(R.string.sugar) + " " + "%.2f".format(
+                foodNutrientsManager.sugars ?: 0
+            ) + " гр"
+            proteinsTextView.text = getString(R.string.proteins) + " " + "%.2f".format(
+                foodNutrientsManager.protein ?: 0
+            ) + " гр"
+            potassiumTextView.text = getString(R.string.potassium) + " " + "%.2f".format(
+                foodNutrientsManager.potassium ?: 0
+            ) + " мг"
         }
     }
 
