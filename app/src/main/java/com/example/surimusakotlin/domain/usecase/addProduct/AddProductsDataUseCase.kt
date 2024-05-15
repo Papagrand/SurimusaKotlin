@@ -14,7 +14,9 @@ class AddProductsDataUseCase(private val eatingRepository: EatingRepository) {
             it.totalCarbohydrateEating = products?.sumOf { product -> product.totalCarbohydrate ?: 0.0 }
             it.totalProteinsEating = products?.sumOf { product -> product.protein ?: 0.0 }
             it.nameProducts = products?.joinToString(separator = ", ") { product -> product.productName ?: "Unknown" }
-            it.countProducts++;
+            if (products != null) {
+                it.countProducts=products.size
+            };
             eatingRepository.updateEating(it)
         }
     }

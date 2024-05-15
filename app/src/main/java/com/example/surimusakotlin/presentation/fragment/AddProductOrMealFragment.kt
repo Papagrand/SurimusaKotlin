@@ -15,6 +15,7 @@ import com.example.surimusakotlin.data.repository.EatingRepository
 import com.example.surimusakotlin.databinding.FragmentAddProductOrMealBinding
 import com.example.surimusakotlin.domain.usecase.addProduct.AddProductsDataUseCase
 import com.example.surimusakotlin.domain.usecase.addProduct.MaintainEatingRecordsUseCase
+import com.example.surimusakotlin.domain.usecase.progress.GetEatingDataUseCase
 import com.example.surimusakotlin.domain.viewModels.AddProductOrMealViewModel
 import com.example.surimusakotlin.domain.viewModels.factories.AddProductOrMealViewModelFactory
 
@@ -27,7 +28,8 @@ class AddProductOrMealFragment : Fragment() {
     private val viewModel: AddProductOrMealViewModel by viewModels{
         AddProductOrMealViewModelFactory(
             MaintainEatingRecordsUseCase(EatingRepository(totalNutritionDao)),
-            AddProductsDataUseCase(EatingRepository(totalNutritionDao))
+            AddProductsDataUseCase(EatingRepository(totalNutritionDao)),
+            GetEatingDataUseCase(EatingRepository(totalNutritionDao))
         )
     }
 
@@ -49,6 +51,11 @@ class AddProductOrMealFragment : Fragment() {
 
         viewModel.maintainRecordsAddProduct()
         viewModel.getAllProductsFromThisEating(arg.mealId)
+        viewModel.getEatingCurrentData(arg.mealId){eating ->
+
+            binding.countOfAddedProducts.text = eating?.countProducts.toString()
+
+        }
 
         (activity as? MainActivity)?.let {
             it.binding.bottomNavigation.visibility = View.GONE

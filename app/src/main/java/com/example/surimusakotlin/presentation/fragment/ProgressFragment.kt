@@ -83,12 +83,33 @@ class ProgressFragment : Fragment() {
         }
 
         viewModel.getEatingData(curentDateBreakfast){eating ->
-            binding.breakfastCaloriesText.text = "%.0f".format(eating?.totalCaloriesEating)+ " / 576 ккал"
             binding.breakfastDishesText.text = eating?.nameProducts
+            binding.circularProgressBarBreakfast.progressMax = 576F
+            binding.breakfastCaloriesText.text = "%.0f".format(eating?.totalCaloriesEating)+" / "
+            binding.maxBreakfastCaloriesText.text = "%.0f".format(binding.circularProgressBarBreakfast.progressMax) + " ккал"
             binding.circularProgressBarBreakfast.progress = eating?.totalCaloriesEating!!.toFloat()
-
-        }//.setText("%.2f".format(foodNutrientsManager.grams))
-        //eating?.totalCaloriesEating.toString()+ " / 576 ккал"
+        }
+        viewModel.getEatingData(curentDateLunch){eating ->
+            binding.lunchDishesText.text = eating?.nameProducts
+            binding.circularProgressBarLunch.progressMax = 765F
+            binding.lunchCaloriesText.text = "%.0f".format(eating?.totalCaloriesEating)+" / "
+            binding.maxLunchCaloriesText.text = "%.0f".format(binding.circularProgressBarLunch.progressMax) + " ккал"
+            binding.circularProgressBarLunch.progress = eating?.totalCaloriesEating!!.toFloat()
+        }
+        viewModel.getEatingData(curentDateDinner){eating ->
+            binding.dinnerDishesText.text = eating?.nameProducts
+            binding.circularProgressBarDinner.progressMax = 482F
+            binding.dinnerCaloriesText.text = "%.0f".format(eating?.totalCaloriesEating)+" / "
+            binding.maxDinnerCaloriesText.text = "%.0f".format(binding.circularProgressBarDinner.progressMax) + " ккал"
+            binding.circularProgressBarDinner.progress = eating?.totalCaloriesEating!!.toFloat()
+        }
+        viewModel.getEatingData(curentDateSnack){eating ->
+            binding.snackDishesText.text = eating?.nameProducts
+            binding.circularProgressBarSnack.progressMax = 110F
+            binding.snackCaloriesText.text = "%.0f".format(eating?.totalCaloriesEating)+" / "
+            binding.maxSnackCaloriesText.text = "%.0f".format(binding.circularProgressBarSnack.progressMax) + " ккал"
+            binding.circularProgressBarSnack.progress = eating?.totalCaloriesEating!!.toFloat()
+        }
 
     }
 
