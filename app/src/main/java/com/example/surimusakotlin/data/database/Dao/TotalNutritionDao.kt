@@ -5,12 +5,15 @@ import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import androidx.room.Update
 import com.example.surimusakotlin.data.database.Entities.Eating
+import com.example.surimusakotlin.data.database.Entities.Product
 import com.example.surimusakotlin.data.database.Entities.Total_nutritions
 
 @Dao
 interface TotalNutritionDao {
-    @Insert
+    //ProgressFragment
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
     fun insertTotalNutritions(nutrition: Total_nutritions)
 
     @Query("SELECT * FROM total_nutritions WHERE id = :id")
@@ -22,10 +25,11 @@ interface TotalNutritionDao {
     @Delete
     fun deleteNutrition(nutrition: Total_nutritions)
 
+    //Add Fragment
     @Query("SELECT * FROM eating WHERE id = :id")
     fun getEatingById(id: Long): Eating?
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
     fun insertEating(eating: Eating)
 
     @Query("SELECT * FROM eating ORDER BY id DESC")
@@ -33,5 +37,15 @@ interface TotalNutritionDao {
 
     @Delete
     fun deleteEating(eating: Eating)
+
+    @Update
+    fun updateEating(eating: Eating)
+
+    //AddingSearched fragment
+    @Query("SELECT * FROM product WHERE mealId = :mealId")
+    fun getProductByMealId(mealId: Long): List<Product>?
+
+    @Insert
+    fun insertProduct(product: Product)
 
 }

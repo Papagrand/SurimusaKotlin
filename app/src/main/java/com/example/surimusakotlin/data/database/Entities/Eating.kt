@@ -16,6 +16,10 @@ data class Eating (
     var totalCarbohydrateEating: Double? = 0.0,
     @ColumnInfo(name = "totalProteins")
     var totalProteinsEating: Double? = 0.0,
+    @ColumnInfo(name = "nameProducts")
+    var nameProducts: String? = null,
+    @ColumnInfo(name = "countProducts")
+    var countProducts: Int = 0,
     @ColumnInfo(name = "products")
     var products: List<Product>? = null
 )

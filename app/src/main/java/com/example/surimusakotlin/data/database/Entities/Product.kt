@@ -32,6 +32,9 @@ data class Product(
     @ColumnInfo(name = "totalFat")
     var totalFat: Double? = null,
     @ColumnInfo(name = "grams")
-    var grams: Double? = null
+    var grams: Double? = null,
+    @ColumnInfo(name = "mealId")
+    var mealId: Long? = null
+
 )
 

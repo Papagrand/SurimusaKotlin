@@ -13,9 +13,10 @@ import com.example.surimusakotlin.R
 import com.example.surimusakotlin.data.database.MainDB
 import com.example.surimusakotlin.data.repository.EatingRepository
 import com.example.surimusakotlin.databinding.FragmentAddProductOrMealBinding
+import com.example.surimusakotlin.domain.usecase.addProduct.AddProductsDataUseCase
 import com.example.surimusakotlin.domain.usecase.addProduct.MaintainEatingRecordsUseCase
 import com.example.surimusakotlin.domain.viewModels.AddProductOrMealViewModel
-import com.example.surimusakotlin.domain.viewModels.AddProductOrMealViewModelFactory
+import com.example.surimusakotlin.domain.viewModels.factories.AddProductOrMealViewModelFactory
 
 class AddProductOrMealFragment : Fragment() {
     private lateinit var binding: FragmentAddProductOrMealBinding
@@ -25,7 +26,8 @@ class AddProductOrMealFragment : Fragment() {
     }
     private val viewModel: AddProductOrMealViewModel by viewModels{
         AddProductOrMealViewModelFactory(
-            MaintainEatingRecordsUseCase(EatingRepository(totalNutritionDao))
+            MaintainEatingRecordsUseCase(EatingRepository(totalNutritionDao)),
+            AddProductsDataUseCase(EatingRepository(totalNutritionDao))
         )
     }
 
@@ -46,16 +48,25 @@ class AddProductOrMealFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         viewModel.maintainRecordsAddProduct()
+        viewModel.getAllProductsFromThisEating(arg.mealId)
 
         (activity as? MainActivity)?.let {
             it.binding.bottomNavigation.visibility = View.GONE
         }
 
-        binding.breakfastLunchDinner.text = arg.meal
+        val mealText = when (arg.mealId%10) {
+            1L -> "Завтрак"
+            2L -> "Обед"
+            3L -> "Ужин"
+            4L -> "Перекус"
+            else -> "Неизвестный прием пищи"
+        }
+        binding.breakfastLunchDinner.text = mealText
 
         binding.searchViewButton.isEnabled = true
         binding.searchViewButton.setOnClickListener {
-            findNavController().navigate(R.id.action_addProductOrMealFragment2_to_searchFragment2)
+            val destination = AddProductOrMealFragmentDirections.actionAddProductOrMealFragment2ToSearchFragment2(arg.mealId)
+            findNavController().navigate(destination)
         }
 
         binding.backToProgress.setOnClickListener {

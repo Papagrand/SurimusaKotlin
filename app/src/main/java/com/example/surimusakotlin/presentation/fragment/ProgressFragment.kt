@@ -7,13 +7,16 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import com.example.surimusakotlin.data.database.Entities.Eating
 import com.example.surimusakotlin.data.database.MainDB
+import com.example.surimusakotlin.data.repository.EatingRepository
 import com.example.surimusakotlin.data.repository.TotalNutritionRepository
 import com.example.surimusakotlin.databinding.ProgressFragmentBinding
+import com.example.surimusakotlin.domain.usecase.progress.GetEatingDataUseCase
 import com.example.surimusakotlin.domain.usecase.progress.GetTotalNutritionUseCase
 import com.example.surimusakotlin.domain.usecase.progress.MaintainTotalNutritionRecordsUseCase
 import com.example.surimusakotlin.domain.viewModels.ProgressViewModel
-import com.example.surimusakotlin.domain.viewModels.ProgressViewModelFactory
+import com.example.surimusakotlin.domain.viewModels.factories.ProgressViewModelFactory
 import com.example.surimusakotlin.presentation.MainActivity
 import java.text.SimpleDateFormat
 import java.util.Calendar
@@ -28,7 +31,8 @@ class ProgressFragment : Fragment() {
     private val viewModel: ProgressViewModel by viewModels {
         ProgressViewModelFactory(
             GetTotalNutritionUseCase(TotalNutritionRepository(totalNutritionDao)),
-            MaintainTotalNutritionRecordsUseCase(TotalNutritionRepository(totalNutritionDao))
+            MaintainTotalNutritionRecordsUseCase(TotalNutritionRepository(totalNutritionDao)),
+            GetEatingDataUseCase(EatingRepository(totalNutritionDao))
         )
     }
 
@@ -53,34 +57,41 @@ class ProgressFragment : Fragment() {
 
         viewModel.maintainRecordsProgress()
         //Временная логика, так как не сделан календарь
-        val currentDate = SimpleDateFormat("ddMMyyyy", Locale.getDefault()).format(Date()).toLong()
+        val currentDate = SimpleDateFormat("yyyyMMdd", Locale.getDefault()).format(Date()).toLong()
         viewModel.loadNutritionData(currentDate)
         binding.numberWeek.text = getWeekOfYear(currentDate.toString()).toString()
-
+        val curentDateBreakfast = currentDate*10+1
+        val curentDateLunch = currentDate*10+2
+        val curentDateDinner = currentDate*10+3
+        val curentDateSnack = currentDate*10+4
 
         binding.addBreakfastDishButton.setOnClickListener{
-            val destination = ProgressFragmentDirections.actionProgressFragmentToAddProductOrMealFragment2(binding.breakfastText.text.toString(), currentDate*10+1)
+            val destination = ProgressFragmentDirections.actionProgressFragmentToAddProductOrMealFragment2( curentDateBreakfast)
             findNavController().navigate(destination)
         }
         binding.addLunchDishButton.setOnClickListener{
-            val destination = ProgressFragmentDirections.actionProgressFragmentToAddProductOrMealFragment2(binding.lunchText.text.toString(), currentDate*10+2)
+            val destination = ProgressFragmentDirections.actionProgressFragmentToAddProductOrMealFragment2( curentDateLunch)
             findNavController().navigate(destination)
         }
         binding.addDinnerDishButton.setOnClickListener{
-            val destination = ProgressFragmentDirections.actionProgressFragmentToAddProductOrMealFragment2(binding.dinnerText.text.toString(), currentDate*10+3)
+            val destination = ProgressFragmentDirections.actionProgressFragmentToAddProductOrMealFragment2( curentDateDinner)
             findNavController().navigate(destination)
         }
         binding.addSnackDishButton.setOnClickListener{
-            val destination = ProgressFragmentDirections.actionProgressFragmentToAddProductOrMealFragment2(binding.snackText.text.toString(), currentDate*10+4)
+            val destination = ProgressFragmentDirections.actionProgressFragmentToAddProductOrMealFragment2( curentDateSnack)
             findNavController().navigate(destination)
         }
 
+        viewModel.getEatingData(curentDateBreakfast){eating ->
+            binding.breakfastCaloriesText.text = "%.0f".format(eating?.totalCaloriesEating)+ " / 576 ккал"
+            binding.breakfastDishesText.text = eating?.nameProducts
+            binding.circularProgressBarBreakfast.progress = eating?.totalCaloriesEating!!.toFloat()
 
-
-
-
+        }//.setText("%.2f".format(foodNutrientsManager.grams))
+        //eating?.totalCaloriesEating.toString()+ " / 576 ккал"
 
     }
+
     fun getWeekOfYear(dateStr: String): Int {
         val dateFormat = SimpleDateFormat("ddMMyyyy", Locale.getDefault())
         val date = dateFormat.parse(dateStr) ?: return -1 // Возвращает -1, если дата неправильная

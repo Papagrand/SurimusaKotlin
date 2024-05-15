@@ -9,8 +9,12 @@ class TotalNutritionRepository(private val totalNutritionDao: TotalNutritionDao)
     }
 
     fun insertTotalNutrition(nutrition: Total_nutritions) {
-        totalNutritionDao.insertTotalNutritions(nutrition)
+        val existingTotalNutrition = nutrition.id?.let { totalNutritionDao.getTotalNutritionById(it) }
+        if (existingTotalNutrition == null){
+            totalNutritionDao.insertTotalNutritions(nutrition)
+        }
     }
+
 
     fun getAllNutritions(): List<Total_nutritions> {
         return totalNutritionDao.getAllNutritions()

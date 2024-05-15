@@ -12,6 +12,7 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.surimusakotlin.data.ScreenSwitchable
 import com.example.surimusakotlin.databinding.FragmentSearchBinding
@@ -29,6 +30,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class SearchFragment : Fragment(), SearchHistoryAdapter.DeleteManager, ScreenSwitchable {
     private val searchViewModel by viewModel<SearchViewModel>()
+    private val arg by navArgs<SearchFragmentArgs>()
 
     private lateinit var foodAdapter: FoodAdapter
     private lateinit var searchHistoryAdapter: SearchHistoryAdapter
@@ -206,12 +208,12 @@ class SearchFragment : Fragment(), SearchHistoryAdapter.DeleteManager, ScreenSwi
 
     private fun initializeFoodRecyclerView() {
         foodAdapter = FoodAdapter(object: FoodAdapter.FoodClickable{
-            override fun onFoodClick(foodItem: Food) {
-                val args = SearchFragmentDirections.actionSearchFragment2ToAddingSearchedProductFragment(foodItem)
+            override fun onFoodClick(foodItem: Food ) {
+                val args = SearchFragmentDirections.actionSearchFragment2ToAddingSearchedProductFragment(foodItem, arg.mealId)
                 Log.e("BOOBAA", foodItem.toString())
                 findNavController().navigate(args)
             }
-        })
+        }, arg.mealId)
         with(binding.foodRecyclerView) {
             layoutManager = LinearLayoutManager(requireContext())
             adapter = foodAdapter

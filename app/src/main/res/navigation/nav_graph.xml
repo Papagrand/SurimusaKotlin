@@ -37,10 +37,7 @@
             android:id="@+id/action_addProductOrMealFragment2_to_searchFragment2"
             app:destination="@id/searchFragment2" />
         <argument
-            android:name="meal"
-            app:argType="string" />
-        <argument
-            android:name="date"
+            android:name="mealId"
             app:argType="long" />
     </fragment>
     <fragment
@@ -51,6 +48,10 @@
             android:id="@+id/action_searchFragment2_to_addingSearchedProductFragment"
             app:destination="@id/addingSearchedProductFragment">
         </action>
+        <argument
+            android:name="mealId"
+            app:argType="long"
+            />
 
     </fragment>
     <fragment
@@ -78,5 +79,12 @@
         <argument
             android:name="foodItem"
             app:argType="com.example.surimusakotlin.domain.model.Food" />
+        <action
+            android:id="@+id/action_addingSearchedProductFragment_to_addProductOrMealFragment2"
+            app:destination="@id/addProductOrMealFragment2" />
+        <argument
+            android:name="mealId"
+            app:argType="long"
+            />
     </fragment>
 </navigation>

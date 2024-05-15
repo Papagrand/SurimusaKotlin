@@ -1,24 +1,38 @@
 package com.example.surimusakotlin.presentation.fragment
 
 import android.os.Bundle
-import android.os.Handler
 import android.text.Editable
 import android.text.TextWatcher
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
 import com.example.surimusakotlin.R
+import com.example.surimusakotlin.data.database.MainDB
+import com.example.surimusakotlin.data.repository.ProductRepository
 import com.example.surimusakotlin.databinding.FragmentAddingSearchedProductBinding
 import com.example.surimusakotlin.domain.FoodNutrientsManager
+import com.example.surimusakotlin.domain.usecase.addingSearchedProduct.AddingSearchedProductUseCase
+import com.example.surimusakotlin.domain.viewModels.AddingSearchedProductViewModel
+import com.example.surimusakotlin.domain.viewModels.factories.AddingSearchedProductViewModelFactory
 
 class AddingSearchedProductFragment : Fragment() {
     private val args: AddingSearchedProductFragmentArgs by navArgs()
 
     private lateinit var binding: FragmentAddingSearchedProductBinding
+    private val totalNutritionDao by lazy {
+        MainDB.getDB(requireContext()).totalNutritionDao()
+    }
     private val foodNutrientsManager = FoodNutrientsManager()
+    private val viewModel: AddingSearchedProductViewModel by viewModels {
+        AddingSearchedProductViewModelFactory(
+            AddingSearchedProductUseCase(ProductRepository(totalNutritionDao))
+        )
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -76,6 +90,11 @@ class AddingSearchedProductFragment : Fragment() {
                 updateTextViews()
             }
         })
+        binding.buttonAddProduct.setOnClickListener {
+            viewModel.addProduct(foodNutrientsManager, args.mealId)
+            val destination = AddingSearchedProductFragmentDirections.actionAddingSearchedProductFragmentToAddProductOrMealFragment2(args.mealId)
+            findNavController().navigate(destination)
+        }
     }
 
     private fun updateNutrientValues(s: Editable?) {

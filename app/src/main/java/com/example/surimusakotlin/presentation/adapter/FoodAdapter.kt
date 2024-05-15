@@ -10,7 +10,7 @@ import com.example.surimusakotlin.R
 import com.example.surimusakotlin.adapter_utils.DiffUtilCallback
 import com.example.surimusakotlin.domain.model.Food
 
-class FoodAdapter(private val foodClickable: FoodClickable) : RecyclerView.Adapter<FoodAdapter.FoodViewHolder>() {
+class FoodAdapter(private val foodClickable: FoodClickable, private val mealId: Long) : RecyclerView.Adapter<FoodAdapter.FoodViewHolder>() {
     var listFood: List<Food> = emptyList()
         set(new) {
             val callback = DiffUtilCallback(old = field, new = new)
