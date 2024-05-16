@@ -1,5 +1,6 @@
 package com.example.surimusakotlin.data.database.Dao
 
+import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
@@ -9,6 +10,7 @@ import androidx.room.Update
 import com.example.surimusakotlin.data.database.Entities.Eating
 import com.example.surimusakotlin.data.database.Entities.Product
 import com.example.surimusakotlin.data.database.Entities.Total_nutritions
+import java.util.concurrent.Flow
 
 @Dao
 interface TotalNutritionDao {
@@ -28,6 +30,9 @@ interface TotalNutritionDao {
     //Add Fragment
     @Query("SELECT * FROM eating WHERE id = :id")
     fun getEatingById(id: Long): Eating?
+
+    @Query("SELECT * FROM Eating WHERE id = :id")
+    fun getEatingByIdLiveData(id: Long): LiveData<Eating?>
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     fun insertEating(eating: Eating)

@@ -16,7 +16,7 @@ class AddProductsDataUseCase(private val eatingRepository: EatingRepository) {
             it.nameProducts = products?.joinToString(separator = ", ") { product -> product.productName ?: "Unknown" }
             if (products != null) {
                 it.countProducts=products.size
-            };
+            }
             eatingRepository.updateEating(it)
         }
     }

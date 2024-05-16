@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
+import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
@@ -92,8 +93,11 @@ class AddingSearchedProductFragment : Fragment() {
         })
         binding.buttonAddProduct.setOnClickListener {
             viewModel.addProduct(foodNutrientsManager, args.mealId)
+            val navOptions = NavOptions.Builder()
+                .setPopUpTo(R.id.action_addingSearchedProductFragment_to_addProductOrMealFragment2, true)
+                .build()
             val destination = AddingSearchedProductFragmentDirections.actionAddingSearchedProductFragmentToAddProductOrMealFragment2(args.mealId)
-            findNavController().navigate(destination)
+            findNavController().navigate(destination, navOptions)
         }
     }
 

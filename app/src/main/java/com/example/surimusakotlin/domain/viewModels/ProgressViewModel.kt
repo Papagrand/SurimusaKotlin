@@ -21,6 +21,21 @@ class ProgressViewModel(
     private val _nutritionData = MutableLiveData<Total_nutritions?>()
     val nutritionData: LiveData<Total_nutritions?> get() = _nutritionData
 
+    private val _eatingData = MutableLiveData<Eating?>()
+    val eatingData: LiveData<Eating?> get() = _eatingData
+
+    private val _breakfastData = MutableLiveData<Eating?>()
+    val breakfastData: LiveData<Eating?> = _breakfastData
+
+    private val _lunchData = MutableLiveData<Eating?>()
+    val lunchData: LiveData<Eating?> = _lunchData
+
+    private val _dinnerData = MutableLiveData<Eating?>()
+    val dinnerData: LiveData<Eating?> = _dinnerData
+
+    private val _snackData = MutableLiveData<Eating?>()
+    val snackData: LiveData<Eating?> = _snackData
+
     fun loadNutritionData(id: Long) {
         viewModelScope.launch(Dispatchers.IO) {
             val nutrition = getTotalNutritionUseCase.execute(id)
@@ -33,10 +48,17 @@ class ProgressViewModel(
         }
     }
 
-    fun getEatingData(id: Long, callback: (Eating?) -> Unit) {
-        viewModelScope.launch(Dispatchers.IO) {
-            val eating = getEatingDataUseCase.execute(id)
-            callback(eating)
+    fun getEatingData(mealId: Long, mealType: String) {
+        viewModelScope.launch {
+            getEatingDataUseCase.execute(mealId).observeForever { eatingData ->
+                when (mealType) {
+                    "breakfast" -> _breakfastData.postValue(eatingData)
+                    "lunch" -> _lunchData.postValue(eatingData)
+                    "dinner" -> _dinnerData.postValue(eatingData)
+                    "snack" -> _snackData.postValue(eatingData)
+                }
+            }
         }
     }
+
 }

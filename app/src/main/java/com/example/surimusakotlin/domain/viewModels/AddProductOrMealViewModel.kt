@@ -10,6 +10,7 @@ import com.example.surimusakotlin.domain.usecase.addProduct.MaintainEatingRecord
 import com.example.surimusakotlin.domain.usecase.progress.GetEatingDataUseCase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class AddProductOrMealViewModel(
 
@@ -27,15 +28,18 @@ class AddProductOrMealViewModel(
         }
     }
 
-    fun getAllProductsFromThisEating(mealId: Long){
+    fun getAllProductsFromThisEating(mealId: Long) {
         viewModelScope.launch(Dispatchers.IO) {
             addProductsDataUseCase.addInformationOfProducts(mealId)
+            getEatingCurrentData(mealId)
         }
     }
-    fun getEatingCurrentData(id: Long, callback: (Eating?) -> Unit) {
-        viewModelScope.launch(Dispatchers.IO) {
-            val eating = getEatingDataUseCase.execute(id)
-            callback(eating)
+    fun getEatingCurrentData(mealId: Long) {
+        viewModelScope.launch(Dispatchers.Main) {
+            getEatingDataUseCase.execute(mealId).observeForever { eating ->
+                _eatingData.postValue(eating)
+            }
+
         }
     }
 }

@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
@@ -48,17 +49,17 @@ class AddProductOrMealFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         viewModel.maintainRecordsAddProduct()
         viewModel.getAllProductsFromThisEating(arg.mealId)
-        viewModel.getEatingCurrentData(arg.mealId){eating ->
-
-            binding.countOfAddedProducts.text = eating?.countProducts.toString()
-
-        }
-
         (activity as? MainActivity)?.let {
             it.binding.bottomNavigation.visibility = View.GONE
+        }
+        viewModel.getEatingCurrentData(arg.mealId)
+
+        viewModel.eatingData.observe(viewLifecycleOwner) { eating ->
+            if (eating != null) {
+                binding.countOfAddedProducts.text = eating.countProducts.toString()
+            }
         }
 
         val mealText = when (arg.mealId%10) {
@@ -77,8 +78,12 @@ class AddProductOrMealFragment : Fragment() {
         }
 
         binding.backToProgress.setOnClickListener {
-            findNavController().popBackStack()
+            findNavController().navigate(R.id.progressFragment)
         }
-
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                findNavController().navigate(R.id.progressFragment)
+            }
+        })
     }
 }
