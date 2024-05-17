@@ -19,5 +19,7 @@ data class Total_nutritions(
     var totalDayCarbohydrate: Double? = 0.0,
     @ColumnInfo(name = "totalDayFat")
     var totalDayFat: Double? = 0.0,
+    @ColumnInfo(name = "water")
+    var water: Double? = 0.0
 
 )

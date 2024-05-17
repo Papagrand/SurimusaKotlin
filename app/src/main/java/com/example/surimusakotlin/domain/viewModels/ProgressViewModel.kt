@@ -17,6 +17,24 @@ class ProgressViewModel(
     private val maintainTotalNutritionRecordsUseCase: MaintainTotalNutritionRecordsUseCase,
     private val getEatingDataUseCase: GetEatingDataUseCase
 ) : ViewModel() {
+    private val _totalCalories = MutableLiveData<Double>()
+    val totalCalories: LiveData<Double> = _totalCalories
+    private val _totalDayProtein = MutableLiveData<Double>()
+    val totalDayProtein: LiveData<Double> = _totalDayProtein
+    private val _totalDayCarbohydrate = MutableLiveData<Double>()
+    val totalDayCarbohydrate: LiveData<Double> = _totalDayCarbohydrate
+    private val _totalDayFat = MutableLiveData<Double>()
+    val totalDayFat: LiveData<Double> = _totalDayFat
+    private val _water = MutableLiveData<Double>()
+    val water: LiveData<Double> = _water
+
+    init {
+        _totalCalories.value = 0.0
+        _totalDayProtein.value = 0.0
+        _totalDayCarbohydrate.value = 0.0
+        _totalDayFat.value = 0.0
+        _water.value = 0.0
+    }
 
     private val _nutritionData = MutableLiveData<Total_nutritions?>()
     val nutritionData: LiveData<Total_nutritions?> get() = _nutritionData
@@ -36,13 +54,25 @@ class ProgressViewModel(
     private val _snackData = MutableLiveData<Eating?>()
     val snackData: LiveData<Eating?> = _snackData
 
+    fun setDefaultNutrients(calories: Double, protein: Double,carbohydrate: Double, fat: Double,water: Double) {
+        _totalCalories.value = calories
+        _totalDayCarbohydrate.value = carbohydrate
+        _totalDayProtein.value = protein
+        _totalDayFat.value = fat
+        _water.value = water
+
+    }
+    fun updateTotalDayNutrients(calories: Double, protein: Double,carbohydrate: Double, fat: Double,water: Double) {
+        _totalCalories.value = (_totalCalories.value ?: 0.0) + calories
+        _totalDayCarbohydrate.value = (_totalDayCarbohydrate.value ?: 0.0) + carbohydrate
+        _totalDayProtein.value = (_totalDayProtein.value ?: 0.0) + protein
+        _totalDayFat.value = (_totalDayFat.value ?: 0.0) + fat
+        _water.value = (_water.value ?: 0.0) + water
+
+    }
+
     fun loadNutritionData(id: Long) {
         viewModelScope.launch(Dispatchers.IO) {
-//            getTotalNutritionUseCase.execute(id).observeForever{nutritionData->
-//                _nutritionData.postValue(nutritionData)
-//
-//
-//            }
             getTotalNutritionUseCase.execute(id)
 
         }

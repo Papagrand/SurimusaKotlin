@@ -10,8 +10,9 @@ import com.example.surimusakotlin.data.database.Dao.TotalNutritionDao
 import com.example.surimusakotlin.data.database.Entities.Eating
 import com.example.surimusakotlin.data.database.Entities.Product
 import com.example.surimusakotlin.data.database.Entities.Total_nutritions
+import com.example.surimusakotlin.data.database.Entities.UserInfo
 
-@Database(entities = [Total_nutritions::class, Eating::class, Product::class], version = 1)
+@Database(entities = [Total_nutritions::class, Eating::class, Product::class, UserInfo::class], version = 2)
 @TypeConverters(Converters::class)
 abstract class MainDB : RoomDatabase() {
     abstract fun totalNutritionDao(): TotalNutritionDao

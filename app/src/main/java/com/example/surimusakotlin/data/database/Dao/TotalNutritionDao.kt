@@ -15,8 +15,11 @@ import java.util.concurrent.Flow
 @Dao
 interface TotalNutritionDao {
     //ProgressFragment
+
+
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     fun insertTotalNutritions(nutrition: Total_nutritions)
+
 
     @Query("SELECT * FROM total_nutritions WHERE id = :id")
     fun getTotalNutritionById(id: Long): Total_nutritions?
