@@ -1,6 +1,7 @@
 package com.example.surimusakotlin.data.repository
 
 
+import androidx.lifecycle.LiveData
 import com.example.surimusakotlin.data.database.Dao.TotalNutritionDao
 import com.example.surimusakotlin.data.database.Entities.Total_nutritions
 class TotalNutritionRepository(private val totalNutritionDao: TotalNutritionDao) {

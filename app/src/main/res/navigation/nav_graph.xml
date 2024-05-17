@@ -39,6 +39,9 @@
         <argument
             android:name="mealId"
             app:argType="long" />
+        <action
+            android:id="@+id/action_addProductOrMealFragment2_to_bottomSheetDeletingFragment"
+            app:destination="@id/bottomSheetDeletingFragment" />
     </fragment>
     <fragment
         android:id="@+id/searchFragment2"
@@ -87,4 +90,14 @@
             app:argType="long"
             />
     </fragment>
+    <dialog
+        android:id="@+id/bottomSheetDeletingFragment"
+        android:name="com.example.surimusakotlin.presentation.fragment.BottomSheetDeletingFragment"
+        android:label="fragment_bottom_sheet_deleting"
+        tools:layout="@layout/fragment_bottom_sheet_deleting"
+        >
+        <argument
+            android:name="mealId"
+            app:argType="long" />
+    </dialog>
 </navigation>

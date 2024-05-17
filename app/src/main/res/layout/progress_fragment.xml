@@ -600,7 +600,7 @@
             />
 
 
-        <Button
+        <ImageButton
             android:id="@+id/add_breakfast_dish_button"
             android:layout_width="20dp"
             android:layout_height="20dp"
@@ -733,7 +733,7 @@
             app:layout_constraintTop_toBottomOf="@id/lunch_text"
             />
 
-        <Button
+        <ImageButton
             android:id="@+id/add_lunch_dish_button"
             android:layout_width="20dp"
             android:layout_height="20dp"
@@ -865,7 +865,7 @@
             app:layout_constraintTop_toBottomOf="@id/dinner_text"
             />
 
-        <Button
+        <ImageButton
             android:id="@+id/add_dinner_dish_button"
             android:layout_width="20dp"
             android:layout_height="20dp"
@@ -991,7 +991,7 @@
             app:layout_constraintTop_toBottomOf="@id/snack_text"
             />
 
-        <Button
+        <ImageButton
             android:id="@+id/add_snack_dish_button"
             android:layout_width="20dp"
             android:layout_height="20dp"

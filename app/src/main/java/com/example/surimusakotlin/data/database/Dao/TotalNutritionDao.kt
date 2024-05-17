@@ -53,4 +53,10 @@ interface TotalNutritionDao {
     @Insert
     fun insertProduct(product: Product)
 
+    @Query("SELECT * FROM product WHERE mealId = :mealId")
+    fun getProductsByMealId(mealId: Long): LiveData<List<Product>>
+
+    @Query("DELETE FROM product WHERE id = :id")
+    suspend fun deleteProductById(id: Long)
+
 }

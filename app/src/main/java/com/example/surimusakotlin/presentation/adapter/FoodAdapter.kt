@@ -8,9 +8,10 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.surimusakotlin.R
 import com.example.surimusakotlin.adapter_utils.DiffUtilCallback
+import com.example.surimusakotlin.data.database.Entities.Product
 import com.example.surimusakotlin.domain.model.Food
 
-class FoodAdapter(private val foodClickable: FoodClickable, private val mealId: Long) : RecyclerView.Adapter<FoodAdapter.FoodViewHolder>() {
+class FoodAdapter(private val foodClickable: FoodClickable? = null, private val mealId: Long) : RecyclerView.Adapter<FoodAdapter.FoodViewHolder>() {
     var listFood: List<Food> = emptyList()
         set(new) {
             val callback = DiffUtilCallback(old = field, new = new)
@@ -20,6 +21,7 @@ class FoodAdapter(private val foodClickable: FoodClickable, private val mealId: 
         }
     interface FoodClickable {
         fun onFoodClick(foodItem: Food)
+        fun onDeleteClick(product: Product)
     }
 
     class FoodViewHolder(view: View) : RecyclerView.ViewHolder(view)
@@ -46,7 +48,7 @@ class FoodAdapter(private val foodClickable: FoodClickable, private val mealId: 
         holder.itemView.findViewById<TextView>(R.id.mass_of_product).text = servingWeight
 
         holder.itemView.setOnClickListener {
-            foodClickable.onFoodClick(listFood[position])
+            foodClickable?.onFoodClick(listFood[position])
         }
     }
 

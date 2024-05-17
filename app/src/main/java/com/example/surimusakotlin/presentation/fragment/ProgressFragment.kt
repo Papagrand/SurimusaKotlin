@@ -67,6 +67,35 @@ class ProgressFragment : Fragment() {
         val currentDateDinner = currentDate*10+3
         val currentDateSnack = currentDate*10+4
 
+        viewModel.getEatingData(currentDateBreakfast, "breakfast")
+        viewModel.getEatingData(currentDateLunch, "lunch")
+        viewModel.getEatingData(currentDateDinner, "dinner")
+        viewModel.getEatingData(currentDateSnack, "snack")
+
+        viewModel.breakfastData.observe(viewLifecycleOwner) { eating ->
+            if (eating != null) {
+                updateMealUI(binding.breakfastDishesText, binding.circularProgressBarBreakfast, binding.breakfastCaloriesText, binding.maxBreakfastCaloriesText, eating, 576F)
+            }
+        }
+
+        viewModel.lunchData.observe(viewLifecycleOwner) { eating ->
+            if (eating != null) {
+                updateMealUI(binding.lunchDishesText, binding.circularProgressBarLunch, binding.lunchCaloriesText, binding.maxLunchCaloriesText, eating, 765F)
+            }
+        }
+
+        viewModel.dinnerData.observe(viewLifecycleOwner) { eating ->
+            if (eating != null) {
+                updateMealUI(binding.dinnerDishesText, binding.circularProgressBarDinner, binding.dinnerCaloriesText, binding.maxDinnerCaloriesText, eating, 482F)
+            }
+        }
+
+        viewModel.snackData.observe(viewLifecycleOwner) { eating ->
+            if (eating != null) {
+                updateMealUI(binding.snackDishesText, binding.circularProgressBarSnack, binding.snackCaloriesText, binding.maxSnackCaloriesText, eating, 110F)
+            }
+        }
+
         binding.addBreakfastDishButton.setOnClickListener{
             val destination = ProgressFragmentDirections.actionProgressFragmentToAddProductOrMealFragment2( currentDateBreakfast)
             findNavController().navigate(destination)
@@ -122,7 +151,6 @@ class ProgressFragment : Fragment() {
         val calendar = Calendar.getInstance()
         calendar.time = date
 
-        // Установка первого дня недели как воскресенье и минимального числа дней в первой неделе года как 1
         calendar.firstDayOfWeek = Calendar.MONDAY
         calendar.minimalDaysInFirstWeek = 7
 

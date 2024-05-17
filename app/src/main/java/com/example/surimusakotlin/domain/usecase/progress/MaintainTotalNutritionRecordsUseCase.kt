@@ -10,7 +10,7 @@ import java.util.Locale
 class MaintainTotalNutritionRecordsUseCase(
     private val repository: TotalNutritionRepository
 ) {
-    suspend fun execute() {
+    fun execute() {
         val calendar = Calendar.getInstance()
         val dateFormat = SimpleDateFormat("yyyyMMdd", Locale.getDefault())
         val nutritions = repository.getAllNutritions()

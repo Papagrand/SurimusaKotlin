@@ -8,12 +8,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.surimusakotlin.R
 import com.example.surimusakotlin.presentation.search.SearchHistoryManager
 
-class SearchHistoryAdapter(
-    private var historyList: List<String>,
-    private var deleteManager: DeleteManager
-) : RecyclerView.Adapter<SearchHistoryAdapter.SearchHistoryViewHolder>(),
+class SearchHistoryAdapter() : RecyclerView.Adapter<SearchHistoryAdapter.SearchHistoryViewHolder>(),
     SearchHistoryManager.SearchHistoryListener {
-
+     var historyList: List<String> = emptyList()
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SearchHistoryViewHolder {
         val view =
             LayoutInflater.from(parent.context).inflate(R.layout.search_history_view, parent, false)

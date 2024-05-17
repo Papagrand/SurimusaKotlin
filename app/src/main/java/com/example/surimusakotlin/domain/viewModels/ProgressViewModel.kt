@@ -38,8 +38,13 @@ class ProgressViewModel(
 
     fun loadNutritionData(id: Long) {
         viewModelScope.launch(Dispatchers.IO) {
-            val nutrition = getTotalNutritionUseCase.execute(id)
-            _nutritionData.postValue(nutrition)
+//            getTotalNutritionUseCase.execute(id).observeForever{nutritionData->
+//                _nutritionData.postValue(nutritionData)
+//
+//
+//            }
+            getTotalNutritionUseCase.execute(id)
+
         }
     }
     fun maintainRecordsProgress() {

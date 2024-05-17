@@ -4,13 +4,15 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.example.surimusakotlin.domain.usecase.addProduct.AddProductsDataUseCase
 import com.example.surimusakotlin.domain.usecase.addProduct.MaintainEatingRecordsUseCase
+import com.example.surimusakotlin.domain.usecase.bottomSheet.GetProductsInAddProductUseCase
 import com.example.surimusakotlin.domain.usecase.progress.GetEatingDataUseCase
 import com.example.surimusakotlin.domain.viewModels.AddProductOrMealViewModel
 
 class AddProductOrMealViewModelFactory(
     private val maintainEatingRecordsUseCase: MaintainEatingRecordsUseCase,
     private val addProductsDataUseCase: AddProductsDataUseCase,
-    private val getEatingDataUseCase: GetEatingDataUseCase
+    private val getEatingDataUseCase: GetEatingDataUseCase,
+    private val getProductsInAddProductUseCase: GetProductsInAddProductUseCase
 ):ViewModelProvider.Factory {
 
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
@@ -19,7 +21,8 @@ class AddProductOrMealViewModelFactory(
             return AddProductOrMealViewModel(
                 maintainEatingRecordsUseCase,
                 addProductsDataUseCase,
-                getEatingDataUseCase
+                getEatingDataUseCase,
+                getProductsInAddProductUseCase
 
             ) as T
         }

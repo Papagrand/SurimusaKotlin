@@ -15,6 +15,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.surimusakotlin.data.ScreenSwitchable
+import com.example.surimusakotlin.data.database.Entities.Product
 import com.example.surimusakotlin.databinding.FragmentSearchBinding
 import com.example.surimusakotlin.domain.model.Food
 import com.example.surimusakotlin.presentation.adapter.FoodAdapter
@@ -33,16 +34,12 @@ class SearchFragment : Fragment(), SearchHistoryAdapter.DeleteManager, ScreenSwi
     private val arg by navArgs<SearchFragmentArgs>()
 
     private lateinit var foodAdapter: FoodAdapter
-    private lateinit var searchHistoryAdapter: SearchHistoryAdapter
+    private val searchHistoryAdapter = SearchHistoryAdapter()
 
     private var searchJob: Job? = null
 
     private lateinit var binding: FragmentSearchBinding
 
-    @SuppressLint("NotifyDataSetChanged")
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
     @SuppressLint("NotifyDataSetChanged")
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -213,6 +210,9 @@ class SearchFragment : Fragment(), SearchHistoryAdapter.DeleteManager, ScreenSwi
                 Log.e("BOOBAA", foodItem.toString())
                 findNavController().navigate(args)
             }
+
+            override fun onDeleteClick(product: Product) {
+            }
         }, arg.mealId)
         with(binding.foodRecyclerView) {
             layoutManager = LinearLayoutManager(requireContext())
@@ -221,8 +221,7 @@ class SearchFragment : Fragment(), SearchHistoryAdapter.DeleteManager, ScreenSwi
     }
 
     private fun initializeSearchHistoryRecyclerView() {
-        searchHistoryAdapter =
-            SearchHistoryAdapter(searchViewModel.searchHistoryManager.getSearchHistory(), this)
+        searchHistoryAdapter.historyList = searchViewModel.searchHistoryManager.getSearchHistory()
         showSearchHistory()
         binding.searchHistoryRecyclerView.apply {
             layoutManager = LinearLayoutManager(requireContext())
