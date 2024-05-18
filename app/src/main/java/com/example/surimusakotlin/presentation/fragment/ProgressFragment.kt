@@ -12,6 +12,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
+import com.example.surimusakotlin.R
 import com.example.surimusakotlin.data.database.Entities.Eating
 import com.example.surimusakotlin.data.database.MainDB
 import com.example.surimusakotlin.data.repository.EatingRepository
@@ -20,10 +21,15 @@ import com.example.surimusakotlin.databinding.ProgressFragmentBinding
 import com.example.surimusakotlin.domain.usecase.progress.GetEatingDataUseCase
 import com.example.surimusakotlin.domain.usecase.progress.GetTotalNutritionUseCase
 import com.example.surimusakotlin.domain.usecase.progress.MaintainTotalNutritionRecordsUseCase
+import com.example.surimusakotlin.domain.usecase.progress.UpdateDayWaterUsecase
+import com.example.surimusakotlin.domain.usecase.progress.UpdateTotalDayNutrientsUseCase
 import com.example.surimusakotlin.domain.viewModels.ProgressViewModel
 import com.example.surimusakotlin.domain.viewModels.factories.ProgressViewModelFactory
 import com.example.surimusakotlin.presentation.MainActivity
 import com.mikhaellopez.circularprogressbar.CircularProgressBar
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import okhttp3.internal.format
 import java.text.SimpleDateFormat
 import java.util.Calendar
@@ -39,7 +45,10 @@ class ProgressFragment : Fragment() {
         ProgressViewModelFactory(
             GetTotalNutritionUseCase(TotalNutritionRepository(totalNutritionDao)),
             MaintainTotalNutritionRecordsUseCase(TotalNutritionRepository(totalNutritionDao)),
-            GetEatingDataUseCase(EatingRepository(totalNutritionDao))
+            GetEatingDataUseCase(EatingRepository(totalNutritionDao)),
+            UpdateTotalDayNutrientsUseCase(totalNutritionDao),
+            UpdateDayWaterUsecase(totalNutritionDao)
+
         )
     }
 
@@ -57,11 +66,6 @@ class ProgressFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        (activity as? MainActivity)?.let {
-            it.binding.bottomNavigation.visibility = View.VISIBLE
-        }
-
         viewModel.maintainRecordsProgress()
         //Временная логика, так как не сделан календарь
         val currentDate = SimpleDateFormat("yyyyMMdd", Locale.getDefault()).format(Date()).toLong()
@@ -80,30 +84,32 @@ class ProgressFragment : Fragment() {
 
         viewModel.breakfastData.observeOnce(viewLifecycleOwner) { eating ->
             if (eating != null) {
-                updateMealUI(binding.breakfastDishesText, binding.circularProgressBarBreakfast, binding.breakfastCaloriesText, binding.maxBreakfastCaloriesText, eating, 576F)
+                updateMealUI(binding.breakfastDishesText, binding.circularProgressBarBreakfast, binding.breakfastCaloriesText, binding.maxBreakfastCaloriesText, eating, 576F, currentDate)
             }
         }
 
         viewModel.lunchData.observeOnce(viewLifecycleOwner) { eating ->
             if (eating != null) {
-                updateMealUI(binding.lunchDishesText, binding.circularProgressBarLunch, binding.lunchCaloriesText, binding.maxLunchCaloriesText, eating, 765F)
+                updateMealUI(binding.lunchDishesText, binding.circularProgressBarLunch, binding.lunchCaloriesText, binding.maxLunchCaloriesText, eating, 765F, currentDate)
             }
         }
 
         viewModel.dinnerData.observeOnce(viewLifecycleOwner) { eating ->
             if (eating != null) {
-                updateMealUI(binding.dinnerDishesText, binding.circularProgressBarDinner, binding.dinnerCaloriesText, binding.maxDinnerCaloriesText, eating, 482F)
+                updateMealUI(binding.dinnerDishesText, binding.circularProgressBarDinner, binding.dinnerCaloriesText, binding.maxDinnerCaloriesText, eating, 482F, currentDate)
             }
 
         }
 
         viewModel.snackData.observeOnce(viewLifecycleOwner) { eating ->
             if (eating != null) {
-                updateMealUI(binding.snackDishesText, binding.circularProgressBarSnack, binding.snackCaloriesText, binding.maxSnackCaloriesText, eating, 110F)
+                updateMealUI(binding.snackDishesText, binding.circularProgressBarSnack, binding.snackCaloriesText, binding.maxSnackCaloriesText, eating, 110F, currentDate)
             }
         }
-
-
+        super.onViewCreated(view, savedInstanceState)
+        (activity as? MainActivity)?.let {
+            it.binding.bottomNavigation.visibility = View.VISIBLE
+        }
 
         binding.addBreakfastDishButton.setOnClickListener{
             val destination = ProgressFragmentDirections.actionProgressFragmentToAddProductOrMealFragment2( currentDateBreakfast)
@@ -122,6 +128,25 @@ class ProgressFragment : Fragment() {
             findNavController().navigate(destination)
         }
 
+        binding.plusWater.setOnClickListener {
+            viewModel.updateDayWater(
+                0.25,
+                currentDate
+            )
+        }
+        binding.minusWater.setOnClickListener {
+            viewModel.updateDayWater(
+                -0.25,
+                currentDate
+            )
+        }
+        //TODO "Сделать нормальное получение воды"
+        viewModel.totalWater.observe(viewLifecycleOwner){
+            val water = it
+            binding.waterValue.text = water.toString() + " литров"
+
+        }
+
         viewModel.totalCalories.observe(viewLifecycleOwner){
             val totalCalories = it
             val newLastCaloriesValue = 1919 - totalCalories
@@ -131,14 +156,28 @@ class ProgressFragment : Fragment() {
 
         }
         viewModel.totalDayCarbohydrate.observe(viewLifecycleOwner){
+            val totalCarbohydrate = it
+            val maxCarbohydrate = 234
+            binding.carbonsGrams.text = "%.0f".format(totalCarbohydrate) + " / " + maxCarbohydrate.toString() + "г"
+            binding.carbonsProgressBar.max = maxCarbohydrate
+            binding.carbonsProgressBar.progress = totalCarbohydrate.toInt()
 
         }
         viewModel.totalDayFat.observe(viewLifecycleOwner){
-
+            val totalFat = it
+            val maxFat = 62
+            binding.fatsGrams.text = "%.0f".format(totalFat) + " / " + maxFat.toString() + "г"
+            binding.fatsProgressBar.max = maxFat
+            binding.fatsProgressBar.progress = totalFat.toInt()
         }
         viewModel.totalDayProtein.observe(viewLifecycleOwner){
-
+            val totalProtein = it
+            val maxProtein = 62
+            binding.proteinsGrams.text = "%.0f".format(totalProtein) + " / " + maxProtein.toString() + "г"
+            binding.proteinsProgressBar.max = maxProtein
+            binding.proteinsProgressBar.progress = totalProtein.toInt()
         }
+
 
 
     }
@@ -167,7 +206,7 @@ class ProgressFragment : Fragment() {
         return calendar.get(Calendar.WEEK_OF_YEAR)
     }
 
-    private fun updateMealUI(dishesText: TextView, progressBar: CircularProgressBar, caloriesText: TextView, maxCaloriesText: TextView, eating: Eating, maxCalories: Float) {
+    private fun updateMealUI(dishesText: TextView, progressBar: CircularProgressBar, caloriesText: TextView, maxCaloriesText: TextView, eating: Eating, maxCalories: Float, currentDate: Long) {
         dishesText.text = eating.nameProducts
         progressBar.progressMax = maxCalories
         val currentCalories = "%.0f".format(eating.totalCaloriesEating) + " / "
@@ -181,7 +220,7 @@ class ProgressFragment : Fragment() {
             eating.totalProteinsEating?: 0.0,
             eating.totalCarbohydrateEating?: 0.0,
             eating.totalFatsEating?: 0.0,
-            0.0
+            currentDate
         )
     }
     fun <T> LiveData<T>.observeOnce(lifecycleOwner: LifecycleOwner, observer: Observer<T>) {

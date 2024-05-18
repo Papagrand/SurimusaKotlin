@@ -9,13 +9,17 @@ import com.example.surimusakotlin.data.database.Entities.Total_nutritions
 import com.example.surimusakotlin.domain.usecase.progress.GetEatingDataUseCase
 import com.example.surimusakotlin.domain.usecase.progress.GetTotalNutritionUseCase
 import com.example.surimusakotlin.domain.usecase.progress.MaintainTotalNutritionRecordsUseCase
+import com.example.surimusakotlin.domain.usecase.progress.UpdateDayWaterUsecase
+import com.example.surimusakotlin.domain.usecase.progress.UpdateTotalDayNutrientsUseCase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class ProgressViewModel(
     private val getTotalNutritionUseCase: GetTotalNutritionUseCase,
     private val maintainTotalNutritionRecordsUseCase: MaintainTotalNutritionRecordsUseCase,
-    private val getEatingDataUseCase: GetEatingDataUseCase
+    private val getEatingDataUseCase: GetEatingDataUseCase,
+    private val updateTotalDayNutrientsUseCase: UpdateTotalDayNutrientsUseCase,
+    private val updateDayWaterUsecase: UpdateDayWaterUsecase
 ) : ViewModel() {
     private val _totalCalories = MutableLiveData<Double>()
     val totalCalories: LiveData<Double> = _totalCalories
@@ -25,15 +29,15 @@ class ProgressViewModel(
     val totalDayCarbohydrate: LiveData<Double> = _totalDayCarbohydrate
     private val _totalDayFat = MutableLiveData<Double>()
     val totalDayFat: LiveData<Double> = _totalDayFat
-    private val _water = MutableLiveData<Double>()
-    val water: LiveData<Double> = _water
+    private val _totalWater = MutableLiveData<Double>()
+    val totalWater: LiveData<Double> = _totalWater
 
     init {
         _totalCalories.value = 0.0
         _totalDayProtein.value = 0.0
         _totalDayCarbohydrate.value = 0.0
         _totalDayFat.value = 0.0
-        _water.value = 0.0
+        _totalWater.value = 0.0
     }
 
     private val _nutritionData = MutableLiveData<Total_nutritions?>()
@@ -59,16 +63,23 @@ class ProgressViewModel(
         _totalDayCarbohydrate.value = carbohydrate
         _totalDayProtein.value = protein
         _totalDayFat.value = fat
-        _water.value = water
+        _totalWater.value = water
 
     }
-    fun updateTotalDayNutrients(calories: Double, protein: Double,carbohydrate: Double, fat: Double,water: Double) {
-        _totalCalories.value = (_totalCalories.value ?: 0.0) + calories
-        _totalDayCarbohydrate.value = (_totalDayCarbohydrate.value ?: 0.0) + carbohydrate
-        _totalDayProtein.value = (_totalDayProtein.value ?: 0.0) + protein
-        _totalDayFat.value = (_totalDayFat.value ?: 0.0) + fat
-        _water.value = (_water.value ?: 0.0) + water
-
+    fun updateTotalDayNutrients(calories: Double, protein: Double, carbohydrate: Double, fat: Double, id: Long) {
+        _totalCalories.value = (_totalCalories.value ?: 0.0) +  calories
+        _totalDayCarbohydrate.value = (_totalDayCarbohydrate.value ?: 0.0) +  carbohydrate
+        _totalDayProtein.value = (_totalDayProtein.value ?: 0.0) +  protein
+        _totalDayFat.value = (_totalDayFat.value ?: 0.0) +  fat
+        viewModelScope.launch(Dispatchers.IO) {
+            updateTotalDayNutrientsUseCase.updateTotalDayNutrients(totalCalories.value, totalDayProtein.value,  totalDayCarbohydrate.value, totalDayFat.value, id)
+        }
+    }
+    fun updateDayWater(water: Double, id: Long){
+        _totalWater.value = (_totalWater.value ?: 0.0) + water
+        viewModelScope.launch(Dispatchers.IO) {
+            updateDayWaterUsecase.updateDayWater(totalWater.value, id)
+        }
     }
 
     fun loadNutritionData(id: Long) {

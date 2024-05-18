@@ -20,6 +20,9 @@ interface TotalNutritionDao {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     fun insertTotalNutritions(nutrition: Total_nutritions)
 
+    @Update
+    suspend fun updateTotalNutritions(totalNutritions: Total_nutritions)
+
 
     @Query("SELECT * FROM total_nutritions WHERE id = :id")
     fun getTotalNutritionById(id: Long): Total_nutritions?
