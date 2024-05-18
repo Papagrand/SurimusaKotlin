@@ -69,12 +69,13 @@
                 />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
+
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/flasting_tracker_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@id/flasting_text_and_button"
-            app:layout_constraintLeft_toLeftOf="parent">
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/flasting_text_and_button">
 
             <ImageView
                 android:id="@+id/flasting_tracker_image_view"
@@ -82,11 +83,10 @@
                 android:layout_height="match_parent"
                 android:scaleType="fitXY"
                 android:src="@drawable/image_tracker_flasting"
-                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent">
-            </ImageView>
+                app:layout_constraintTop_toTopOf="parent"></ImageView>
 
             <TextView
                 android:id="@+id/tracker_status_text"
@@ -97,27 +97,28 @@
                 android:text="@string/customize_yourself"
                 android:textColor="?android:textColor"
                 android:textSize="@dimen/top_strings_size"
-                app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
-                />
+                app:layout_constraintTop_toTopOf="parent" />
+
             <com.mikhaellopez.circularprogressbar.CircularProgressBar
-                android:id="@+id/circularProgressBarCalories"
+                android:id="@+id/circularProgressBarTimer"
                 android:layout_width="wrap_content"
-                android:layout_marginTop="20dp"
-                android:layout_marginBottom="5dp"
                 android:layout_height="0dp"
-                app:cpb_progress="1"
-                app:layout_constraintTop_toBottomOf="@id/tracker_status_text"
-                app:layout_constraintBottom_toTopOf="@id/your_tracker_text"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="5dp"
                 app:cpb_background_progressbar_color="?attr/colorSecondaryVariant"
                 app:cpb_background_progressbar_width="10dp"
+                app:cpb_progress="1"
                 app:cpb_progress_direction="to_right"
                 app:cpb_progressbar_color="?attr/colorTertiaryFixed"
                 app:cpb_progressbar_width="10dp"
-                app:cpb_round_border="true" />
+                app:cpb_round_border="true"
+                app:layout_constraintBottom_toTopOf="@id/guideline10"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tracker_status_text" />
+
             <TextView
                 android:id="@+id/your_tracker_text"
                 android:layout_width="wrap_content"
@@ -126,9 +127,10 @@
                 android:text="@string/your_tracker"
                 android:textColor="?android:textColor"
                 android:textSize="@dimen/main_information_size"
+                android:visibility="visible"
                 app:layout_constraintBottom_toTopOf="@id/variant_16_8"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintLeft_toLeftOf="parent"/>
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent" />
 
             <TextView
                 android:id="@+id/variant_16_8"
@@ -138,59 +140,102 @@
                 android:text="16:8"
                 android:textColor="?attr/colorTertiaryFixed"
                 android:textSize="@dimen/giant_text_size"
+                android:visibility="visible"
                 app:layout_constraintBottom_toTopOf="@id/button_on_tracker"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintLeft_toLeftOf="parent"/>
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent" />
+
+            <TextView
+                android:id="@+id/last_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/blinker_extralight"
+                android:text="00:00:00"
+                android:textColor="?attr/android:textColor"
+                android:textSize="@dimen/last_calories_and_timer_size"
+                android:visibility="gone"
+                app:layout_constraintBottom_toTopOf="@id/guideline11"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent" />
+
 
             <ImageButton
                 android:id="@+id/button_on_tracker"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:layout_constraintBottom_toTopOf="@id/start_end_of_period_flasting"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintLeft_toLeftOf="parent"
                 android:layout_marginBottom="20dp"
+                android:background="@android:color/transparent"
                 android:src="@drawable/on_tracker"
-                android:background="@android:color/transparent"/>
+                app:layout_constraintBottom_toTopOf="@id/start_end_of_period_flasting"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent" />
+
+            <ImageButton
+                android:id="@+id/button_start_flasting"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
+                android:background="@android:color/transparent"
+                android:src="@drawable/start_flasting_button"
+                android:visibility="gone"
+                app:layout_constraintBottom_toTopOf="@id/start_end_of_period_flasting"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent" />
+
+            <ImageButton
+                android:id="@+id/button_stop_flasting"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
+                android:background="@android:color/transparent"
+                android:src="@drawable/stop_period_flusting_button"
+                android:visibility="gone"
+                app:layout_constraintBottom_toTopOf="@id/start_end_of_period_flasting"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent" />
+
+
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/start_end_of_period_flasting"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="20dp"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent">
+                app:layout_constraintRight_toRightOf="parent">
+
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/start_of_period_flasting"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toLeftOf="@id/end_of_period_flasting"
-                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintTop_toTopOf="parent">
+
                     <TextView
                         android:id="@+id/start_of_period_flasting_text"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        app:layout_constraintTop_toTopOf="parent"
+                        android:fontFamily="@font/blinker_bold"
+                        android:text="@string/start_of_starving"
+                        android:textSize="@dimen/minimal_text_size"
                         app:layout_constraintBottom_toTopOf="@id/day_hour_start"
                         app:layout_constraintLeft_toLeftOf="parent"
                         app:layout_constraintRight_toRightOf="parent"
-                        android:textSize="@dimen/minimal_text_size"
-                        android:text="@string/start_of_starving"
-                        android:fontFamily="@font/blinker_bold"
-                        />
+                        app:layout_constraintTop_toTopOf="parent" />
+
                     <TextView
                         android:id="@+id/day_hour_start"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:fontFamily="@font/blinker_regular"
+                        android:text="Сегодня 20:00"
+                        android:textSize="@dimen/minimal_text_size"
                         app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/start_of_period_flasting_text"
                         app:layout_constraintLeft_toLeftOf="parent"
                         app:layout_constraintRight_toRightOf="parent"
-                        android:textSize="@dimen/minimal_text_size"
-                        android:text="Сегодня 20:00"
-                        android:fontFamily="@font/blinker_regular"/>
+                        app:layout_constraintTop_toBottomOf="@id/start_of_period_flasting_text" />
 
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
@@ -199,41 +244,68 @@
                     android:id="@+id/end_of_period_flasting"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintLeft_toRightOf="@id/start_of_period_flasting"
                     app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintTop_toTopOf="parent">
+
                     <TextView
                         android:id="@+id/end_of_period_flasting_text"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        app:layout_constraintTop_toTopOf="parent"
+                        android:fontFamily="@font/blinker_bold"
+                        android:text="@string/end_of_starving"
+                        android:textSize="@dimen/minimal_text_size"
                         app:layout_constraintBottom_toTopOf="@id/day_hour_end"
                         app:layout_constraintLeft_toLeftOf="parent"
                         app:layout_constraintRight_toRightOf="parent"
-                        android:textSize="@dimen/minimal_text_size"
-                        android:text="@string/end_of_starving"
-                        android:fontFamily="@font/blinker_bold"
-                        />
+                        app:layout_constraintTop_toTopOf="parent" />
+
                     <TextView
                         android:id="@+id/day_hour_end"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:fontFamily="@font/blinker_regular"
+                        android:text="Завтра 10:00"
+                        android:textSize="@dimen/minimal_text_size"
                         app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/end_of_period_flasting_text"
                         app:layout_constraintLeft_toLeftOf="parent"
                         app:layout_constraintRight_toRightOf="parent"
-                        android:textSize="@dimen/minimal_text_size"
-                        android:text="Завтра 10:00"
-                        android:fontFamily="@font/blinker_regular"/>
+                        app:layout_constraintTop_toBottomOf="@id/end_of_period_flasting_text" />
 
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-
             </androidx.constraintlayout.widget.ConstraintLayout>
 
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline10"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintGuide_percent="0.57" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline11"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintGuide_percent="0.7" />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
+        <ImageButton
+            android:id="@+id/button_stop_all_process"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/flasting_tracker_view"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            android:layout_marginTop="20dp"
+            android:src="@drawable/stop_all_process_button"
+            android:background="@android:color/transparent"
+            android:visibility="visible"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>
