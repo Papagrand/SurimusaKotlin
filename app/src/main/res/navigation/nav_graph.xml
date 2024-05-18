@@ -13,10 +13,6 @@
             app:destination="@id/addProductOrMealFragment2" />
     </fragment>
     <fragment
-        android:id="@+id/recepiesFragment"
-        android:name="com.example.surimusakotlin.presentation.fragment.RecepiesFragment"
-        android:label="RecepiesFragment" />
-    <fragment
         android:id="@+id/flastingFragment"
         android:name="com.example.surimusakotlin.presentation.fragment.FlastingFragment"
         android:label="FlastingFragment" />

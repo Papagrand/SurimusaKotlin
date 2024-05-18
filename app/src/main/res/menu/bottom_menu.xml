@@ -7,11 +7,6 @@
         android:icon="@drawable/progress_navigation"
         />
     <item
-        android:id="@+id/recepiesFragment"
-        android:title="Рецепты"
-        android:icon="@drawable/recepies_navigation"
-        />
-    <item
         android:id="@+id/flastingFragment"
         android:title="Голодание"
         android:icon="@drawable/flasting_navigation"
