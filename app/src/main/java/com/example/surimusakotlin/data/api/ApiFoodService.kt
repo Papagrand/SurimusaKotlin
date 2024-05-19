@@ -13,16 +13,6 @@ import retrofit2.http.Query
 
 interface ApiFoodService {
 
-//    @Headers(
-//        "Content-Type: application/x-www-form-urlencoded",
-//        "x-app-id: f55b564e",
-//        "x-app-key: ebb09c5dc3cbef9a264656d6332c1935"
-//    )
-//    @GET("v2/search/item")
-//    suspend fun getAdditionalFoodInfo(
-//        @Query("nix_item_id") nixItemId: String
-//    ): Response<Food>
-
     @Headers(
         "Content-Type: application/json",
         "x-app-id: a090e737",

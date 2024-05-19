@@ -16,11 +16,12 @@ class DataHelper(context: Context) {
     private var fastingPeriod: Long = 0
     private var eatingPeriod: Long = 0
     private var isFasting = true
+    private var onStopTime: Long = 0
 
     init {
         timerCounting = sharedPref.getBoolean(COUNTING_KEY, false)
-        fastingPeriod = sharedPref.getLong(FASTING_PERIOD_KEY, 57600)
-        eatingPeriod = sharedPref.getLong(EATING_PERIOD_KEY, 28800)
+        fastingPeriod = sharedPref.getLong(FASTING_PERIOD_KEY, 5760000)
+        eatingPeriod = sharedPref.getLong(EATING_PERIOD_KEY, 2880000)
         isFasting = sharedPref.getBoolean(IS_FASTING_KEY, true)
 
         val startString = sharedPref.getString(START_TIME_KEY, null)
@@ -40,13 +41,23 @@ class DataHelper(context: Context) {
     }
 
     fun elapsedTime(): Long {
-        startTime?.let {
-            val now = Date().time
-            val start = it.time
-            return now - start
+        if (isFasting == true){
+            startTime?.let {
+                val now = Date().time
+                val start = it.time
+                return now - start
+            }
+        }
+        else{
+            stopTime?.let {
+                val now = Date().time
+                val start = it.time
+                return now - start
+            }
         }
         return 0
     }
+
 
     fun stopTime(): Date? = stopTime
 
@@ -57,6 +68,28 @@ class DataHelper(context: Context) {
             apply()
         }
     }
+
+    fun setIsFasting(flag: Boolean){
+        isFasting = flag
+        with(sharedPref.edit()){
+            putBoolean(IS_FASTING_KEY,isFasting)
+            apply()
+        }
+    }
+
+    fun getIsFasting(): Boolean = isFasting
+
+    fun setOnStopTime(date: Long){
+        onStopTime = date
+        with(sharedPref.edit()){
+            putLong(ON_STOP_TIME, onStopTime)
+            apply()
+        }
+    }
+    fun getOnStopTime(): Long? {
+        return sharedPref.getLong(ON_STOP_TIME, onStopTime)
+    }
+
 
     fun timerCounting(): Boolean = timerCounting
 
@@ -89,6 +122,7 @@ class DataHelper(context: Context) {
     }
 
     companion object {
+        const val ON_STOP_TIME = "onStopTime"
         const val PREFERENCES = "prefs"
         const val START_TIME_KEY = "startKey"
         const val STOP_TIME_KEY = "stopKey"

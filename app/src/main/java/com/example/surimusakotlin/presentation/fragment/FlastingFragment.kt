@@ -43,13 +43,53 @@ class FlastingFragment : Fragment() {
 
         if (dataHelper.timerCounting()) {
             val elapsedTime = dataHelper.elapsedTime()
-            val remainingTime = if (dataHelper.getFastingPeriod() - elapsedTime > 0) dataHelper.getFastingPeriod() - elapsedTime else 0
-            if (remainingTime > 0) {
-                startTimer(remainingTime, true)
-            } else {
-                val eatingTimeLeft = dataHelper.getEatingPeriod() - (elapsedTime - dataHelper.getFastingPeriod())
-                if (eatingTimeLeft > 0) {
-                    startTimer(eatingTimeLeft, false)
+
+            fastingTimer?.cancel()
+            dataHelper.setTimerCounting(false)
+            if (dataHelper.getIsFasting()){
+                if (5760000 - elapsedTime >= 0){
+                    restartFastingPeriod(5760000 - elapsedTime)
+                }else{
+                    var remainsTime = elapsedTime - 5760000
+                    dataHelper.setIsFasting(false)
+                    while (remainsTime>=2880000){
+                        remainsTime -= 2880000
+                        dataHelper.setIsFasting(true)
+                        if (remainsTime - 5760000 >= 0){
+                            remainsTime -= 5760000
+                            dataHelper.setIsFasting(false)
+                        }else{
+                            break
+                        }
+                    }
+                    if (dataHelper.getIsFasting()){
+                        restartFastingPeriod(remainsTime)
+                    }else{
+                        restartEatingPeriod(remainsTime)
+                    }
+
+                }
+            }else{
+                if (2880000 - elapsedTime >=0){
+                    restartEatingPeriod(2880000 - elapsedTime)
+                }else{
+                    var remainsTime = elapsedTime - 2880000
+                    dataHelper.setIsFasting(true)
+                    while (remainsTime>=5760000){
+                        remainsTime -= 5760000
+                        dataHelper.setIsFasting(false)
+                        if (remainsTime - 2880000 >= 0){
+                            remainsTime -= 2880000
+                            dataHelper.setIsFasting(true)
+                        }else{
+                            break
+                        }
+                    }
+                    if (dataHelper.getIsFasting()){
+                        restartFastingPeriod(remainsTime)
+                    }else{
+                        restartEatingPeriod(remainsTime)
+                    }
                 }
             }
         }
@@ -73,10 +113,54 @@ class FlastingFragment : Fragment() {
         updateUI()
     }
 
-    private fun startFlastingPeriod() {
+    override fun onStop() {
+        super.onStop()
+        if (dataHelper.getIsFasting() == true){
+            val elapsedTime = dataHelper.elapsedTime()
+            dataHelper.setOnStopTime(elapsedTime)
+        }
+        else
+        {
+            val elapsedTime = dataHelper.elapsedTime()
+            dataHelper.setOnStopTime(elapsedTime)
+        }
+
+    }
+
+    private fun restartFastingPeriod(dateInMillis: Long) {
+        val date = Date(dateInMillis)
+        dataHelper.setFastingPeriod(dateInMillis)
         dataHelper.setStartTime(Date())
         dataHelper.setTimerCounting(true)
         startTimer(dataHelper.getFastingPeriod(), true)
+        dataHelper.setIsFasting(true)
+        binding.buttonStopFlasting.visibility = View.VISIBLE
+        binding.buttonStartFlasting.visibility = View.GONE
+        binding.buttonOnTracker.visibility = View.GONE
+        binding.buttonStopAllProcess.visibility = View.VISIBLE
+        binding.trackerStatusText.text = getString(R.string.you_are_starving)
+    }
+
+    private fun restartEatingPeriod(dateInMillis: Long) {
+        val date = Date(dateInMillis)
+        dataHelper.setEatingPeriod(dateInMillis)
+        dataHelper.setStopTime(Date())
+        dataHelper.setTimerCounting(true)
+        dataHelper.setIsFasting(false)
+        startTimer(dataHelper.getEatingPeriod(), false)
+        binding.buttonStartFlasting.visibility = View.VISIBLE
+        binding.buttonStopFlasting.visibility = View.GONE
+        binding.buttonOnTracker.visibility = View.GONE
+        binding.buttonStopAllProcess.visibility = View.VISIBLE
+        binding.trackerStatusText.text = getString(R.string.you_can_eat)
+    }
+
+    private fun startFlastingPeriod() {
+        dataHelper.setStartTime(Date())
+        dataHelper.setTimerCounting(true)
+        dataHelper.setEatingPeriod(5760000)
+        startTimer(dataHelper.getFastingPeriod(), true)
+        dataHelper.setIsFasting(true)
         binding.buttonStopFlasting.visibility = View.VISIBLE
         binding.buttonStartFlasting.visibility = View.GONE
         binding.buttonOnTracker.visibility = View.GONE
@@ -87,6 +171,8 @@ class FlastingFragment : Fragment() {
     private fun startEatingPeriod() {
         dataHelper.setStopTime(Date())
         dataHelper.setTimerCounting(true)
+        dataHelper.setEatingPeriod(2880000)
+        dataHelper.setIsFasting(false)
         startTimer(dataHelper.getEatingPeriod(), false)
         binding.buttonStartFlasting.visibility = View.VISIBLE
         binding.buttonStopFlasting.visibility = View.GONE
@@ -98,6 +184,7 @@ class FlastingFragment : Fragment() {
     private fun continueFastingPeriod() {
         dataHelper.setStartTime(Date())
         dataHelper.setTimerCounting(true)
+        dataHelper.setIsFasting(true)
         startTimer(dataHelper.getFastingPeriod(), true)
         binding.buttonStopFlasting.visibility = View.VISIBLE
         binding.buttonStartFlasting.visibility = View.GONE
