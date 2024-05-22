@@ -26,6 +26,10 @@ class FlastingFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        dataHelper = DataHelper(requireContext().applicationContext)
+        if (dataHelper.timerCounting()) {
+            dataHelper.setElapsedTime()
+        }
     }
 
     override fun onCreateView(
@@ -38,11 +42,11 @@ class FlastingFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        dataHelper = DataHelper(requireContext().applicationContext)
+
         circularProgressBar = binding.circularProgressBarTimer
 
         if (dataHelper.timerCounting()) {
-            val elapsedTime = dataHelper.elapsedTime()
+            val elapsedTime = dataHelper.getElapsedTime()
 
             fastingTimer?.cancel()
             dataHelper.setTimerCounting(false)
@@ -96,14 +100,17 @@ class FlastingFragment : Fragment() {
 
         binding.buttonOnTracker.setOnClickListener {
             startFlastingPeriod()
+            dataHelper.dropElapsedTime()
         }
 
         binding.buttonStopFlasting.setOnClickListener {
             startEatingPeriod()
+            dataHelper.dropElapsedTime()
         }
 
         binding.buttonStartFlasting.setOnClickListener {
-            continueFastingPeriod()
+            startFlastingPeriod()
+            dataHelper.dropElapsedTime()
         }
 
         binding.buttonStopAllProcess.setOnClickListener {
@@ -116,12 +123,12 @@ class FlastingFragment : Fragment() {
     override fun onStop() {
         super.onStop()
         if (dataHelper.getIsFasting() == true){
-            val elapsedTime = dataHelper.elapsedTime()
+            val elapsedTime = dataHelper.getElapsedTime()
             dataHelper.setOnStopTime(elapsedTime)
         }
         else
         {
-            val elapsedTime = dataHelper.elapsedTime()
+            val elapsedTime = dataHelper.getElapsedTime()
             dataHelper.setOnStopTime(elapsedTime)
         }
 
@@ -158,7 +165,7 @@ class FlastingFragment : Fragment() {
     private fun startFlastingPeriod() {
         dataHelper.setStartTime(Date())
         dataHelper.setTimerCounting(true)
-        dataHelper.setEatingPeriod(5760000)
+        dataHelper.setFastingPeriod(5760000)
         startTimer(dataHelper.getFastingPeriod(), true)
         dataHelper.setIsFasting(true)
         binding.buttonStopFlasting.visibility = View.VISIBLE
@@ -181,21 +188,11 @@ class FlastingFragment : Fragment() {
         binding.trackerStatusText.text = getString(R.string.you_can_eat)
     }
 
-    private fun continueFastingPeriod() {
-        dataHelper.setStartTime(Date())
-        dataHelper.setTimerCounting(true)
-        dataHelper.setIsFasting(true)
-        startTimer(dataHelper.getFastingPeriod(), true)
-        binding.buttonStopFlasting.visibility = View.VISIBLE
-        binding.buttonStartFlasting.visibility = View.GONE
-        binding.buttonOnTracker.visibility = View.GONE
-        binding.buttonStopAllProcess.visibility = View.VISIBLE
-        binding.trackerStatusText.text = getString(R.string.you_are_starving)
-    }
 
     private fun stopAllTimers() {
         fastingTimer?.cancel()
         dataHelper.setTimerCounting(false)
+        dataHelper.dropElapsedTime()
         updateUI()
         val currentProgress = circularProgressBar.progress
         circularProgressBar.setProgressWithAnimation(1f, 1000)
@@ -234,7 +231,7 @@ class FlastingFragment : Fragment() {
                 if (isFasting) {
                     startEatingPeriod()
                 } else {
-                    continueFastingPeriod()
+                    startFlastingPeriod()
                 }
             }
         }.start()

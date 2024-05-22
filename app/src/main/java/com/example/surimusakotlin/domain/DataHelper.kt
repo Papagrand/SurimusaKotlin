@@ -17,12 +17,14 @@ class DataHelper(context: Context) {
     private var eatingPeriod: Long = 0
     private var isFasting = true
     private var onStopTime: Long = 0
+    private var elapsedTimeSum: Long = 0
 
     init {
         timerCounting = sharedPref.getBoolean(COUNTING_KEY, false)
         fastingPeriod = sharedPref.getLong(FASTING_PERIOD_KEY, 5760000)
         eatingPeriod = sharedPref.getLong(EATING_PERIOD_KEY, 2880000)
         isFasting = sharedPref.getBoolean(IS_FASTING_KEY, true)
+        elapsedTimeSum = sharedPref.getLong(ELAPSED_TIME, 2)
 
         val startString = sharedPref.getString(START_TIME_KEY, null)
         startTime = startString?.let { dateFormat.parse(it) }
@@ -40,23 +42,42 @@ class DataHelper(context: Context) {
         }
     }
 
-    fun elapsedTime(): Long {
-        if (isFasting == true){
+    fun getElapsedTime(): Long{
+        if (isFasting){
+            return elapsedTimeSum
+        }
+        else{
+            return elapsedTimeSum
+        }
+    }
+    fun dropElapsedTime(){
+        elapsedTimeSum = 2
+        with(sharedPref.edit()) {
+            putLong(ELAPSED_TIME, 2 )
+            apply()
+        }
+    }
+
+    fun setElapsedTime(): Long{
+        if (isFasting){
             startTime?.let {
                 val now = Date().time
                 val start = it.time
-                return now - start
+                elapsedTimeSum += now - start
+                sharedPref.edit().putLong(ELAPSED_TIME, elapsedTimeSum).apply()
             }
         }
         else{
             stopTime?.let {
                 val now = Date().time
                 val start = it.time
-                return now - start
+                elapsedTimeSum += now - start
+                sharedPref.edit().putLong(ELAPSED_TIME, elapsedTimeSum).apply()
             }
         }
         return 0
     }
+
 
 
     fun stopTime(): Date? = stopTime
@@ -122,6 +143,7 @@ class DataHelper(context: Context) {
     }
 
     companion object {
+        const val ELAPSED_TIME = "elapsedTime"
         const val ON_STOP_TIME = "onStopTime"
         const val PREFERENCES = "prefs"
         const val START_TIME_KEY = "startKey"
