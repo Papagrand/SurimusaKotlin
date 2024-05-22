@@ -37,6 +37,8 @@
     <string name="you_are_starving">Вы голодаете!</string>
     <string name="start_of_starving">Начало периода голодания</string>
     <string name="end_of_starving">Окончание голодания</string>
+    <string name="start_of_eating">Начало периода приема пищи</string>
+    <string name="end_of_eating">Окончание периода приема пищи</string>
     <string name="popular_trackers">Популярные трекеры</string>
     <string name="description_16_8">16 часов голодания, 8 часов еды. Одна из самых популярных программ по всему миру!</string>
     <string name="description_14_10">Простой путь к 14 часам голодания и 10 часам приема пищи.</string>

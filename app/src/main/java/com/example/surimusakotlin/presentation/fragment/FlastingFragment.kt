@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.os.CountDownTimer
 import android.os.Handler
 import android.os.Looper
+import java.time.LocalDate
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -42,7 +43,8 @@ class FlastingFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        binding.dayHourStart.text = "Не задано"
+        binding.dayHourEnd.text = "Не задано"
         circularProgressBar = binding.circularProgressBarTimer
 
         if (dataHelper.timerCounting()) {
@@ -135,12 +137,15 @@ class FlastingFragment : Fragment() {
     }
 
     private fun restartFastingPeriod(dateInMillis: Long) {
-        val date = Date(dateInMillis)
         dataHelper.setFastingPeriod(dateInMillis)
         dataHelper.setStartTime(Date())
         dataHelper.setTimerCounting(true)
         startTimer(dataHelper.getFastingPeriod(), true)
         dataHelper.setIsFasting(true)
+        binding.dayHourStart.text = convertMillisecondsToDayHourMinute(Date().time - dataHelper.getElapsedTime())
+        binding.dayHourEnd.text = convertMillisecondsToDayHourMinute(Date().time - dataHelper.getElapsedTime() + 57600000 )
+        binding.startOfPeriodFlastingText.text = resources.getString(R.string.start_of_starving)
+        binding.endOfPeriodFlastingText.text = resources.getString(R.string.end_of_starving)
         binding.buttonStopFlasting.visibility = View.VISIBLE
         binding.buttonStartFlasting.visibility = View.GONE
         binding.buttonOnTracker.visibility = View.GONE
@@ -149,12 +154,15 @@ class FlastingFragment : Fragment() {
     }
 
     private fun restartEatingPeriod(dateInMillis: Long) {
-        val date = Date(dateInMillis)
         dataHelper.setEatingPeriod(dateInMillis)
         dataHelper.setStopTime(Date())
         dataHelper.setTimerCounting(true)
         dataHelper.setIsFasting(false)
         startTimer(dataHelper.getEatingPeriod(), false)
+        binding.dayHourStart.text = convertMillisecondsToDayHourMinute(Date().time - - dataHelper.getElapsedTime())
+        binding.dayHourEnd.text = convertMillisecondsToDayHourMinute(Date().time - - dataHelper.getElapsedTime() + 28800000 )
+        binding.startOfPeriodFlastingText.text = resources.getString(R.string.start_of_eating)
+        binding.endOfPeriodFlastingText.text = resources.getString(R.string.end_of_eating)
         binding.buttonStartFlasting.visibility = View.VISIBLE
         binding.buttonStopFlasting.visibility = View.GONE
         binding.buttonOnTracker.visibility = View.GONE
@@ -168,6 +176,10 @@ class FlastingFragment : Fragment() {
         dataHelper.setFastingPeriod(57600000)
         startTimer(dataHelper.getFastingPeriod(), true)
         dataHelper.setIsFasting(true)
+        binding.dayHourStart.text = convertMillisecondsToDayHourMinute(Date().time)
+        binding.dayHourEnd.text = convertMillisecondsToDayHourMinute(Date().time + 57600000 )
+        binding.startOfPeriodFlastingText.text = resources.getString(R.string.start_of_starving)
+        binding.endOfPeriodFlastingText.text = resources.getString(R.string.end_of_starving)
         binding.buttonStopFlasting.visibility = View.VISIBLE
         binding.buttonStartFlasting.visibility = View.GONE
         binding.buttonOnTracker.visibility = View.GONE
@@ -180,6 +192,10 @@ class FlastingFragment : Fragment() {
         dataHelper.setTimerCounting(true)
         dataHelper.setEatingPeriod(28800000)
         dataHelper.setIsFasting(false)
+        binding.dayHourStart.text = convertMillisecondsToDayHourMinute(Date().time)
+        binding.dayHourEnd.text = convertMillisecondsToDayHourMinute(Date().time + 28800000 )
+        binding.startOfPeriodFlastingText.text = resources.getString(R.string.start_of_eating)
+        binding.endOfPeriodFlastingText.text = resources.getString(R.string.end_of_eating)
         startTimer(dataHelper.getEatingPeriod(), false)
         binding.buttonStartFlasting.visibility = View.VISIBLE
         binding.buttonStopFlasting.visibility = View.GONE
@@ -193,6 +209,10 @@ class FlastingFragment : Fragment() {
         fastingTimer?.cancel()
         dataHelper.setTimerCounting(false)
         dataHelper.dropElapsedTime()
+        binding.dayHourStart.text = "Не задано"
+        binding.dayHourEnd.text = "Не задано"
+        binding.startOfPeriodFlastingText.text = resources.getString(R.string.start_of_starving)
+        binding.endOfPeriodFlastingText.text = resources.getString(R.string.end_of_starving)
         updateUI()
         val currentProgress = circularProgressBar.progress
         circularProgressBar.setProgressWithAnimation(1f, 1000)
@@ -245,5 +265,14 @@ class FlastingFragment : Fragment() {
         val hours = ((ms / 1000) / 3600) % 24
         return String.format("%02d:%02d:%02d", hours, minutes, seconds)
     }
+    fun convertMillisecondsToDayHourMinute(ms: Long): String {
+        val currentDayOfMonth = LocalDate.now().dayOfMonth
+        val currentMonth = LocalDate.now().monthValue
+        val minutes = (ms / 1000 / 60) % 60
+        val hours = (ms / 1000 / 3600) % 24
+
+        return "$currentDayOfMonth.$currentMonth ${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}"
+    }
+
 
 }
