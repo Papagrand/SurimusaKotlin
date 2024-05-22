@@ -21,8 +21,8 @@ class DataHelper(context: Context) {
 
     init {
         timerCounting = sharedPref.getBoolean(COUNTING_KEY, false)
-        fastingPeriod = sharedPref.getLong(FASTING_PERIOD_KEY, 5760000)
-        eatingPeriod = sharedPref.getLong(EATING_PERIOD_KEY, 2880000)
+        fastingPeriod = sharedPref.getLong(FASTING_PERIOD_KEY, 57600000)
+        eatingPeriod = sharedPref.getLong(EATING_PERIOD_KEY, 28800000)
         isFasting = sharedPref.getBoolean(IS_FASTING_KEY, true)
         elapsedTimeSum = sharedPref.getLong(ELAPSED_TIME, 2)
 

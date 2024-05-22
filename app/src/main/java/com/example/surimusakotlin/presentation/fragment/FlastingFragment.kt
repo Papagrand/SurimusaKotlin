@@ -51,16 +51,16 @@ class FlastingFragment : Fragment() {
             fastingTimer?.cancel()
             dataHelper.setTimerCounting(false)
             if (dataHelper.getIsFasting()){
-                if (5760000 - elapsedTime >= 0){
-                    restartFastingPeriod(5760000 - elapsedTime)
+                if (57600000 - elapsedTime >= 0){
+                    restartFastingPeriod(57600000 - elapsedTime)
                 }else{
-                    var remainsTime = elapsedTime - 5760000
+                    var remainsTime = elapsedTime - 57600000
                     dataHelper.setIsFasting(false)
-                    while (remainsTime>=2880000){
-                        remainsTime -= 2880000
+                    while (remainsTime>=28800000){
+                        remainsTime -= 28800000
                         dataHelper.setIsFasting(true)
-                        if (remainsTime - 5760000 >= 0){
-                            remainsTime -= 5760000
+                        if (remainsTime - 57600000 >= 0){
+                            remainsTime -= 57600000
                             dataHelper.setIsFasting(false)
                         }else{
                             break
@@ -74,16 +74,16 @@ class FlastingFragment : Fragment() {
 
                 }
             }else{
-                if (2880000 - elapsedTime >=0){
-                    restartEatingPeriod(2880000 - elapsedTime)
+                if (28800000 - elapsedTime >=0){
+                    restartEatingPeriod(28800000 - elapsedTime)
                 }else{
-                    var remainsTime = elapsedTime - 2880000
+                    var remainsTime = elapsedTime - 28800000
                     dataHelper.setIsFasting(true)
-                    while (remainsTime>=5760000){
-                        remainsTime -= 5760000
+                    while (remainsTime>=57600000){
+                        remainsTime -= 57600000
                         dataHelper.setIsFasting(false)
-                        if (remainsTime - 2880000 >= 0){
-                            remainsTime -= 2880000
+                        if (remainsTime - 28800000 >= 0){
+                            remainsTime -= 28800000
                             dataHelper.setIsFasting(true)
                         }else{
                             break
@@ -165,7 +165,7 @@ class FlastingFragment : Fragment() {
     private fun startFlastingPeriod() {
         dataHelper.setStartTime(Date())
         dataHelper.setTimerCounting(true)
-        dataHelper.setFastingPeriod(5760000)
+        dataHelper.setFastingPeriod(57600000)
         startTimer(dataHelper.getFastingPeriod(), true)
         dataHelper.setIsFasting(true)
         binding.buttonStopFlasting.visibility = View.VISIBLE
@@ -178,7 +178,7 @@ class FlastingFragment : Fragment() {
     private fun startEatingPeriod() {
         dataHelper.setStopTime(Date())
         dataHelper.setTimerCounting(true)
-        dataHelper.setEatingPeriod(2880000)
+        dataHelper.setEatingPeriod(28800000)
         dataHelper.setIsFasting(false)
         startTimer(dataHelper.getEatingPeriod(), false)
         binding.buttonStartFlasting.visibility = View.VISIBLE
