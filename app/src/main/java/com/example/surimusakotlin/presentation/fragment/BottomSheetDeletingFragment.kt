@@ -59,6 +59,10 @@ class BottomSheetDeletingFragment : BottomSheetDialogFragment(), FoodAdapter.Foo
             }
         }
 
+        binding.closeText.setOnClickListener{
+            dismiss()
+        }
+
     }
 
     override fun onFoodClick(foodItem: Food) {
@@ -68,5 +72,9 @@ class BottomSheetDeletingFragment : BottomSheetDialogFragment(), FoodAdapter.Foo
     override fun onDeleteClick(product: Product) {
         viewModel.deleteProduct(product.id)
     }
+
+
+
+
 
 }

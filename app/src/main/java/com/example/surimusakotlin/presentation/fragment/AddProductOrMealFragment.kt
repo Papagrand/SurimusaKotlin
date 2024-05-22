@@ -60,7 +60,14 @@ class AddProductOrMealFragment : Fragment() {
         viewModel.productData.observe(viewLifecycleOwner) { eating ->
             if (eating != null) {
                 binding.countOfAddedProducts.text = eating.size.toString()
+                if (eating.size > 0){
+                    binding.countOfProducts.setOnClickListener{
+                        val destination = AddProductOrMealFragmentDirections.actionAddProductOrMealFragment2ToBottomSheetDeletingFragment(arg.mealId)
+                        findNavController().navigate(destination)
+                    }
+                }
             }
+
         }
 
         val mealText = when (arg.mealId%10) {
@@ -77,12 +84,13 @@ class AddProductOrMealFragment : Fragment() {
             val destination = AddProductOrMealFragmentDirections.actionAddProductOrMealFragment2ToSearchFragment2(arg.mealId)
             findNavController().navigate(destination)
         }
-        binding.countOfProducts.setOnClickListener{
-            val destination = AddProductOrMealFragmentDirections.actionAddProductOrMealFragment2ToBottomSheetDeletingFragment(arg.mealId)
-            findNavController().navigate(destination)
-        }
+
+
 
         binding.backToProgress.setOnClickListener {
+            findNavController().navigate(R.id.progressFragment)
+        }
+        binding.doneButton.setOnClickListener {
             findNavController().navigate(R.id.progressFragment)
         }
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {

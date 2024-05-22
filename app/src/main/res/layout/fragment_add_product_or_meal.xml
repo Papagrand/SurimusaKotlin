@@ -81,19 +81,6 @@
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toBottomOf="@id/breakfast_lunch_dinner"
             >
-            <!--            <SearchView-->
-            <!--                android:id="@+id/search_view"-->
-            <!--                android:layout_width="0dp"-->
-            <!--                android:layout_height="wrap_content"-->
-            <!--                app:layout_constraintRight_toRightOf="parent"-->
-            <!--                app:layout_constraintLeft_toLeftOf="parent"-->
-            <!--                app:layout_constraintTop_toTopOf="parent"-->
-            <!--                app:layout_constraintBottom_toBottomOf="parent"-->
-            <!--                android:background="@drawable/searchbar"-->
-            <!--                android:queryHint="@string/search_empty"-->
-            <!--                android:iconifiedByDefault="false"-->
-            <!--                android:enabled="false"-->
-            <!--                />-->
             <ImageButton
                 android:id="@+id/search_view_button"
                 android:layout_width="match_parent"
@@ -118,78 +105,7 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/buttons_product_meals"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/search_bar_products"
-            >
-            <ImageButton
-                android:id="@+id/button_produtct"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="30dp"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
-                android:background="@drawable/button_product"
-                />
-            <ImageButton
-                android:id="@+id/button_meals"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="30dp"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
-                android:background="@drawable/button_meals"
-                />
-            <TextView
-                android:id="@+id/produtct_text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:layout_constraintTop_toBottomOf="@+id/button_produtct"
-                app:layout_constraintLeft_toLeftOf="@+id/button_produtct"
-                app:layout_constraintRight_toRightOf="@+id/button_produtct"
-                android:text="@string/products"
-                android:fontFamily="@font/blinker_regular"
-                android:textSize="@dimen/main_information_size"
-                android:textColor="@color/text_color_on_light_and_timer"/>
-            <TextView
-                android:id="@+id/meals_text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:layout_constraintTop_toBottomOf="@+id/button_meals"
-                app:layout_constraintLeft_toLeftOf="@+id/button_meals"
-                app:layout_constraintRight_toRightOf="@+id/button_meals"
-                android:text="@string/meals"
-                android:fontFamily="@font/blinker_regular"
-                android:textSize="@dimen/main_information_size"
-                android:textColor="@color/text_color_on_light_and_timer"/>
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/tabLayoutView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/buttons_product_meals"
-            >
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
-                android:background="@drawable/tablayout"
-                />
-        </androidx.constraintlayout.widget.ConstraintLayout>
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/products_or_meals"
             android:layout_width="match_parent"
@@ -197,7 +113,7 @@
             android:layout_marginTop="20dp"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tabLayoutView"
+            app:layout_constraintTop_toBottomOf="@id/search_bar_products"
             >
             <androidx.recyclerview.widget.RecyclerView
                 android:layout_width="match_parent"
