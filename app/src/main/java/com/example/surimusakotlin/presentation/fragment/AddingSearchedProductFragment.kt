@@ -141,7 +141,7 @@ class AddingSearchedProductFragment : Fragment() {
             ) + " гр"
             cholesterolTextView.text = getString(R.string.cholesterol) + " " + "%.2f".format(
                 foodNutrientsManager.cholesterol ?: 0
-            ) + " гр"
+            ) + " мг"
             sodiumTextView.text = getString(R.string.sodium) + " " + "%.2f".format(
                 foodNutrientsManager.sodium ?: 0
             ) + " мг"
