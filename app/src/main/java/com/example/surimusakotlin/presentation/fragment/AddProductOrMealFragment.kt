@@ -63,7 +63,9 @@ class AddProductOrMealFragment : Fragment() {
                 if (eating.size > 0){
                     binding.countOfProducts.setOnClickListener{
                         val destination = AddProductOrMealFragmentDirections.actionAddProductOrMealFragment2ToBottomSheetDeletingFragment(arg.mealId)
-                        findNavController().navigate(destination)
+                        if ( binding.countOfAddedProducts.text != "0") {
+                            findNavController().navigate(destination)
+                        }
                     }
                 }
             }
